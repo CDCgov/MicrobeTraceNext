@@ -1,0 +1,156 @@
+﻿<div #mapContainer>
+    <!-- <div #mapContainer style="position:fixed; width:500px; height:200px"> -->
+    <!-- <div id="3DNet"></div> -->
+    <!-- <div id="3DNet" style="position:absolute; left:-200px;width:500px; height:200px;"></div> -->
+</div>
+
+<div id="3DNet"></div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2 *ngIf="isExporting && commonService.session.style.widgets['node-color-variable'] != 'None'"
+            class="bottom-table">
+            Node Colors
+        </h2>
+        <table id="node-color-table-bottom3d" class="bottom-table"></table>
+    </div>
+    <div class="col-md-4">
+        <h2 *ngIf="isExporting && commonService.session.style.widgets['link-color-variable'] != 'None'"
+            class="bottom-table">
+            Link Colors
+        </h2>
+        <table id="link-color-table-bottom3d" class="bottom-table"></table>
+    </div>
+</div>
+
+<div class="m-content" *ngIf="IsDataAvailable == false">
+    <div id="file-panel" class="container-fluid" style="height:500px;">
+        <div id="file-prompt" class="d-flex justify-content-center">
+            <h1><b>Please add data files to load...</b></h1>
+            <br />
+        </div>
+    </div>
+</div>
+
+<p-dialog id="net3D-settings-pane" [positionLeft]="Node3DSettingsExportDialogSettings.left"
+    [positionTop]="Node3DSettingsExportDialogSettings.top" [(visible)]="Node3DSettingsExportDialogSettings.isVisible"
+    header="3D Settings Configuration" [style]="{width: '25vw', height:'400px'}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <tabset class="tab-container tabbable-line" style='width: 100%; height: 100%'>
+                    <tab heading="{{'Nodes' | localize}}" [active]="true" customClass="m-tabs__item">
+                        <div id="threeDNodeConfigurations" class="tab-pane fade show active" role="tabpanel">
+                            <div class="form-group row" title="What do you want to see when you hover over a node?">
+                                <div class="col-4">
+                                    <label for="3DNet-node-tooltip-variable">Tooltip</label>
+                                </div>
+                                <div class="col-8">
+                                    <p-dropdown id="3DNet-node-tooltip-variable" [options]="FieldList"
+                                        [(ngModel)]="SelectedNodeTooltipVariable"
+                                        (ngModelChange)="onNodeToolTipChange()" appendTo="body"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4" title="Launch Global Color Options">Color</div>
+                                <div class="col-8">
+                                    <button class="btn btn-sm btn-light w-100 launch-color-options"
+                                        (click)="showGlobalSettings($event)">
+                                        Color Options
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="Size nodes in proportion to which variable?">
+                                <div class="col-4">
+                                    <label for="3DNet-node-radius-variable">Size By</label>
+                                </div>
+                                <div class="col-8">
+                                    <p-dropdown id="3DNet-node-radius-variable" [options]="FieldList"
+                                        [(ngModel)]="SelectedNodeSizeByVariable" (ngModelChange)="onNodeSizeChange()"
+                                        appendTo="body"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How large should the nodes be?">
+                                <div class="col-4"><label for="3DNet-node-radius">Size</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="3DNet-node-radius" min=".1" value="4"
+                                        step=".1" max="20" [(ngModel)]="SelectedNodeSizeVariabe"
+                                        (ngModelChange)="onNodeSizeChange()">
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="{{'Links' | localize}}" customClass="m-tabs__item">
+                        <div id="threeDLinkConfigurations" class="tab-pane fade show" role="tabpanel">
+                            <div class="form-group row" title="What do you want to see when you hover over a node?">
+                                <div class="col-4">
+                                    <label for="3DNet-link-tooltip-variable">Tooltip</label>
+                                </div>
+                                <div class="col-8">
+                                    <p-dropdown id="3DNet-link-tooltip-variable" [options]="FieldList"
+                                        [(ngModel)]="SelectedLinkTooltipVariable"
+                                        (ngModelChange)="onNodeLinkToolTipChange()" appendTo="body"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4" title="Launch Global Color Options">Color</div>
+                                <div class="col-8">
+                                    <button class="btn btn-sm btn-light w-100 launch-color-options"
+                                        (click)="showGlobalSettings($event)">Color Options</button>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How transparent should the links be?">
+                                <div class="col-4">
+                                    <label for="3DNet-link-transparency">Transparency</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="3DNet-link-transparency" min="0"
+                                        max="1" value="0" step="0.01" [(ngModel)]="SelectedLinkTransparencyVariabe"
+                                        (ngModelChange)="onLinkTransparencyChange()">
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How wide should the links be?">
+                                <div class="col-4"><label for="3DNet-link-width">Width</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="3DNet-link-width" min=".1" value="1.6"
+                                        step=".1" max="20" [(ngModel)]="SelectedLinkWidthVariabe"
+                                        (ngModelChange)="onLinkWidthChange()">
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog id="network-export-modal" [(visible)]="Show3DExportSettingsPange" header="Export Network Image"
+    (onHide)="onCloseExport()">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style='min-width: 400px; height: 100%;'>
+                <div class="form-group row">
+                    <div class="col-9">
+                        <input type="text" id="network-export-filename" class="form-control form-control-sm"
+                            placeholder="Filename" [(ngModel)]="SelectedNetworkExportFilenameVariable">
+                    </div>
+                    <div class="col-1">
+                        <p-dropdown id="network-export-filetype" [options]="NetworkExportFileTypeList"
+                            [(ngModel)]="SelectedNetworkExportFileTypeListVariable" appendTo="body"></p-dropdown>
+                    </div>
+                </div>
+                <div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-error"
+                    (click)="Show3DExportSettingsPange = !Show3DExportSettingsPange">Cancel</button>
+                <button type="button" id="network-export" class="btn btn-primary"
+                    (click)="exportVisualization($event)">Export</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</p-dialog><!-- /.modal -->

@@ -1,0 +1,13 @@
+.dialogSize{
+    width: 30vw;
+    height: 150px;
+    min-width: 150px;
+}
+
+.ui-dropdown {
+    width: 100% !important;
+}
+
+.bottom-table{
+    font-size: calc((.5vmax));   
+}
