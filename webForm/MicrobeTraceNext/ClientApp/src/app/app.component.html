@@ -1,0 +1,21 @@
+
+
+<div>
+    <app-header></app-header>
+    <div class="content-body" *ngIf="!isLoading">
+        <app-login *ngIf="!isUserLoggedIn"></app-login>
+        <app-home *ngIf="isUserLoggedIn"></app-home>
+        <!-- <app-section-select *ngIf="isUserLoggedIn"></app-section-select> -->
+    </div>
+    <app-footer></app-footer>
+</div>
+
+<ng-template #countDownModal>
+    <h1 mat-dialog-title>Warning</h1>
+    <div mat-dialog-content>
+        <p>Due to inactivity, you will be logged out in {{counter}} seconds!</p>
+    </div>
+    <div mat-dialog-actions class="pull-right">
+        <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial (click)="reset()">Keep Alive</button>
+    </div>
+</ng-template>

@@ -1,0 +1,46 @@
+.title {
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #0D47A1;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  font-size: 20px;
+}
+
+.title-sm{
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #404040;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  font-size: 15px;
+}
+.offer-Port-register {
+  max-width: 500px;
+  /*box-shadow: 0 0 11px 1px rgba(0, 0, 0, 0.2);*/
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3%;
+}
+
+.panel-body-register {
+  padding: 20px 0px 0px;
+  /*border-top: 5px solid #0D47A1;*/
+  border-radius: 0px;
+}
+
+.register-page-header {
+  max-width: 500px;
+  padding: 50px 40px 30px 40px;
+}
+
+.bpass-sin-lab {
+  color: #404040;
+  font-size: 17px;
+  font-weight: 400;
+  padding-bottom: 5%;
+  margin-top:5%;
+}
+

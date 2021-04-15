@@ -1,0 +1,161 @@
+
+
+
+
+
+
+
+
+<mat-sidenav-container class="side-container">
+    <mat-sidenav #sidenav mode="side" opened class="side-nav"
+                 [fixedInViewport]="options.value.fixed" [fixedTopGap]="options.value.top"
+                 [fixedBottomGap]="options.value.bottom">
+        <mat-nav-list class="sidelist">
+            <!--<a mat-list-item class="side-list" routerLinkActive="current" [routerLink]="'/investigate'">
+
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67.38 69.06" style="width:20px; height:20px; padding-right: 10px;">
+            <defs>
+                <style>
+
+                    .virus-1 {
+                        fill: #666;
+                    }
+                    .current .virus-1 {
+                        fill: #0D47A1;
+                    }
+
+                    .virus-2 {
+                        fill: #f2f2f2;
+                    }
+                    .current .virus-2 {
+                        fill: #ffffff;
+                    }
+                </style>
+            </defs>
+            <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><ellipse class="virus-1" cx="32.94" cy="35.04" rx="22.89" ry="23.45" /><ellipse class="virus-2" cx="31.14" cy="20.63" rx="4.73" ry="4.69" /><ellipse class="virus-2" cx="45.38" cy="31.69" rx="5.89" ry="6.02" /><ellipse class="virus-2" cx="37.37" cy="48.13" rx="5.38" ry="5.64" /><ellipse class="virus-2" cx="19.09" cy="28.24" rx="3.53" ry="3.63" /><ellipse class="virus-2" cx="21.93" cy="44.17" rx="5.33" ry="5.4" /><polygon class="virus-1" points="25.89 12.57 25.97 6.64 29.16 6.11 31.05 11.42 25.89 12.57" /><ellipse class="virus-1" cx="27.04" cy="3.23" rx="4.45" ry="3.16" transform="translate(-0.05 6.04) rotate(-12.74)" /><ellipse class="virus-1" cx="5.38" cy="19.26" rx="4.53" ry="3.1" transform="matrix(0.52, -0.86, 0.86, 0.52, -13.88, 13.89)" /><path class="virus-1" d="M7,22.13l4.82,3.81a26.18,26.18,0,0,1,2.32-4.42L8.85,19.13A6,6,0,0,1,7,22.13Z" /><ellipse class="virus-1" cx="52.96" cy="10.24" rx="3.12" ry="4.49" transform="translate(9.57 42.29) rotate(-47.4)" /><polygon class="virus-1" points="49.64 11.34 45.59 15.41 49.21 18.42 52.22 13.73 49.64 11.34" /><polygon class="virus-1" points="15.48 13.55 17.45 17.44 20.47 15.32 17.28 11.87 15.48 13.55" /><polygon class="virus-1" points="5.75 32.31 10.05 32.23 10.05 35.85 5.5 34.97 5.75 32.31" /><polygon class="virus-1" points="5.5 43.91 10.66 40.9 12.55 45.68 6.53 47.27 5.5 43.91" /><polygon class="virus-1" points="13.24 54.62 16.08 50.9 18.57 53.29 15.13 56.3 13.24 54.62" /><polygon class="virus-1" points="22.79 56.21 21.5 62.23 24.6 63.65 27.44 57.98 22.79 56.21" /><polygon class="virus-1" points="33.63 58.51 34.58 63.12 37.25 62.85 37.16 58.16 33.63 58.51" /><polygon class="virus-1" points="42.06 56.74 45.68 61.61 48.69 59.84 46.37 54.09 42.06 56.74" /><polygon class="virus-1" points="51.96 48.16 55.74 50.19 57.38 47.98 53.77 44.88 51.96 48.16" /><polygon class="virus-1" points="55.83 32.58 61.25 33.02 61.34 36.83 55.74 37.63 55.83 32.58" /><polygon class="virus-1" points="52.48 22.93 56.26 21.6 57.47 23.91 54.28 26.21 52.48 22.93" /><ellipse class="virus-1" cx="15.27" cy="10.83" rx="3.45" ry="2.32" transform="translate(-3.45 11.1) rotate(-36.18)" /><ellipse class="virus-1" cx="39.52" cy="5.84" rx="2.42" ry="3.19" transform="translate(23.58 42.47) rotate(-74.9)" /><polygon class="virus-1" points="37.68 7.71 36.21 11.78 39.4 12.57 40.09 8.33 37.68 7.71" /><ellipse class="virus-1" cx="3.41" cy="33.28" rx="2.41" ry="3.37" /><ellipse class="virus-1" cx="3.18" cy="46.66" rx="3.08" ry="4.56" transform="translate(-10.73 2.01) rotate(-13.4)" /><ellipse class="virus-1" cx="12.61" cy="57.22" rx="2.45" ry="3.33" transform="translate(-39.44 30.31) rotate(-50.23)" /><ellipse class="virus-1" cx="22.05" cy="65.78" rx="3.15" ry="4.45" transform="translate(-47.27 68.69) rotate(-73.87)" /><ellipse class="virus-1" cx="36.04" cy="65.34" rx="3.44" ry="2.43" transform="translate(-5.96 3.66) rotate(-5.38)" /><ellipse class="virus-1" cx="48.62" cy="63.46" rx="4.47" ry="3.14" transform="translate(-26.27 35.5) rotate(-32.07)" /><ellipse class="virus-1" cx="58.64" cy="50.56" rx="3.54" ry="2.5" transform="matrix(0.52, -0.86, 0.86, 0.52, -14.91, 74.77)" /><ellipse class="virus-1" cx="64.3" cy="35.02" rx="3.07" ry="4.57" transform="matrix(1, -0.03, 0.03, 1, -1.12, 2.14)" /><ellipse class="virus-1" cx="59.12" cy="21.66" rx="2.61" ry="3.41" transform="translate(-3.61 27.03) rotate(-25.02)" /></g></g>
+        </svg>
+
+
+
+
+
+
+
+
+        Case Investigation
+    </a>-->
+            <a mat-list-item class="side-list" routerLinkActive="current" [routerLink]="'/form'" (click)="ClickTab()">
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 417.87 519.51" style="width:20px; height:20px; padding-right: 10px;">
+                    <defs>
+                        <style>
+
+
+                            .formicon-1 {
+                                fill: #f2f2f2;
+                                stroke: #666;
+                                stroke-miterlimit: 10;
+                                stroke-width: 45px;
+                            }
+
+                            .current .formicon-1 {
+                                stroke: #0D47A1;
+                                fill: #ffffff;
+                            }
+                        </style>
+                    </defs>
+                    <g id="Layer_2" data-name="Layer 2"><g id="Layer_2-2" data-name="Layer 2"><path class="formicon-1" d="M406.36,153l-4.05,302.91c0,28.77-22.62,52.1-50.52,52.1H62c-27.9,0-50.52-23.33-50.52-52.1V63.6C11.5,34.83,34.12,11.5,62,11.5H287.15l115.16,120Z" /><path class="formicon-1" d="M268.22,12.8l1.31,100.35s-2.61,35.18,43,35.18h84.71" /><line class="formicon-1" x1="83.17" y1="244.77" x2="332.08" y2="244.77" /><line class="formicon-1" x1="82.82" y1="300.08" x2="331.72" y2="300.08" /><line class="formicon-1" x1="83.26" y1="351.14" x2="332.17" y2="351.14" /><line class="formicon-1" x1="81.87" y1="401.84" x2="225.22" y2="401.84" /></g></g>
+                </svg>
+
+
+                New Case
+            </a>
+            <a mat-list-item class="side-list" routerLinkActive="current" [routerLink]="'/search'">
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 51 51" style="width:20px; height:20px; padding-right: 10px;">
+                    <defs>
+                        <style>
+
+
+                            .search-1 {
+                                fill: #666;
+                            }
+
+                            .current .search-1 {
+                                fill: #0D47A1;
+                            }
+
+                            .search-2 {
+                                fill: #f2f2f2;
+                            }
+
+                            .current .search-2 {
+                                fill: #ffffff;
+                            }
+
+                            .search-3 {
+                                fill: #f2f2f2;
+                            }
+
+                            .current .search-3 {
+                                fill: #ffffff;
+                            }
+                        </style>
+                        <linearGradient id="linear-gradient" x1="25.5" y1="54" x2="25.5" y2="3" gradientTransform="matrix(1, 0, 0, -1, 0, 54)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a4a4a4" /><stop offset="0.63" stop-color="#7f7f7f" /><stop offset="1" stop-color="#6f6f6f" /></linearGradient>
+                    </defs>
+                    <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="search-1" d="M49.85,44h0L37.62,31.76a20.52,20.52,0,1,0-5.86,5.86L44,49.85a4,4,0,0,0,5.58,0l.27-.27A4,4,0,0,0,49.85,44Z" /><path class="search-2" d="M20.5,6A14.5,14.5,0,1,0,35,20.5,14.5,14.5,0,0,0,20.5,6Z" /><path class="search-3" d="M20.5,6a2.5,2.5,0,0,1,0,5H17a2,2,0,0,0,0,4h.5a2.5,2.5,0,0,1,0,5H13a2,2,0,0,0,0,4h.5a2.5,2.5,0,0,1,0,5H8.77A14.48,14.48,0,0,1,20.5,6Zm4,9A2.5,2.5,0,1,0,27,17.5,2.5,2.5,0,0,0,24.5,15Z" /></g></g>
+                </svg>
+
+
+
+
+                Search / Modify
+            </a>
+            <a mat-list-item class="side-list" routerLinkActive="current" [routerLink]="'/contact'">
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.79 40.79" style="width:20px; height:20px; padding-right: 10px;">
+                    <defs>
+                        <style>
+
+
+                            .quest-1 {
+                                fill: #666;
+                            }
+
+                            .current .quest-1 {
+                                fill: #0D47A1;
+                            }
+
+                            .quest-2 {
+                                fill: #f2f2f2;
+                                stroke: #f2f2f2;
+                                stroke-miterlimit: 10;
+                                stroke-width: 2px;
+                            }
+
+                            .current .quest-2 {
+                                fill: #ffffff;
+                                stroke: #ffffff;
+                            }
+                        </style>
+                    </defs>
+                    <g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><circle class="quest-1" cx="20.4" cy="20.4" r="20.4" /><path class="quest-2" d="M24.41,15.1a4.06,4.06,0,0,0-4.34-4.36,6.9,6.9,0,0,0-5.17,2.58l-2.12-1.94a10.22,10.22,0,0,1,7.71-3.72C25,7.66,28,10.42,28,14.84c0,5.91-7.26,8.29-6.52,14.58H18.24C17.28,22.43,24.41,19.85,24.41,15.1Zm-7.11,21A2.68,2.68,0,1,1,20,38.89,2.7,2.7,0,0,1,17.3,36.09Z" transform="translate(0 -2.51)" /></g></g>
+                </svg>
+
+
+                Help
+            </a>
+            <!--<a mat-list-item class="side-list" routerLinkActive="current" [routerLink]="'/profile'"> User Profile </a>-->
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content [formGroup]="options">
+        <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>
+

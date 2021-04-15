@@ -1,0 +1,57 @@
+.label-padding {
+  padding-right: 3%;
+}
+
+.label-weight {
+  font-weight: 500;
+}
+
+.level-checkbox {
+  padding-top: 1.5%;
+}
+
+.blocked {
+  display: block;
+}
+
+.lg-pad-bottom {
+  padding-bottom: 2%;
+}
+
+.focused {
+  color: #0D47A1;
+}
+
+.section-title-padding {
+  padding-bottom: 3%;
+  padding-top: 3%
+}
+
+.section-title-padding-sm {
+  padding-bottom: 1%;
+  padding-top: 2%
+}
+
+.lg-padding-top {
+  padding-top: 3%
+}
+
+.sm-padding-top {
+  padding-top: 1%
+}
+
+.row-padding {
+  padding-left: 5%;
+}
+
+.padd{
+    padding-bottom:0.5%;
+}
+
+.wide-width{
+    width: 50%;
+}
+
+.label-padding-sm {
+  padding-right: 1%;
+}

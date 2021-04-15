@@ -1,0 +1,27 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1 && MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Additional Comments or Notes</p>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Comments or Notes</mat-label>
+                    <textarea class="focused" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="20" [(ngModel)]="Section8.Comments" (change)="UpdateData()"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="row section-title-padding" *ngIf="isLoading == false"></div>
+    <div>
+        <button *ngIf="isLoading == false" style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" *ngIf="isLoading == false" style="margin: 10px;" mat-flat-button color="primary" (click)="Submit()">{{ButtonMsg}}</button>
+        <button class="pull-right" *ngIf="isLoading == false" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <app-loader *ngIf="isLoading"></app-loader>
+
+
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+
+</div>

@@ -1,0 +1,76 @@
+.title {
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #0D47A1;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  font-size: 20px;
+}
+
+.center {
+  text-align: center;
+}
+.center-page {
+  margin: auto;
+}
+
+.btn-center{
+    text-align:center;
+    padding-top:3%;
+}
+table {
+  width: 100%;
+}
+
+.search-result {
+  margin-top: 5%;
+  margin-bottom: 10%;
+}
+
+th {
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  color: #0D47A1;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+  .modify:hover {
+    cursor: pointer;
+    color: #0D47A1;
+  }
+
+  td{
+      color:#404040;
+  }
+
+    td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type, th.mat-header-cell:last-of-type{
+        padding-right:0px;
+    }
+
+
+
+/*
+        td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type{
+        padding-left: 5%;
+    }
+
+    */
+
+.clearSearch{
+    color:#404040;
+    font-weight:600;
+}
+
+
+  .clearSearch:hover {
+    color: #0D47A1;
+    font-weight: 600;
+    cursor:pointer;
+  }
+
+
+  .clear{
+      text-align:center;
+      margin: 2%;
+  }

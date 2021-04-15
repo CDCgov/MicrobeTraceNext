@@ -1,0 +1,81 @@
+.nav-tabs {
+  border: none;
+}
+
+.nav {
+}
+
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus {
+  border: none;
+  color: #0D47A1;
+  cursor: default;
+  background-color: #fff;
+  border-bottom-color: transparent;
+  font-weight: 600;
+  border-top: 3px solid #0D47A1;
+}
+
+.nav > li {
+  background-color: #f2f2f2;
+  outline: none;
+  text-align: center;
+  cursor: pointer;
+
+}
+
+.nav > li > a {
+
+  color: #404040;
+  font-size: 15px;
+}
+
+.mct-tabs {
+  box-shadow: 0 0 11px 1px rgba(0, 0, 0, .2);
+  margin-top: 42px;
+}
+
+.nav-tabs > li.custom-active > a,
+.nav-tabs > li.custom-active > a:focus {
+  border: none;
+  color: #000;
+  cursor: default;
+  background-color: #fff;
+  border-top: 3px solid #0D47A1;
+  border-bottom-color: transparent;
+  font-weight: 600;
+
+}
+
+.tab-content {
+  padding-bottom: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.side-nav {
+  background-color: #f2f2f2;
+  width: 15%;
+}
+
+.side-list{
+    color:#404040;
+    font-weight:600;
+
+}
+
+.current {
+  color: #0D47A1;
+  background-color: #fff;
+  border-left: 5px solid #0D47A1;
+}
+
+
+.mat-list-base{
+    padding-top: 0px;
+}
+
+.sidelist {
+  width: 98%
+}

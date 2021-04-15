@@ -1,0 +1,225 @@
+<div class="title">
+    <h2>
+        Welcome to MicrobeTrace Next
+        <span class="smaller-copyright"></span>
+    </h2>
+    <h3 *ngIf="ShowNewAcctMsg">
+        Ready to get started!? Please login to your new account.
+    </h3>
+</div>
+
+<div *ngIf="ShowLogin" class="lg-margin-bottom">
+    <form class="offer-Port-sign" [class.hiddenClass]="!hideDiv" id="offerPortal-loginForm" name="form" #f="ngForm" novalidate>
+        <div class="panel-body-signin">
+            <div class="bpass-sin-lab text-center">MicrobeTrace Next Login</div>
+            <div class="signin-page-header">
+
+                <div class="form-group login-fields required control-label" [formGroup]="form" [ngClass]="Email ? 'focused' : ''">
+                    <label class="form-label login-fields" for="email">Email Address</label>
+                    <input id="email" class="form-input form-control login-fields" #email formControlName="email" type="email" minlength="5" name="email" [(ngModel)]="Email" required (focus)="focusFields($event)" (blur)="blurFields($event)" [custom-focus]="true" />
+                    <div *ngIf="form.controls['email'].errors?.pattern || showEmailErr " [ngClass]="form.controls['email'].errors?.pattern ? 'has-error' : ''">
+                        <span class="help-block">Please enter a valid email address. Example user@email.com</span>
+                    </div>
+
+                </div>
+                <div class="form-group login-fields required control-label" [formGroup]="form" [ngClass]="Password ? 'focused' : ''">
+                    <label class="form-label login-fields" for="password">Password</label>
+                    <input id="password" class="form-input form-control login-fields" #password formControlName="password" type="password" minlength="5" name="password" [(ngModel)]="Password" required (focus)="focusFields($event)" (blur)="blurFields($event)" />
+                    <div *ngIf="form.controls['password'].errors?.pattern || showPasswordErr" [ngClass]="form.controls['password'].errors?.pattern ? 'has-error' : ''">
+                        <span class="help-block">Password must be minimum five characters, at least one uppercase letter, one lowercase letter and one number.</span>
+                    </div>
+                </div>
+                <div class="form-group login-fields required control-label" [formGroup]="form" [ngClass]="Organization ? 'focused' : ''">
+                    <label class="form-label login-fields" for="org">Organization</label>
+                    <input id="org" class="form-input form-control login-fields" #org formControlName="org" type="text" name="org" [(ngModel)]="Organization" required (focus)="focusFields($event)" (blur)="blurFields($event)"/>
+                    <div *ngIf="form.controls['org'].errors?.pattern || showOrgErr " [ngClass]="form.controls['org'].errors?.pattern ? 'has-error' : ''">
+                        <span class="help-block">Please enter you organization (Tenant Name). Example: FirstGenesis, Inc</span>
+                    </div>
+                    <div>
+                        <span class="help-block"> Example: FirstGenesis, Inc</span>
+                    </div>
+
+                </div>
+                <div class="signin-page-footer signin-footer-seperator">
+                    <button type="button" class="pull-right btn btn-warning signin-btn" *ngIf="!isLoading" (click)="login()" [disabled]="!isEmailError || !isPasswordError || !isOrgError">Login</button>
+                    <app-loader *ngIf="isLoading"></app-loader>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="center-page center">
+        <a class="link" (click)="ShowRegisterPage()">Register for an account</a>
+    </div>
+</div>
+<div *ngIf="!ShowLogin" class="lg-margin-bottom">
+    <div class="offer-Port-register panel-body-register">
+        <div class="bpass-sin-lab text-center">Register for a MicrobeTrace Next account</div>
+        <div class="register-page-header">
+            <!-- <p class="section-title center">Register for a MicrobeTrace Next account</p>
+    <div class="row side-padding"> -->
+            <form #registerForm='ngForm'>
+                <div class="row">
+
+                    <div class="col-sm-5 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Last name</mat-label>
+                            <input matInput required #lastName='ngModel' name='lastName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="newUserProfile.Lastname" [ngClass]="newUserProfile.Lastname? 'focused' : '' ">
+                            <mat-error *ngIf="lastName?.invalid">
+                                <div *ngIf="lastName.errors.required">
+                                    Last name is required.
+                                </div>
+                                <div *ngIf="lastName.value && lastName?.invalid">
+                                    Last name only allows letters, ', -, and spaces.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-5 form-full-width">
+                            <mat-form-field class="full-width">
+                                <mat-label>First name</mat-label>
+                                <input matInput required #firstName='ngModel' name='firstName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="newUserProfile.Firstname" [ngClass]="newUserProfile.Firstname? 'focused' : ''">
+                                <mat-error *ngIf="firstName?.invalid">
+                                    <div *ngIf="firstName.errors.required">
+                                        First name is required.
+                                    </div>
+                                    <div *ngIf="firstName.value && firstName?.invalid">
+                                        First name only allows letters, ', -, and spaces.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5 form-full-width">
+                            <mat-form-field class="full-width">
+                                <mat-label>Middle name</mat-label>
+                                <!-- <input matInput [(ngModel)]="Section1.PatientInformation.Lastname" [ngClass]="Section1.PatientInformation.Lastname? 'focused' : ''" (change)="UpdateData()"> -->
+                                <input matInput #midName='ngModel' name='midName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="newUserProfile.Middlename" [ngClass]="newUserProfile.Middlename? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+
+                                <mat-error *ngIf="midName?.invalid">
+
+                                    <div *ngIf="midName.value && midName?.invalid">
+                                        Last name only allows letters, ', -, and spaces.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-sm-5 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="newUserProfile.Email" [ngClass]="newUserProfile.Email? 'focused' : '' ">
+                            <mat-error *ngIf="email?.invalid">
+                                <div *ngIf="email.errors.required">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="email.value && email?.invalid">
+                                    Email is invalid.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-5 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Phone</mat-label>
+                            <input appPhoneMask matInput required #phone='ngModel' name='phone' [pattern]='regex.PhoneNumber' [(ngModel)]="newUserProfile.Phone" [ngClass]="newUserProfile.Phone? 'focused' : '' ">
+                            <mat-error *ngIf="phone?.invalid">
+                                <div *ngIf="phone.errors.required">
+                                    Phone is required.
+                                </div>
+                                <div *ngIf="phone.value && phone?.invalid">
+                                    Phone number allows 10 numbers.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-5 form-full-width" [ngClass]="pass?.invalid && pass.value? 'error-padding' : ''">
+                        <mat-form-field class="full-width">
+                            <mat-label>Password</mat-label>
+                            <input matInput required #pass='ngModel' name='pass' type='password' [pattern]='regex.Password' style="border: none; height: 0em;" [(ngModel)]="newUserProfile.Password" [ngClass]="newUserProfile.Password? 'focused' : '' " (change)="ComparePassword()">
+                            <mat-error *ngIf="pass?.invalid">
+                                <div *ngIf="pass.errors.required">
+                                    Password is required.
+                                </div>
+                                <div *ngIf="pass.value && pass?.invalid">
+                                    Password must be minimum five characters, at least one uppercase letter, one lowercase letter and one number.
+                                </div>
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-5 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Confirm Password</mat-label>
+                            <input required #cpass='ngModel' name='cpass' [pattern]='regex.Password' style="border: none; height: 0em;" matInput type="password" [(ngModel)]="ConfirmPassword" [ngClass]="ConfirmPassword? 'focused' : '' " (change)="ComparePassword()">
+                            <mat-error *ngIf="cpass?.invalid">
+                                <div *ngIf="cpass.errors.required">
+                                    Please confirm your password.
+                                </div>
+                                <div *ngIf="cpass.value && cpass?.invalid">
+                                    Password must be minimum five characters, at least one uppercase letter, one lowercase letter and one number.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-error class="error-small" *ngIf="!cpass?.invalid && !isPasswordMatched">Password do not match!</mat-error>
+                    </div>
+                    <div class="col-sm-4 form-full-width">
+
+                        <mat-form-field class="full-width">
+                            <mat-label>Jurisdiction</mat-label>
+                            <mat-select required #state='ngModel' name='state' [(ngModel)]="newUserProfile.Jurisdiction">
+                                <mat-option *ngFor="let state of staticData.StateCode" [value]="state.abbreviation">
+                                    {{state.name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="state?.invalid && (state.dirty || state.touched)">
+                                <div *ngIf="state.errors.required">
+                                    Jurisdiction is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-6 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Reporting Health Department</mat-label>
+                            <input matInput required #healthDepartment='ngModel' name='healthDepartment' [(ngModel)]="newUserProfile.ReportingHealthDepartment" [ngClass]="newUserProfile.ReportingHealthDepartment? 'focused' : '' "
+                                   (change)="UpdateData()">
+                            <mat-error *ngIf="healthDepartment?.invalid && (healthDepartment.dirty || healthDepartment.touched)">
+                                <div *ngIf="healthDepartment.errors.required">
+                                    Health Department is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-sm-12 lg-form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Affiliation / Organization</mat-label>
+                        <input matInput required #org='ngModel' name='org' [(ngModel)]="newUserProfile.Organization" [ngClass]="newUserProfile.Organization? 'focused' : '' ">
+                        <mat-hint>Example: FirstGenesis, Inc</mat-hint>
+                        <mat-error *ngIf="org?.invalid && (org.dirty || org.touched)">
+                            <div *ngIf="org.errors.required">
+                                Organization or Tenant ID is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+     
+            <div class="register-page-footer register-footer-seperator">
+                <button type="button" class="pull-right btn btn-warning signin-btn" *ngIf="!isLoading" (click)="register()" [disabled]="registerForm.invalid || !this.isPasswordMatched">Register</button>
+
+            </div>
+</form>
+        </div>
+    </div>
+    <div class="center-page center">
+        <a class="link" (click)="ShowLoginPage()">Back to Login</a>
+    </div>
+</div>

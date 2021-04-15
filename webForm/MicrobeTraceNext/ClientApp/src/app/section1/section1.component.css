@@ -1,0 +1,158 @@
+.title {
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #0D47A1;
+  margin-bottom: 24px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.title2 {
+  font-family: "open-sans", "Helvetica Neue", Helvetica, Calibri, Arial, "Lucida Grande", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  color: #0D47A1;
+  margin-bottom: 24px;
+  margin-top: 0px;
+  font-size: 12px;
+}
+
+.prod-flig-radiolabel {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #404040;
+  font-weight: 600;
+}
+
+
+  /* Hide the browser's default radio button */
+
+  .prod-flig-radiolabel input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+
+/* Create a custom radio button */
+
+.radiomark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 12px;
+  width: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #404040;
+}
+
+
+/* When the radio button is checked, add a blue background */
+
+.prod-flig-radiolabel input:checked ~ .radiomark {
+  background-color: #ffffff;
+}
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+
+.radiomark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+
+/* Show the indicator (dot/circle) when checked */
+
+.prod-flig-radiolabel input:checked ~ .radiomark:after {
+  display: block;
+}
+
+
+/* Style the indicator (dot/circle) */
+
+.prod-flig-radiolabel .radiomark:after {
+  top: 3px;
+  left: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #024;
+}
+
+.prod-flig-radiolabel {
+  padding-right: 5%
+}
+
+.span-question {
+  color: #404040;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 20px 10px 0 10px;
+  padding-right: 0px;
+  margin-right: 0px;
+  text-align: right;
+}
+
+.sel-lab-issue {
+  top: 15px;
+}
+
+.drop-down-focused .form-label {
+  -webkit-transform: translateY(-125%);
+  transform: translateY(-125%);
+  font-size: 12px;
+  color: #2172ba;
+  font-weight: 600;
+  top: 18px !important;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.label-padding {
+  padding-right: 5%;
+}
+.label-padding-sm {
+  padding-right: 2%;
+}
+
+.level {
+  padding-top: 1%;
+}
+
+.section-divide {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.section-divide-sm {
+  margin-bottom: 2%;
+}
+
+.focused {
+  color: #0D47A1;
+}
+
+.button-margin {
+  display: table-cell;
+  margin-right: 100px;
+}
+
+.center-page {
+  margin-left: auto;
+}
+.nCoV-divide {
+  display: block;
+  padding: 2%
+}

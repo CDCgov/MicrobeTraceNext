@@ -1,0 +1,371 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Clinical course, symptoms, past medical history, and social history (continued)</p>
+
+        <form #underlyingForm='ngForm'>
+            <div class="row">
+
+                <div class="col-sm-11">
+
+                    <mat-label class="label-padding label-weight">Does the patient have any underlying medical conditions and/or risk behaviors? <span class="star">*</span></mat-label>
+                    <mat-radio-group class="level-checkbox" aria-label="Select an option" required #isUn='ngModel' name='isUn' [(ngModel)]="Section7.MedicalHistory.UnderlyingMedicalCondition" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        <mat-error *ngIf="isUn?.invalid && (isUn.dirty || isUn.touched)">
+                            <div *ngIf="isUn.errors.required">
+                                Your response is required.
+                            </div>
+                        </mat-error>
+                    </mat-radio-group>
+
+                </div>
+            </div>
+        </form>
+
+        <div class="section-title-padding" [hidden]="Section7.MedicalHistory.UnderlyingMedicalCondition != Bool.Yes">
+            <div class="row">
+                <div class="col-sm-11">
+
+                    <mat-label class="label-padding label-weight">Does the patient has any of the conditions and/or risk behaviors below:</mat-label>
+
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Diabetes Mellius</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.DiabetesMellitus" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Hypertension</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.Hypertension" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Severe obesity (BMI ≥ 40)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.SevereObesity" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Cardiovascular disease</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.CardiovascularDisease" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Chronic Renal disease</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.ChronicRenalDisease" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-4">
+                    <mat-label class="blocked label-padding label-weight">Chronic Lung disease (ashma/empthysema/COPD)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.ChronicLungDisease" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Chronic Liver disease</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.ChronicLiverDisease" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Immunosuppressive condition</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.ImmunosuppressiveCondition" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Autoimmune condition</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.AutoimmuneCondition" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Current smoker</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.CurrentSmoker" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Former smoker</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.FormerSmoker" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Substance abuse or misuse</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section7.MedicalHistory.SubstanceAbuse" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <form #psycForm='ngForm'>
+                <div class="row level-checkbox row-padding level-checkbox">
+
+                    <div class="col-sm-6" [ngClass]="Section7.MedicalHistory.PsychologicalCondition == Bool.Yes? 'level-checkbox': '' ">
+                        <mat-label class="label-padding label-weight">Psychological / psychiatric condition</mat-label>
+                        <mat-radio-group class="level-checkbox" aria-label="Select an option" #psyc='ngModel' name='psyc' [(ngModel)]="Section7.MedicalHistory.PsychologicalCondition" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-sm-4" *ngIf="Section7.MedicalHistory.PsychologicalCondition == Bool.Yes">
+                        <mat-form-field class="full-width">
+                            <mat-label>Specify psychological / psychiatric condition</mat-label>
+                            <input matInput required #opsyc='ngModel' name='opsyc' [(ngModel)]="Section7.MedicalHistory.PsychologicalConditionSpecify" [ngClass]="Section7.MedicalHistory.PsychologicalConditionSpecify? 'focused' : ''" (change)="UpdateData()">
+                            <mat-error *ngIf="opsyc?.invalid && (opsyc.dirty || opsyc.touched)">
+                                <div *ngIf="opsyc.errors.required">
+                                    Please specify psychological / psychiatric condition.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <form #chronicForm='ngForm'>
+                <div class="row row-padding level-checkbox">
+
+
+                    <div class="col-sm-5" [ngClass]="Section7.MedicalHistory.OtherChronicDisease == Bool.Yes? 'level-checkbox': '' ">
+                        <mat-label class="label-padding label-weight">Other Chronic disease</mat-label>
+                        <mat-radio-group class="level-checkbox" aria-label="Select an option" #chro='ngModel' name='chro' [(ngModel)]="Section7.MedicalHistory.OtherChronicDisease" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-sm-4" *ngIf="Section7.MedicalHistory.OtherChronicDisease == Bool.Yes">
+                        <mat-form-field class="full-width">
+                            <mat-label>Specify other chronic disease</mat-label>
+                            <input matInput required #oChro='ngModel' name='oChro' [(ngModel)]="Section7.MedicalHistory.OtherChronicDiseaseSpecify" [ngClass]="Section7.MedicalHistory.OtherChronicDiseaseSpecify? 'focused' : ''" (change)="UpdateData()">
+                            <mat-error *ngIf="oChro?.invalid && (oChro.dirty || oChro.touched)">
+                                <div *ngIf="oChro.errors.required">
+                                    Please specify other chronic disease.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </form>
+
+            <form #disabilityForm='ngForm'>
+                <div class="row row-padding level-checkbox">
+
+                    <div class="col-sm-4" [ngClass]="Section7.MedicalHistory.Disability == Bool.Yes? 'level-checkbox': '' ">
+                        <mat-label class="label-weight">Disability - (neurologic, neurodevelopmental, intellectual, physical, vision, or hearing impairment)</mat-label>
+                    </div>
+                    <div class="col-sm-3" [ngClass]="Section7.MedicalHistory.Disability == Bool.Yes? 'level-checkbox': '' ">
+                        <mat-radio-group class="level-checkbox" aria-label="Select an option" #disa='ngModel' name='disa' [(ngModel)]="Section7.MedicalHistory.Disability" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-sm-3" *ngIf="Section7.MedicalHistory.Disability == Bool.Yes">
+                        <mat-form-field class="full-width">
+                            <mat-label>Specify disability</mat-label>
+                            <input matInput required #sdis='ngModel' name='sdis' [(ngModel)]="Section7.MedicalHistory.DisabilitySpecify" [ngClass]="Section7.MedicalHistory.DisabilitySpecify? 'focused' : ''" (change)="UpdateData()">
+                            <mat-error *ngIf="sdis?.invalid && (sdis.dirty || sdis.touched)">
+                                <div *ngIf="sdis.errors.required">
+                                    Please specify disability.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+
+            <form #otherForm='ngForm'>
+                <div class="row row-padding level-checkbox">
+
+                    <div class="col-sm-7" [ngClass]="Section7.MedicalHistory.OtherUnderlyingCondition == Bool.Yes? 'level-checkbox': '' ">
+                        <mat-label class="label-padding label-weight">Other underlying condition or risk behavior</mat-label>
+                        <mat-radio-group class="level-checkbox" aria-label="Select an option" #uCon='ngModel' name='uCon' [(ngModel)]="Section7.MedicalHistory.OtherUnderlyingCondition" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="col-sm-4" *ngIf="Section7.MedicalHistory.OtherUnderlyingCondition == Bool.Yes">
+                        <mat-form-field class="full-width">
+                            <mat-label>Specify other underlying condition / risk behavior</mat-label>
+                            <input matInput required #oCon='ngModel' name='oCon' [(ngModel)]="Section7.MedicalHistory.OtherUnderlyingConditionSpecity" [ngClass]="Section7.MedicalHistory.OtherUnderlyingConditionSpecity? 'focused' : ''" (change)="UpdateData()">
+                            <mat-error *ngIf="oCon?.invalid && (oCon.dirty || oCon.touched)">
+                                <div *ngIf="oCon.errors.required">
+                                    Please specify other underlying condition.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <p class="section-title section-title-padding">SARS / CoV-2 Testing or Specimens</p>
+
+        <p class="row-padding section-title section-title-padding">SARS-CoV-2-Testing <span class="bracket">(approved by FDA or other designated authority)</span></p>
+
+        <div class="row row-padding">
+
+            <div class="col-sm-3">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Molecular Amplification Test (RT PCR)</mat-label>
+                    <mat-select [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.MolecularAmplificationTest" (selectionChange)="UpdateData() ">
+                        <mat-option *ngFor="let result of staticData.TestResults " [value]="result">{{result}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Serologic test</mat-label>
+                    <mat-select [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.SerologicTest" (selectionChange)="UpdateData() ">
+                        <mat-option *ngFor="let result of staticData.TestResults " [value]="result">{{result}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Other test, specify</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.OtherTest" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Testing.OtherTest? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+        </div>
+        <p class="row-padding section-title section-title-padding">Specimens for CoV-19 Testing</p>
+
+        <div class="row row-padding lg-pad-bottom">
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #1</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_1" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_1? 'focused' : '' " (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #2</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_2" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_2? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #3</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_3" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_3? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+        </div>
+        <!--<div class="container roundbox">
+    <p class="section-title section-title-padding-sm">
+        <a *ngIf="!ShowTesting" class="section-title-a" (click)="ShowTesting = !ShowTesting">Any SARS / CoV-2 Testing or Specimens?</a>
+        <a *ngIf="ShowTesting" class="section-title-a" (click)="ShowTesting = !ShowTesting"> SARS / CoV-2 Testing or Specimens</a>
+        <a (click)="ShowTesting = !ShowTesting">
+            <img *ngIf="!ShowTesting" class="chevron-custom" src="../../assets/images/chevron-down-solid.svg" />
+        </a>
+        <a (click)="ShowTesting = !ShowTesting">
+            <img *ngIf="ShowTesting" class="chevron-custom" src="../../assets/images/chevron-up-solid.svg" />
+        </a>
+    </p>
+    <div *ngIf="ShowTesting">
+        <p class="row-padding section-title section-title-padding">SARS-CoV-2-Testing <span class="bracket">(approved by FDA or other designated authority)</span></p>
+
+        <div class="row row-padding">
+
+            <div class="col-sm-3">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Molecular Amplification Test (RT PCR)</mat-label>
+                    <mat-select [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.MolecularAmplificationTest" (selectionChange)="UpdateData() ">
+                        <mat-option *ngFor="let result of staticData.TestResults " [value]="result">{{result}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-3">
+                <mat-form-field style="width: 100%;">
+                    <mat-label>Serologic test</mat-label>
+                    <mat-select [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.SerologicTest" (selectionChange)="UpdateData() ">
+                        <mat-option *ngFor="let result of staticData.TestResults " [value]="result">{{result}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Other test, specify</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Testing.OtherTest" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Testing.OtherTest? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+        </div>
+        <p class="row-padding section-title section-title-padding">Specimens for CoV-19 Testing</p>
+
+        <div class="row row-padding lg-pad-bottom">
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #1</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_1" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_1? 'focused' : '' " (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #2</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_2" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_2? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+                <mat-form-field class="full-width">
+                    <mat-label>Specimen ID #3</mat-label>
+                    <input matInput [(ngModel)]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_3" [ngClass]="Section7.MedicalHistory.SARS_CoV_2_Specimens_ID_3? 'focused' : ''" (change)="UpdateData()">
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    </div>-->
+        <div class="row section-title-padding"></div>
+        <div>
+            <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+            <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+            <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="underlyingForm.invalid || otherForm.invalid || disabilityForm.invalid || chronicForm.invalid || psycForm.invalid || Section7.Saved ">Save</button>
+        </div>
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+
+</div>

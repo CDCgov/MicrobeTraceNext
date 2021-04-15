@@ -1,0 +1,153 @@
+<div class="container size">
+    <p class="title">User Profile</p>
+    <div class="content">
+       
+
+        <form #interviewerForm='ngForm'>
+
+            <div class="row">
+
+                <div class="col-sm-4 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>First name</mat-label>
+                        <input matInput #iFirstName='ngModel' name='iFirstName' [(ngModel)]="User.Firstname" [ngClass]="User.Firstname? 'focused' : ''" [disabled]="true">
+                        <!-- <input matInput required #iFirstName='ngModel' name='iFirstName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="User.Firstname" [ngClass]="User.Firstname? 'focused' : ''" (change)="UpdateData()">
+                    <mat-error *ngIf="iFirstName?.invalid">
+                           <div *ngIf="iFirstName.errors.required">
+                               First name is required.
+                           </div>
+                           <div *ngIf="iFirstName.value != '' && iFirstName?.invalid">
+                               First name only allows letters, ', -, and spaces.
+                           </div>
+                       </mat-error>-->
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Last name</mat-label>
+                        <input matInput #iLastName='ngModel' name='iLastName' [(ngModel)]="User.Lastname" [ngClass]="User.Lastname? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                        <input matInput required #iLastName='ngModel' name='iLastName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Lastname" [ngClass]="Section1.InterviewerInformation.UserProfile.Lastname? 'focused' : '' " (change)="UpdateData()"
+                           [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="iLastName?.invalid && (iLastName.dirty || iLastName.touched)">
+                        <div *ngIf="iLastName.errors.required">
+                            Last name is required.
+                        </div>
+                        <div *ngIf="iLastName.value != '' && iLastName?.invalid">
+                            Last name only allows letters, ', -, and spaces.
+                        </div>
+                    </mat-error>    -->
+                    </mat-form-field>
+
+                </div>
+                <div class="col-sm-2 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Phone</mat-label>
+                        <input appPhoneMask matInput #phone='ngModel' name='phone' [(ngModel)]="User.Phone" [ngClass]="User.Phone? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input appPhoneMask matInput required #phone='ngModel' name='phone' [pattern]='regex.PhoneNumber' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Phone" [ngClass]="Section1.InterviewerInformation.UserProfile.Phone? 'focused' : '' " (change)="UpdateData()"
+                           [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="phone?.invalid">
+                        <div *ngIf="phone.errors.required">
+                            Phone is required.
+                        </div>
+                        <div *ngIf="phone.value != '' && phone?.invalid">
+                            Phone number allows 10 numbers, () and -.
+                        </div>
+                    </mat-error>
+                        -->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Username</mat-label>
+                        <input matInput #user='ngModel' name='user' [(ngModel)]="User.Email" [ngClass]="User.Email? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Email" [ngClass]="Section1.InterviewerInformation.UserProfile.Email? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="email?.invalid">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                        <div *ngIf="email.value != '' && email?.invalid">
+                            Email is invalid.
+                        </div>
+                    </mat-error>-->
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput #email='ngModel' name='email' [(ngModel)]="User.Email" [ngClass]="User.Email? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Email" [ngClass]="Section1.InterviewerInformation.UserProfile.Email? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="email?.invalid">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                        <div *ngIf="email.value != '' && email?.invalid">
+                            Email is invalid.
+                        </div>
+                    </mat-error>-->
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 form-full-width" *ngIf="User.BPaasInfo.BPaaSRole">
+                    <mat-form-field class="full-width">
+                        <mat-label>Role</mat-label>
+                        <input matInput #role='ngModel' name='role' [(ngModel)]="User.BPaasInfo.BPaaSRole[0]" [ngClass]="User.BPaasInfo.BPaaSRole? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Email" [ngClass]="Section1.InterviewerInformation.UserProfile.Email? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="email?.invalid">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                        <div *ngIf="email.value != '' && email?.invalid">
+                            Email is invalid.
+                        </div>
+                    </mat-error>-->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Jurisdiction</mat-label>
+                        <input matInput #jur='ngModel' name='jur' [(ngModel)]="User.Jurisdiction" [ngClass]="User.Jurisdiction? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Email" [ngClass]="Section1.InterviewerInformation.UserProfile.Email? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher">
+                    <mat-error *ngIf="email?.invalid">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                        <div *ngIf="email.value != '' && email?.invalid">
+                            Email is invalid.
+                        </div>
+                    </mat-error>-->
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-7">
+                    <mat-form-field class="full-width">
+                        <mat-label>Affiliation / Organization</mat-label>
+                        <input matInput #org='ngModel' name='org' [(ngModel)]="User.Organization" [ngClass]="User.Organization? 'focused' : '' " [disabled]="true">
+
+                        <!--
+                    <input matInput required #org='ngModel' name='org' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Organization" [ngClass]="Section1.InterviewerInformation.UserProfile.Organization? 'focused' : '' " (change)="UpdateData()">
+                    <mat-error *ngIf="org?.invalid && (org.dirty || org.touched)">
+                        <div *ngIf="org.errors.required">
+                            Organization is required.
+                        </div>
+                    </mat-error>  -->
+                    </mat-form-field>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

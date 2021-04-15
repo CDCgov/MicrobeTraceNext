@@ -1,0 +1,362 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Case Demographics</p>
+        <form #demographicForm='ngForm'>
+            <div class="row">
+
+                <div class="col-sm-2 label-padding">
+
+                    <mat-form-field>
+                        <mat-label>Date of birth</mat-label>
+                        <input matInput [matDatepicker]="picker" [max]="today" required #dob='ngModel' name='dob' [(ngModel)]="DateOfBirth" [ngClass]="DateOfBirth? 'focused' : '' " [errorStateMatcher]="matcher" [disabled]="true">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-hint>Format: mm/DD/yyyy</mat-hint>
+                        <mat-error *ngIf="dob?.invalid">
+                            <div *ngIf="dob.errors.required">
+                                Date of Birth is required in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="dob.value != undefined && dob?.invalid">
+                                Date of Birth (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Age</mat-label>
+                        <input matInput #age='ngModel' name='age' [(ngModel)]="Section3.CaseDemographics.Age" [ngClass]="Section3.CaseDemographics.Age? 'focused' : ''" (change)="UpdateData()" [disabled]="true">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Age Unit</mat-label>
+                        <input matInput #unit='ngModel' name='unit' [(ngModel)]="Section3.CaseDemographics.AgeUnits" [ngClass]="Section3.CaseDemographics.AgeUnits? 'focused' : ''" (change)="UpdateData()" [disabled]="true">
+                    </mat-form-field>
+
+                </div>
+                <div class="col-sm-1">
+                    <!-- <mat-label class="label-padding">Sex:</mat-label> -->
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Sex</mat-label>
+                        <mat-select required #sex='ngModel' name='sex' [(ngModel)]="Section3.CaseDemographics.Sex" (selectionChange)="UpdateData()">
+                            <mat-option *ngFor="let sex of staticData.Sex" [value]="sex">{{sex}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="sex?.invalid && (sex.dirty || sex.touched)">
+                            <div *ngIf="sex.errors.required">
+                                Sex is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 level-checkbox" *ngIf="Section3.CaseDemographics.Sex == 'Female'">
+                    <mat-label class="label-padding label-weight">Currently pregnant? <span class="star">*</span></mat-label>
+
+                    <mat-radio-group aria-label="Select an option" required #preg='ngModel' name='preg' [(ngModel)]="Section3.CaseDemographics.IsPregnant" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="sm-label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-2 label-padding">
+                    <!-- <mat-label class="label-padding">Sex:</mat-label> -->
+                    <mat-form-field>
+                        <mat-label>Ethnicity</mat-label>
+                        <mat-select required #eth='ngModel' name='eth' [(ngModel)]="Section3.CaseDemographics.Ethnicity" (selectionChange)="UpdateData()">
+                            <mat-option *ngFor="let ethnicity of staticData.Ethnicity" [value]="ethnicity">{{ethnicity}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="eth?.invalid && (eth.dirty || eth.touched)">
+                            <div *ngIf="eth.errors.required">
+                                Ethnicity is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 level-checkbox" style="padding-right:0px">
+                    <mat-label class="label-padding label-weight ">Case has any tribal affiliation? <span class="star">*</span></mat-label>
+
+                    <mat-radio-group aria-label="Select an option" required #tri='ngModel' name='tri' [(ngModel)]="Section3.CaseDemographics.IsTribal " (change)="UpdateData() ">
+                        <mat-radio-button [value]="true" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false">No</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-1 custom-padding" *ngIf=" Section3.CaseDemographics.IsTribal">
+                    <!-- <mat-label class="label-padding ">Sex:</mat-label> -->
+                    <mat-form-field style="width:130%">
+                        <mat-label>Tribe Name</mat-label>
+                        <mat-select required #tribe='ngModel' name='tribe' [(ngModel)]="Section3.CaseDemographics.TribeName " (selectionChange)="UpdateData()">
+                            <mat-option *ngFor="let tribe of this.staticData.AmericanIndianTribes " [value]="tribe ">{{tribe}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="tribe?.invalid && (tribe.dirty || tribe.touched)">
+                            <div *ngIf="tribe.errors.required">
+                                Tribe name is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 level-checkbox" *ngIf=" Section3.CaseDemographics.IsTribal">
+
+                    <mat-label class="label-padding label-weight ">Enrolled Member?</mat-label>
+                    <mat-radio-group aria-label="Select an option" #enroll='ngModel' name='enroll' [(ngModel)]="Section3.CaseDemographics.Enrolled " (change)="UpdateData() ">
+                        <mat-radio-button [value]="true " class="label-padding ">Yes</mat-radio-button>
+                        <mat-radio-button [value]="false ">No</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <!-->div class="col-sm-5 form-full-width">
+        <mat-form-field class="full-width">
+            <mat-label>Residential Address</mat-label>
+            <input matInput #Address='ngModel' name='Address' [(ngModel)]="Section3.CaseDemographics.Address" [ngClass]="Section3.CaseDemographics.Address? 'focused' : ''" (change)="UpdateData()">
+        </mat-form-field>
+    </div-->
+                <div class="col-sm-5 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Residential Address</mat-label>
+                        <input matInput #Address='ngModel' name='Address' [(ngModel)]="Section3.CaseDemographics.Address.StreetAddress" [ngClass]="Section3.CaseDemographics.Address.StreetAddress? 'focused' : ''" (change)="UpdateAddressData()"
+                               matGoogleMapsAutocomplete
+                               [country]="DefaultCountry"
+                               (onAutocompleteSelected)="onAutocompleteSelected($event, Address)"
+                               (onLocationSelected)="onLocationSelected($event)">
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Unit Number</mat-label>
+                        <input matInput #Unit='ngModel' name='Unit' [(ngModel)]="Section3.CaseDemographics.Address.Unit" [ngClass]="Section3.CaseDemographics.Address.Unit? 'focused' : ''" (change)="UpdateData()">
+
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-2 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>City</mat-label>
+                        <input matInput #City='ngModel' name='City' [(ngModel)]="Section3.CaseDemographics.Address.City" [ngClass]="Section3.CaseDemographics.Address.City? 'focused' : ''" (change)="UpdateData()">
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-2 label-padding">
+                    <mat-form-field>
+                        <mat-label>State of residence</mat-label>
+                        <mat-select required #state='ngModel' name='state' [(ngModel)]="Section3.CaseDemographics.Address.State" (selectionChange)="UpdateStateData()">
+                            <mat-option *ngFor="let state of staticData.States" [value]="state">{{state}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="state?.invalid && (state.dirty || state.touched)">
+                            <div *ngIf="state.errors.required">
+                                State is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2" *ngIf="Section3.CaseDemographics.Address.State && Section3.CaseDemographics.Address.State != 'Non US' && (ApplicableCounties != undefined && this.ApplicableCounties.length > 0)">
+                    <!-- <mat-label class="label-padding ">Sex:</mat-label> -->
+                    <mat-form-field>
+                        <mat-label>County of residence</mat-label>
+                        <mat-select required #county='ngModel' name='county' [(ngModel)]="Section3.CaseDemographics.Address.County" (selectionChange)="UpdateData() ">
+                            <mat-option *ngFor="let county of this.ApplicableCounties " [value]="county.County ">{{county.County}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="county?.invalid && (county.dirty || county.touched)">
+                            <div *ngIf="county.errors.required">
+                                County is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2" *ngIf="Section3.CaseDemographics.Address.State && Section3.CaseDemographics.Address.State == 'Non US'">
+                    <!-- <mat-label class="label-padding ">Sex:</mat-label> -->
+                    <mat-form-field>
+                        <mat-label>Country of residence</mat-label>
+                        <mat-select required #country='ngModel' name='country' [(ngModel)]="Section3.CaseDemographics.Address.Country " (selectionChange)="UpdateData() ">
+                            <mat-option *ngFor="let country of staticData.Countries " [value]="country">{{country}}</mat-option>
+                        </mat-select>
+
+                        <mat-error *ngIf="country?.invalid && (country.dirty || country.touched)">
+                            <div *ngIf="country.errors.required">
+                                Country is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width" *ngIf="Section3.CaseDemographics.Address.State != 'Non US'">
+                        <mat-label>Zipcode</mat-label>
+                        <input matInput required #zip='ngModel' name='zip' [pattern]='regex.Zipcode' [(ngModel)]="Section3.CaseDemographics.Address.Zipcode" [ngClass]="Section3.CaseDemographics.Address.Zipcode? 'focused' : '' " (change)="UpdateData()"
+                               [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="zip?.invalid">
+                            <div *ngIf="zip.errors.required">
+                                Zipcode is required.
+                            </div>
+                            <div *ngIf="zip.value && zip?.invalid">
+                                Zipcode allows 5 numbers.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="full-width" *ngIf="Section3.CaseDemographics.Address.State == 'Non US'">
+                        <mat-label>Zipcode</mat-label>
+                        <input matInput required #zip='ngModel' name='zip' [(ngModel)]="Section3.CaseDemographics.Address.Zipcode" [ngClass]="Section3.CaseDemographics.Address.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                        <mat-error *ngIf="zip?.invalid && (zip.dirty || zip.touched)">
+                            <div *ngIf="zip.errors.required">
+                                Zipcode is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Phone</mat-label>
+                        <input appPhoneMask matInput #phone='ngModel' name='phone' [pattern]='regex.PhoneNumber' [(ngModel)]="Section3.CaseDemographics.PhoneNumber" [ngClass]="Section3.CaseDemographics.PhoneNumber? 'focused' : '' " (change)="UpdateData()"
+                               [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="phone?.invalid">
+                            <div *ngIf="phone.value && phone?.invalid">
+                                Phone number allows 10 numbers, () and -.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section3.CaseDemographics.Email" [ngClass]="Section3.CaseDemographics.Email? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="email?.invalid">
+                            <div *ngIf="email.value && email?.invalid">
+                                Email is invalid.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div class="row margin-tp">
+                <div class="col-sm-11">
+
+                    <mat-label class="blocked label-padding lg-pad-bottom label-weight">Race (check all that apply):</mat-label>
+
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsBlackRace='ngModel' name='IsBlackRace' [(ngModel)]="Section3.CaseDemographics.IsBlackRace">Black</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsWhiteRace='ngModel' name='IsWhiteRace' [(ngModel)]="Section3.CaseDemographics.IsWhiteRace">White</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsAsianRace='ngModel' name='IsAsianRace' [(ngModel)]="Section3.CaseDemographics.IsAsianRace">Asian</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsAmericanIndianRace='ngModel' name='IsAmericanIndianRace' [(ngModel)]="Section3.CaseDemographics.IsAmericanIndianRace">American Indian / Alaskan Native</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsNativeHawaiianRace='ngModel' name='IsNativeHawaiianRace' [(ngModel)]="Section3.CaseDemographics.IsNativeHawaiianRace">Native Hawaiian / Other Pacific Islander</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsUnknownRace='ngModel' name='IsUnknownRace' [(ngModel)]="Section3.CaseDemographics.IsUnknownRace">Unknown</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsOtherRace='ngModel' name='IsOtherRace' [(ngModel)]="Section3.CaseDemographics.IsOtherRace">Other Race</mat-checkbox>
+                    <mat-form-field class="label-padding" *ngIf="Section3.CaseDemographics.IsOtherRace">
+                        <mat-label>Specify other race</mat-label>
+                        <input matInput required #OtherRaceDesp='ngModel' name='OtherRaceDesp' [(ngModel)]="Section3.CaseDemographics.OtherRaceDesp" [ngClass]="Section3.CaseDemographics.OtherRaceDesp? 'focused' : ''" (change)="UpdateData()">
+                        <mat-error *ngIf="OtherRaceDesp?.invalid && (OtherRaceDesp.dirty || OtherRaceDesp.touched)">
+                            <div *ngIf="OtherRaceDesp.errors.required">
+                                Please specify other race.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-7">
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>Which would best describe where the patient was staying at the time of illness onset?</mat-label>
+                        <mat-select #PatientLocationIllnessOnset='ngModel' name='PatientLocationIllnessOnset'[(ngModel)]="Section3.CaseDemographics.PatientLocationIllnessOnset" (selectionChange)="UpdateData() ">
+                            <mat-option *ngFor="let place of staticData.PlaceOfStay " [value]="place ">{{place}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 form-full-width" *ngIf="Section3.CaseDemographics.PatientLocationIllnessOnset=='Other'">
+                    <mat-form-field class="label-padding full-width">
+                        <mat-label>Specify other place</mat-label>
+                        <input matInput required #OtherPateintPlaceDesp='ngModel' name='OtherPateintPlaceDesp' [(ngModel)]="Section3.CaseDemographics.OtherPateintPlaceDesp" [ngClass]="Section3.CaseDemographics.OtherPateintPlaceDesp? 'focused' : ''" (change)="UpdateData()">
+                        <mat-error *ngIf="OtherPateintPlaceDesp?.invalid && (OtherPateintPlaceDesp.dirty || OtherPateintPlaceDesp.touched)">
+                            <div *ngIf="OtherPateintPlaceDesp.errors.required">
+                                Please specify other place.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="container section-title-padding">
+        <p class="section-title section-title-padding-sm">Healthcare Worker Information</p>
+        <form #hworkerForm='ngForm'>
+
+            <div class="row">
+                <div class="col-sm-7 level-checkbox">
+                    <mat-label class="label-padding label-weight">Is the patient a healthcare worker in the United States? <span class="star">*</span></mat-label>
+
+                    <mat-radio-group aria-label="Select an option" required #hworker='ngModel' name='hworker' [(ngModel)]="Section3.HealthcareWorkerInfomation.IsPatientHealthCareWorker" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row" *ngIf="Section3.HealthcareWorkerInfomation.IsPatientHealthCareWorker == Bool.Yes">
+
+                <div class="col-sm-4 label-padding">
+                    <!-- <mat-label class="label-padding">Sex:</mat-label> -->
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>What is their occupation (type of job)?</mat-label>
+                        <mat-select required #occupation='ngModel' name='occupation' [(ngModel)]="Section3.HealthcareWorkerInfomation.Occupation" (selectionChange)="UpdateData()">
+                            <mat-option *ngFor="let job of staticData.HealthcareJobs" [value]="job">{{job}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="occupation?.invalid && (occupation.dirty || occupation.touched)">
+                            <div *ngIf="occupation.errors.required">
+                                Occupation is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 form-full-width" *ngIf="Section3.HealthcareWorkerInfomation.Occupation=='Other'">
+                    <mat-form-field class="label-padding full-width">
+                        <mat-label>Other Job (specify)</mat-label>
+                        <input matInput required #Other='ngModel' name='Other' [(ngModel)]="Section3.HealthcareWorkerInfomation.OtherOccupation" [ngClass]="Section3.HealthcareWorkerInfomation.OtherOccupation? 'focused' : ''" (change)="UpdateData()">
+                        <mat-error *ngIf="Other?.invalid && (Other.dirty || Other.touched)">
+                            <div *ngIf="Other.errors.required">
+                                Please specify other occupation.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <!-- </div>
+                <div class="row" *ngIf="Section3.HealthcareWorkerInfomation.IsPatientHealthCareWorker == Bool.Yes"> -->
+
+                <div class="col-sm-4 label-padding">
+                    <!-- <mat-label class="label-padding">Sex:</mat-label> -->
+                    <mat-form-field style="width: 100%;">
+                        <mat-label>What is their job setting?</mat-label>
+                        <mat-select required #setting='ngModel' name='setting' [(ngModel)]="Section3.HealthcareWorkerInfomation.JobSetting" (selectionChange)="UpdateData()">
+                            <mat-option *ngFor="let setting of staticData.JobSettings" [value]="setting">{{setting}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="setting?.invalid && (setting.dirty || setting.touched)">
+                            <div *ngIf="setting.errors.required">
+                                Job setting is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 form-full-width" *ngIf="Section3.HealthcareWorkerInfomation.JobSetting=='Other'">
+                    <mat-form-field class="label-padding full-width">
+                        <mat-label>Other job setting (specify)</mat-label>
+                        <input matInput required #job='ngModel' name='job' [(ngModel)]="Section3.HealthcareWorkerInfomation.OtherJobSetting" [ngClass]="Section3.HealthcareWorkerInfomation.OtherJobSetting? 'focused' : ''" (change)="UpdateData()">
+                        <mat-error *ngIf="job?.invalid && (job.dirty || job.touched)">
+                            <div *ngIf="job.errors.required">
+                                Please specify other job setting.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="hworkerForm.invalid|| demographicForm.invalid || Section3.Saved">Save</button>
+    </div>
+    <div class="center"><span class="star">*</span> indicates required field</div>
+
+</div>

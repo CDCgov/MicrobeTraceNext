@@ -1,0 +1,26 @@
+1. You must have PowerShell installed
+
+2. PowerShell must be run in administrator mode
+
+3. When you open PowerShell you must enter the following command : "cd [path to build folder]"
+
+4. Open the following PowerShell script "build_Image-host.ps1"
+
+5. After you open the "build_Image-host.ps1" and when you are in the "build folder" 
+   click the run button which is the green right arrow at the top of the page.
+
+6. The PowerShell scrip will automatically handle tagging and untagging any exisitng images for MicrobeTraceNext.
+
+7. When the docker container is successfully built you re-tag with the correct version number.
+   An example re-tagging the Docker container image is as follows:
+   docker tag 50e030d7cb74 firstgensisbpaas/microbetracenext-webforms:1.2.4  
+   -The 04843a2d4869 represents the image ID for the newly created Docker images built with this PowerShell script.
+   -firstgensisbpaas/microbetracenext-webforms represents the actual repository and name of the container image.
+   -:1.2.0 represents the desired version number of the newly created Docker Container image.
+
+8. After tagging with the desired tag version number, you can push to Docker Hub.
+   An exmaple of the Docker push command is as follows:
+   docker push firstgensisbpaas/microbetracenext-webforms:1.2.0
+   - firstgensisbpaas/microbetracenext-webforms represents the actual repository and name of the container image.
+
+9. After pushing to Docker Hug goto the Google Cloud Console and edit the YAML for the MicrobeTraceNext workload to reflect the new version. 

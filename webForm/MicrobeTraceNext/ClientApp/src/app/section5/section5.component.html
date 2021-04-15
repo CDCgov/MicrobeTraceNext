@@ -1,0 +1,408 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    
+    <div class="container">
+        <p class="section-title section-title-padding">COVID-19 Contact Tracing</p>
+        <div *ngIf="Section5 != undefined && (Section5.ContactTracings == undefined || Section5.ContactTracings.length == 0)">
+            <div class="add-link">
+                <div class="pull-right">
+                    <a class="addlink" (click)="AddNewContact()">+ Add new contact</a>
+                </div>
+            </div>
+        </div>
+        <form #contactForm='ngForm'>
+            <div *ngIf="Section5 != undefined && Section5.ContactTracings != undefined && Section5.ContactTracings.length > 0">
+
+                <div *ngFor="let contact of Section5.ContactTracings; let i = index;">
+
+                    <div class="row">
+                        <div class="col-sm-6 label-weight lg-padding-top" *ngIf="contact.SystemID">
+                            <mat-label>Contact ID: {{contact.SystemID}}</mat-label>
+                        </div>
+                        <div class="col-sm-5 label-weight lg-padding-top">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #IsKnownCase='ngModel' name='IsKnownCase{{i}}' [(ngModel)]="contact.IsKnownCase">Contact is a known COVID-19 Person of Interest</mat-checkbox>
+                        </div>
+                    </div>
+                    <div *ngIf="contact.IsKnownCase">
+                        <div class="row">
+                            <div class="col-sm-3 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>CDC 2019-nCoV ID</mat-label>
+                                    <input matInput #nCoV='ngModel' name='nCoV{{i}}' [pattern]='regex.CoVId' [(ngModel)]="contact.CDC2019nCovID" [ngClass]="contact.CDC2019nCovID? 'focused' : '' " (change)="UpdateData()" [errorStateMatcher]="matcher" (blur)="CheckCoVId(nCoV?.invalid, i)">
+                                    <mat-error *ngIf="nCoV?.invalid">
+                                        <div *ngIf="nCoV.value && nCoV?.invalid">
+                                            CDC 2019-nCoV ID must be in the format AA123456.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="!isLoading">
+                        <div *ngIf="contact.CDC2019nCovID">
+
+                            <div class="row">
+                                <div class="col-sm-11">
+                                    <mat-label class="blocked label-padding lg-pad-bottom label-weight sm-padding-top">What type of COVID-19 contact did the patient has?</mat-label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-11">
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsHouseHoldContact='ngModel' name='IsHouseHoldContact{{i}}' [(ngModel)]="contact.IsHouseHoldContact">Household Contact</mat-checkbox>
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsCommunityAssociatedContact='ngModel' name='IsCommunityAssociatedContact{{i}}' [(ngModel)]="contact.IsCommunityAssociatedContact">Community-associated contact</mat-checkbox>
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #IsHealthcareAssociatedContact='ngModel' name='IsHealthcareAssociatedContact{{i}}' [(ngModel)]="contact.IsHealthcareAssociatedContact">Healthcare-associated contact (patient, visitor, or healthcare worker)</mat-checkbox>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10 level-checkbox">
+                                    <mat-label class="label-padding label-weight">Is this person a US case?</mat-label>
+                                    <mat-radio-group aria-label="Select an option" #USCase='ngModel' name='USCase{{i}}' [(ngModel)]="contact.USCase" (change)="UpdateData()">
+                                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                        <mat-radio-button [value]="Bool.No" class="label-padding">No, this person was an international case and contact occured abroad</mat-radio-button>
+                                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                                    </mat-radio-group>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-5 level-checkbox">
+                                    <mat-label class="label-padding label-weight">Is this case part of an outbreak?</mat-label>
+                                    <mat-radio-group aria-label="Select an option" #PartOfOutbreak='ngModel' name='PartOfOutbreak{{i}}' [(ngModel)]="contact.PartOfOutbreak" (change)="UpdateData()">
+                                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                                <div class="col-sm-5">
+                                    <mat-form-field class="label-padding full-width" *ngIf="contact.PartOfOutbreak==Bool.Yes">
+                                        <mat-label>Outbreak name (specify)</mat-label>
+                                        <input matInput #OutbreakName='ngModel' name='OutbreakName{{i}}' [(ngModel)]="contact.OutbreakName" [ngClass]="contact.OutbreakName? 'focused' : '' " (change)="UpdateData()">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Contact Last name</mat-label>
+                                    <input matInput required #lastName='ngModel' name='lastName{{i}}' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="contact.Lastname" [ngClass]="contact.Lastname? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="lastName?.invalid">
+                                        <div *ngIf="lastName.errors.required">
+                                            Last name is required.
+                                        </div>
+                                        <div *ngIf="lastName.value && lastName?.invalid">
+                                            Last name only allows letters, ', -, and spaces.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </div>
+
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Contact First name</mat-label>
+                                    <input matInput required #firstName='ngModel' name='firstName{{i}}' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="contact.Firstname" [ngClass]="contact.Firstname? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="firstName?.invalid">
+                                        <div *ngIf="firstName.errors.required">
+                                            First name is required.
+                                        </div>
+                                        <div *ngIf="firstName.value && firstName?.invalid">
+                                            First name only allows letters, ', -, and spaces.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Contact Middle name</mat-label>
+                                    <input matInput #middleName='ngModel' name='middleName{{i}}' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="contact.Middlename" [ngClass]="contact.Middlename? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="middleName?.invalid">
+
+                                        <div *ngIf="middleName.value && middleName?.invalid">
+                                            Middle name only allows letters, ', -, and spaces.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-1 form-full-width">
+
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Sex</mat-label>
+                                    <mat-select required #sex='ngModel' name='sex{{i}}' [(ngModel)]="contact.Sex" (selectionChange)="UpdateData()">
+                                        <mat-option *ngFor="let sex of staticData.Sex" [value]="sex">{{sex}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="sex?.invalid && (sex.dirty || sex.touched)">
+                                        <div *ngIf="sex.errors.required">
+                                            Sex is required.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <!--<mat-form-field style="width: 100%;">
+            <mat-label>Approximate Age</mat-label>
+            <mat-select #AgeRange='ngModel' name='AgeRange{{i}}' [(ngModel)]="contact.AgeRange" (selectionChange)="UpdateData()">
+                <mat-option *ngFor="let age of staticData.AgeRange" [value]="age">{{age}}</mat-option>
+            </mat-select>
+        </mat-form-field>-->
+                                <mat-form-field class="full-width">
+                                    <mat-label>Approximate Age</mat-label>
+                                    <input matInput #AgeRange='ngModel' name='AgeRange{{i}}' [pattern]='regex.Numeric' [(ngModel)]="contact.AgeRange" [ngClass]="contact.AgeRange? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="AgeRange?.invalid">
+
+                                        <div *ngIf="AgeRange.value && AgeRange?.invalid">
+                                            Age only allows numbers.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Relation to Case</mat-label>
+                                    <mat-select #RelationtoCase='ngModel' name='RelationtoCase{{i}}' [(ngModel)]="contact.RelationtoCase" (selectionChange)="UpdateData()">
+                                        <mat-option *ngFor="let relation of staticData.RelationToCase" [value]="relation">{{relation}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Type of Contact</mat-label>
+                                    <mat-select #TypeOfContact='ngModel' name='TypeOfContact{{i}}' [(ngModel)]="contact.TypeOfContact" (selectionChange)="UpdateData()">
+                                        <mat-option *ngFor="let type of staticData.TypeOfContact" [value]="type">{{type}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>Illness / Outcome</mat-label>
+                                    <mat-select #IllnessOutcome='ngModel' name='IllnessOutcome{{i}}' [(ngModel)]="contact.IllnessOutcome" (selectionChange)="UpdateData()">
+                                        <mat-option *ngFor="let illness of staticData.IllnessOutcome" [value]="illness">{{illness}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4 level-checkbox">
+                                <mat-label class="label-padding">Did they get tested?</mat-label>
+                                <mat-radio-group aria-label="Select an option" #GetTested='ngModel' name='GetTested{{i}}' [(ngModel)]="contact.GetTested" (change)="UpdateData()">
+                                    <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                    <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                    <mat-radio-button [value]="Bool.Unknown">Unknown</mat-radio-button>
+
+                                </mat-radio-group>
+                            </div>
+
+
+
+                            <div class="col-sm-11">
+                                <mat-form-field class="form-full-width">
+                                    <mat-label>
+                                        Date Of Last Vaccination (2nd Dose if applicable)
+                                        
+                                    </mat-label>
+                                    <input matInput #DateOfVacination='ngModel' name='DateOfVacination{{i}}' [matDatepicker]="picker" [max]="today" [(ngModel)]="VacinationDate[i]" [ngClass]="VacinationDate[i]? 'focused' : '' " (dateChange)="UpdateVacinationDate(i)" [errorStateMatcher]="matcher" (input)="contact.VacinationDetails.Type = undefined">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="DateOfVacination?.invalid">
+                                        <div *ngIf="DateOfVacination.value ==null && DateOfVacination?.invalid">
+                                            Vacination date must be in mm/DD/yyyy format.
+                                        </div>
+                                        <div *ngIf="DateOfVacination.value != undefined && DateOfVacination?.invalid">
+                                            Vacination date (in mm/DD/yyyy format) cannot be a future date.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-radio-group class="radio-padding" aria-label="Select an option" #type='ngModel' name='type{{i}}' [(ngModel)]="contact.VacinationDetails.Type" (change)="UpdateData()" *ngIf="contact.VacinationDetails.VacinationDate == undefined">
+                                    <mat-radio-button [value]="VacinationType.No" class="label-padding">Not vacinated</mat-radio-button>
+                                    <mat-radio-button [value]="VacinationType.Unknown" class="label-padding">Unknown Date</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+
+
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width" [ngClass]="PhoneNumber?.invalid? 'error-padding' : ''">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input appPhoneMask matInput #PhoneNumber='ngModel' name='PhoneNumber{{i}}' [pattern]='regex.PhoneNumber' [(ngModel)]="contact.PhoneNumber" [ngClass]="contact.PhoneNumber? 'focused' : ''" (change)="UpdateData()" (blur)="ClearPhone(i)" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="PhoneNumber?.invalid">
+                                        <div *ngIf="PhoneNumber.value && PhoneNumber?.invalid">
+                                            Phone number allows 10 numbers, () and -.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownPhone='ngModel' name='UnknownPhone{{i}}' [(ngModel)]="contact.UnknownPhone" *ngIf="!contact.PhoneNumber">Unknown Phone</mat-checkbox>
+                            </div>
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Email</mat-label>
+                                    <input matInput #Email='ngModel' name='Email{{i}}' [pattern]='regex.Email' [(ngModel)]="contact.Email" [ngClass]="contact.Email? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="Email?.invalid">
+                                        <div *ngIf="Email.value && Email?.invalid">
+                                            Email is invalid.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownEmail='ngModel' name='UnknownEmail{{i}}' [(ngModel)]="contact.UnknownEmail" *ngIf="!contact.Email">Unknown Email</mat-checkbox>
+                            </div>
+
+                            <!-->div class="col-sm-5 form-full-width">
+        <mat-form-field class="full-width">
+            <mat-label>Residential Address</mat-label>
+            <input matInput #Address='ngModel' name='Address{{i}}' [(ngModel)]="contact.Address" [ngClass]="contact.Address? 'focused' : ''" (change)="UpdateData()">
+        </mat-form-field>
+        <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownAddress='ngModel' name='UnknownAddress{{i}}' [(ngModel)]="contact.UnknownAddress" *ngIf="!contact.Address">Unknown Residential Address</mat-checkbox>
+    </!--div-->
+
+                            <div class="col-sm-5 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Residential Address</mat-label>
+                                    <input matInput #Address='ngModel' name='Address{{i}}' [(ngModel)]="contact.Address.StreetAddress" [ngClass]="contact.Address.StreetAddress? 'focused' : ''" (change)="UpdateAddressData(i)"
+                                           matGoogleMapsAutocomplete
+                                           [country]="DefaultCountry"
+                                           (onAutocompleteSelected)="onAutocompleteSelected($event, i)"
+                                           (onLocationSelected)="onLocationSelected($event, i)">
+                                </mat-form-field>
+                                <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownAddress='ngModel' name='UnknownAddress{{i}}' [(ngModel)]="contact.UnknownAddress" *ngIf="!contact.Address">Unknown Residential Address</mat-checkbox>
+                            </div>
+
+                            <div class="col-sm-1 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Unit Number</mat-label>
+                                    <input matInput #Unit='ngModel' name='Unit{{i}}' [(ngModel)]="contact.Address.Unit" [ngClass]="contact.Address.Unit? 'focused' : ''" (change)="UpdateData()">
+
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2 form-full-width">
+                                <mat-form-field class="full-width">
+                                    <mat-label>City</mat-label>
+                                    <input matInput #City='ngModel' name='City{{i}}' [(ngModel)]="contact.Address.City" [ngClass]="contact.Address.City? 'focused' : ''" (change)="UpdateData()">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2">
+                                <mat-form-field style="width: 100%;">
+                                    <mat-label>State of residence</mat-label>
+                                    <mat-select #StateOfResidence='ngModel' name='StateOfResidence{{i}}' [(ngModel)]="contact.Address.State" (selectionChange)="UpdateData()">
+                                        <mat-option *ngFor="let State of staticData.States" [value]="State">{{State}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-2" *ngIf="contact.Address.State && contact.Address.State == 'Non US'">
+                                <mat-form-field>
+                                    <mat-label>Country of residence</mat-label>
+                                    <mat-select #CountryOfResidence='ngModel' name='CountryOfResidence{{i}}' [(ngModel)]="contact.Address.Country" (selectionChange)="UpdateData() ">
+                                        <mat-option *ngFor="let country of staticData.Countries " [value]="country">{{country}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-1 form-full-width">
+                                <mat-form-field class="full-width" *ngIf="contact.Address.State != 'Non US'">
+                                    <mat-label>Zipcode</mat-label>
+                                    <input matInput #Zipcode='ngModel' name='Zipcode{{i}}' [pattern]='regex.Zipcode' [(ngModel)]="contact.Address.Zipcode" [ngClass]="contact.Address.Zipcode? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-error *ngIf="Zipcode?.invalid">
+                                        <div *ngIf="Zipcode.value && Zipcode?.invalid">
+                                            Zipcode allows 5 numbers.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="full-width" *ngIf="contact.Address.State == 'Non US'">
+                                    <mat-label>Zipcode</mat-label>
+                                    <input matInput #Zipcode='ngModel' name='Zipcode{{i}}' [(ngModel)]="contact.Address.Zipcode" [ngClass]="contact.Address.Zipcode? 'focused' : ''" (change)="UpdateData()">
+
+                                </mat-form-field>
+                            </div>
+
+
+
+
+                        </div>
+                        <div *ngFor="let venue of contact.ContactVenue; let j = index;">
+                            <div class="row">
+
+                                <div class="col-sm-4 form-full-width">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Venue of exposure with contact</mat-label>
+                                        <input matInput #LocationOfContact='ngModel' name='LocationOfContact{{i}}{{j}}' [(ngModel)]="venue.Venue.Name" [ngClass]="venue.Venue.Name? 'focused' : ''" (change)="UpdateVenueData(i,j)"
+                                               matGoogleMapsAutocomplete
+                                               [country]="DefaultCountry"
+                                               (onAutocompleteSelected)="onAutocompleteSelectedVenue($event, i, j)"
+                                               (onLocationSelected)="onLocationSelectedVenue($event, i, j)">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-1 form-full-width" *ngIf="venue.Venue.Name != undefined && venue.Venue.Name.length > 0">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Zipcode</mat-label>
+                                        <input matInput required #VenueZipcode='ngModel' name='VenueZipcode{{i}}{{j}}' [(ngModel)]="venue.Venue.Zipcode" [ngClass]="venue.Venue.Zipcode? 'focused' : ''" (change)="UpdateData()">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-2">
+                                    <mat-form-field style="width: 100%;">
+                                        <mat-label>Duration of Contact</mat-label>
+                                        <mat-select #Duration='ngModel' name='Duration{{i}}{{j}}' [(ngModel)]="venue.Duration" (selectionChange)="UpdateData()">
+                                            <mat-option *ngFor="let duration of staticData.Duration" [value]="duration">{{duration}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-3">
+                                    <mat-form-field>
+                                        <mat-label>Contact Date (mm/DD/yyyy)</mat-label>
+                                        <input matInput #DateOfContact='ngModel' name='DateOfContact{{i}}{{j}}' [matDatepicker]="picker" [max]="today" [(ngModel)]="VenueDates[i][j]" [ngClass]="VenueDates[i][j]? 'focused' : '' " (dateChange)="UpdateDate(i,j)" [errorStateMatcher]="matcher">
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-error *ngIf="DateOfContact?.invalid">
+                                            <div *ngIf="DateOfContact.value ==null && DateOfContact?.invalid">
+                                                Contact date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="DateOfContact.value != undefined && DateOfContact?.invalid">
+                                                Contact date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div *ngIf="j == contact.ContactVenue.length -1" class="col-sm-1 add-link" style="margin-top:2%;">
+                                    <a class="addlink" (click)="AddVenue(contact, i)">+ Add Venue</a>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Contact Description</mat-label>
+                                    <input matInput #Desp='ngModel' name='Desp{{i}}' [(ngModel)]="contact.Description" [ngClass]="contact.Description? 'focused' : ''" (change)="UpdateData()">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                        <app-loader *ngIf="isLoading"></app-loader>
+
+
+                        <mat-divider style="margin-top: 2%; margin-bottom:2%" *ngIf="i != Section5.ContactTracings.length-1 "></mat-divider>
+
+                    </div>
+
+
+                <div class="add-link">
+                    <div class="remove-link" *ngIf="Section5.ContactTracings.length > 1">
+                        <a class="removelink" (click)="RemoveContact()">- Remove Contact</a>
+                    </div>
+                    <div class="pull-right">
+                        <a class="addlink" (click)="AddContact()">+ Add another contact</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+    <div class="row section-title-padding"></div>
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="(Section5 != undefined && Section5.ContactTracings != undefined && Section5.ContactTracings.length > 0 && contactForm.invalid) || Section5.Saved">Save</button>
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+
+</div>

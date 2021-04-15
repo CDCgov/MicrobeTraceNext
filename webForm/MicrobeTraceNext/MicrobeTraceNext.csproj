@@ -1,0 +1,459 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>    
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>b6df971f-d16f-4f55-8776-1e668e0831b2</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="RestSharp" Version="106.11.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <None Include="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\services\application-data.service.spec.ts" />
+    <None Remove="ClientApp\src\app\services\application-data.service.spec.ts" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\-XgiW7yz08S2Hf3ZAVZldL5PyhnLT_hZ8MHujlTwvv3ffOctggMdeMJ6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\WENJOHiGOq3_XZiazaPj19sxUujE_e1BYo2vAwX0WgjffOctggMdeMI6MK6g5Mw.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\RsvgxekFZkCDfk0HCmjFfy0F1QIN-dDXV32vTNFW4RXffOctggMdeMJ6gK6g5Mw.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Sv4Oq7RSQCdIMz1qya_sbhY-gdQRAvS1iSy8pA5W9_JffO0tggMdeMI6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\UATCv6B63u7KNxUhGN0MSMzQ8-_GBGMd8Q4-h-GQjdCffO0tggMdeMI6MK6g5Mb.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-d.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-k.css" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\-XgiW7yz08S2Hf3ZAVZldL5PyhnLT_hZ8MHujlTwvv3ffOctggMdeMJ6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\WENJOHiGOq3_XZiazaPj19sxUujE_e1BYo2vAwX0WgjffOctggMdeMI6MK6g5Mw.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\RsvgxekFZkCDfk0HCmjFfy0F1QIN-dDXV32vTNFW4RXffOctggMdeMJ6gK6g5Mw.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Sv4Oq7RSQCdIMz1qya_sbhY-gdQRAvS1iSy8pA5W9_JffO0tggMdeMI6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\UATCv6B63u7KNxUhGN0MSMzQ8-_GBGMd8Q4-h-GQjdCffO0tggMdeMI6MK6g5Mb.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-d.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-k.css" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\rsa.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\3rdpartylicenses.txt" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-a.css" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\awf4abw.js" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-j.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-l.css" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\fqANzT3ZfaPXK7YMXdJUzNxy41aK_OM_is_apX8MXMIffOktggMdeMI6MK6g5Mj.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\_4MNuoGhBw5i-hJ7G1VuVNWu5wMNxctkbjW9a9acQCSffO0tggMdeMJ6Mk6g5Mb.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\ahb1d6nXNe5pLBXqwFPHDHH7JyCfbArXBhfZSSQnS8MffOctggMdeMJ6Mk6g5Mw.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\barcode.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\dNZunMKbetx4kA-mKeAn97oM8Kck0vJyU2QyWIs7y1XffO0tggMdeMJ6MP6g5Mb.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\c\awf4abw-i.css" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\kjKCxzYRDgAe-NNbYboqW0Pe3FX0KUR_d82nD0pJWRvffOctggMdeMI6MP6g5Mw.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\nU0WkY2wvZiTqfb_TuEeD9nALhQTo0xNQT2TLt28vVCffOktggMdeMI6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\v1dRzmFjUnAlcLhKZg_JWZvHRlzmjyLziRklmJ-ZtiGffOktggMdeMJ6gK6g5Mj.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.ttf" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\f\qb7vYFfjW7mI8T_F6GFwPjZW5UOehCP6m1Rkhdp9mCIffO0tggMdeMJ6gK6g5Mb.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.eot" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\rEBHgagJckXTHmFRNXki3UgkSw5cpPWvCEiu_tQOwMJffOktggMdeMJ6MP6g5Mj.otf" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\fonts\f\Qr9wAaoP1vMsw6IzUnKvCshOdHbiwlqpdeXmwceqBejffOktggMdeMJ6Mk6g5Mj.woff" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-down-solid.svg" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\fonts\glyphicons-halflings-regular.woff2" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\chevron-up-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.svg" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\Contact-tracing.png" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\print.jpg" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\sync-alt-solid.svg" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTraceNext.png" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\search.ico" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\sprite-default.png" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\Microbe.ico" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\images\MicrobeTrace.png" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\images\mainForFooter.png" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\jsbn.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.request.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\MIT-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\msf.utilities.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.min.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\src\README.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\amplify-vsdoc.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\requestAnimation.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\GPL-LICENSE.txt" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\TypeKit.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.core.js" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\index.html" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\polyfills-es2015.8152c9498af1a221f68d.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es2015.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\styles.95649a1d5fc17e948747.css" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\assets\scripts\app\amplify-1.1.2\individual\amplify.store.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\polyfills-es5.02f6d598580be024c9a1.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+    <None Remove="ClientApp\dist\runtime-es5.c5fa8325f89fc516600b.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\utils\" />
+    <Folder Include="ClientApp\src\app\DTO\API-DTO\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BPaaSDTO\BPaaSDTO.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

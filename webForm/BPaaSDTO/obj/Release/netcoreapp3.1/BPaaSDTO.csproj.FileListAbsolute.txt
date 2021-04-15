@@ -1,0 +1,8 @@
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/bin/Release/netcoreapp3.1/BPaaSDTO.deps.json
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/bin/Release/netcoreapp3.1/BPaaSDTO.dll
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/bin/Release/netcoreapp3.1/BPaaSDTO.pdb
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/obj/Release/netcoreapp3.1/BPaaSDTO.AssemblyInfoInputs.cache
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/obj/Release/netcoreapp3.1/BPaaSDTO.AssemblyInfo.cs
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/obj/Release/netcoreapp3.1/BPaaSDTO.csproj.CoreCompileInputs.cache
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/obj/Release/netcoreapp3.1/BPaaSDTO.dll
+/Users/nuansric/Desktop/MicrobeTraceNext-Asset/MicrobeTraceNext/BPaaSDTO/obj/Release/netcoreapp3.1/BPaaSDTO.pdb

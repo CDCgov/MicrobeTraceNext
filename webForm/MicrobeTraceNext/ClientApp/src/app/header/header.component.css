@@ -1,0 +1,178 @@
+.header-bg {
+  background-color: #011042;
+  /* background-image: -webkit-linear-gradient(0deg, #024aad 0%, #043d6e 100%);
+    background-image: -moz-linear-gradient(0deg, #0669f5 0%, #043d6e 100%);
+    background-image: -o-linear-gradient(0deg, #0669f5 0%, #043d6e 100%);
+    background-image: -ms-linear-gradient(0deg, #0669f5 0%, #043d6e 100%);
+    background-image: linear-gradient(0deg, #0669f5 0%, #043d6e 100%); */
+  background-image: -webkit-linear-gradient(0deg, #002bb9 0%, #011042 100%);
+  background-image: -moz-linear-gradient(0deg, #002bb9 0%, #011042 100%);
+  background-image: -o-linear-gradient(0deg, #002bb9 0%, #011042 100%);
+  background-image: -ms-linear-gradient(0deg, #002bb9 0%, #011042 100%);
+  background-image: linear-gradient(0deg, #002bb9 0%, #022492 30%, #021d75 58.09%, #011042 95%, #011042 100%);
+  background-repeat: repeat-x;
+  min-height: 60px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 0px;
+}
+
+.header-logo {
+  position: relative;
+  top: 5px;
+  padding-bottom: 5px;
+  margin-right: 20px;
+}
+
+.header-lab {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 500;
+  position: relative;
+  padding-top: 16px;
+}
+
+.iata-code-header {
+  color: white;
+  background-color: #011042;
+  border: #fff;
+  margin-left: 12px;
+  border-bottom: 2px solid #fff;
+  width: 45%;
+}
+
+.header-settings-icon {
+  color: #fff;
+  font-size: 30px;
+  display: inline-flex;
+  padding-right: 24px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  top: 15px;
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  background-color: #011042;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  background-image: linear-gradient(0deg, #011042 0%, #1b4889 100%);
+}
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #fff;
+    display: block;
+    transition: 0.3s;
+  }
+
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+.header-slide-section {
+  width: 250px;
+}
+
+.close-slide-section {
+  width: 0px;
+}
+
+.iata-code-header-mob {
+  color: white;
+  background-color: #011042;
+  border: #fff;
+  margin-left: 0px;
+  border-bottom: 2px solid #fff;
+  width: 180px;
+}
+
+.header-set-ico-sec {
+  display: none;
+}
+
+.toggler-overlay {
+  background-color: transparent;
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorStr=#99003057, endColorStr=#99003057);
+  background: rgba(0, 48, 87, .3);
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 999;
+}
+
+.head-login-sigOut {
+  color: #fff;
+  font-size: 16px;
+  display: inline-flex;
+  margin-right: 0px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.lniatasec {
+  padding-right: 0px;
+  margin-right: -46px;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.head-login-det-sec {
+  color: #fff;
+  font-size: 16px;
+  display: inline-flex;
+  padding-right: 15px;
+  font-weight: 500;
+}
+
+  .head-login-det-sec span {
+    padding-left: 10px;
+  }
+
+@media only screen and (min-width: 1224px) {
+  .toggler-overlay {
+    display: none;
+  }
+
+  .sidenav {
+    display: none;
+  }
+}
+
+@media screen\0 {
+  .head-login-det-sec {
+    float: left;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .header-set-ico-sec {
+    display: block;
+  }
+
+  .log-det-sec {
+    display: none;
+  }
+}

@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30223.230
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicrobeTraceNext", "MicrobeTraceNext\MicrobeTraceNext.csproj", "{7771F4D2-4BD6-4B88-97C9-93D6AB81FBC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPaaSDTO", "BPaaSDTO\BPaaSDTO.csproj", "{329486D3-DBD0-4D87-8B9B-010096D3D959}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{08321D1A-1351-4870-B0B5-7A953D13C358}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "host", "host", "{23E08B24-2C98-46D6-A5A6-0A92D00D367F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{A89D56FE-9554-4706-AE87-8D6C43C5BE07}"
+	ProjectSection(SolutionItems) = preProject
+		build\build_Image-host.ps1 = build\build_Image-host.ps1
+		BuildSriptInstructions.txt = BuildSriptInstructions.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "outputs", "outputs", "{D7C3646B-6521-4053-A61C-3BDCAE083930}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{2F2E05B5-B45F-4FC8-A963-D62825D89426}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7771F4D2-4BD6-4B88-97C9-93D6AB81FBC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7771F4D2-4BD6-4B88-97C9-93D6AB81FBC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7771F4D2-4BD6-4B88-97C9-93D6AB81FBC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7771F4D2-4BD6-4B88-97C9-93D6AB81FBC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{329486D3-DBD0-4D87-8B9B-010096D3D959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{329486D3-DBD0-4D87-8B9B-010096D3D959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{329486D3-DBD0-4D87-8B9B-010096D3D959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{329486D3-DBD0-4D87-8B9B-010096D3D959}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23E08B24-2C98-46D6-A5A6-0A92D00D367F} = {08321D1A-1351-4870-B0B5-7A953D13C358}
+		{D7C3646B-6521-4053-A61C-3BDCAE083930} = {A89D56FE-9554-4706-AE87-8D6C43C5BE07}
+		{2F2E05B5-B45F-4FC8-A963-D62825D89426} = {D7C3646B-6521-4053-A61C-3BDCAE083930}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EE0F4008-F04E-4D66-A6BF-E0D9F9A7A3A1}
+	EndGlobalSection
+EndGlobal

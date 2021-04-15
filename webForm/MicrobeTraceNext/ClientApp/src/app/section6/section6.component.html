@@ -1,0 +1,350 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Clinical course, symptoms, past medical history, and social history</p>
+
+        <div class="row">
+            <div class="col-sm-5">
+
+                <mat-label class="blocked label-padding  lg-pad-bottom  label-weight">Collected from (check all that apply):</mat-label>
+                <mat-checkbox (change)="UpdateData()" class="label-padding" [(ngModel)]="Section6.ClinicalCourse.PatientDataCollection">Patient interview</mat-checkbox>
+                <mat-checkbox (change)="UpdateData()" class="label-padding" [(ngModel)]="Section6.ClinicalCourse.MedicalRecordDataCollection">Medical record review</mat-checkbox>
+            </div>
+            <div class="col-sm-5">
+
+                <mat-label class="blocked label-padding label-weight">Symptom present during the course of illness:</mat-label>
+                <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.Symptomatic" (change)="UpdateData()">
+                    <mat-radio-button [value]="Bool.Yes" class="label-padding">Symptomatic</mat-radio-button>
+                    <mat-radio-button [value]="Bool.No" class="label-padding">Asymptomatic</mat-radio-button>
+                    <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div [hidden]="Section6.ClinicalCourse.Symptomatic != Bool.Yes">
+            <form #onsetForm='ngForm'>
+                <div class="row padd">
+                    <div class="col-sm-11">
+                        <mat-label class="label-padding label-weight">When was the symptom onset date? <span class="star">*</span></mat-label>
+                        <mat-form-field class="label-padding" *ngIf="Section6.ClinicalCourse.UnknownOnsetDate != true">
+                            <mat-label>Onset Date</mat-label>
+                            <input matInput [matDatepicker]="picker" [max]="today" required #onset='ngModel' name='onset' [(ngModel)]="OnsetDate" [ngClass]="OnsetDate? 'focused' : '' " (dateChange)="UpdateOnsetDate()" [errorStateMatcher]="matcher">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-hint>Format: mm/DD/yyyy</mat-hint>
+                            <mat-error *ngIf="onset?.invalid">
+                                <div *ngIf="onset.value ==null && onset?.invalid">
+                                    Onset date is required.
+                                </div>
+                                <div *ngIf="onset.value != undefined && onset?.invalid">
+                                    Onset date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-checkbox *ngIf="Section6.ClinicalCourse.OnsetDate == undefined" (change)="UpdateData()" class="label-padding" #uonset='ngModel' name='uonset' [(ngModel)]="Section6.ClinicalCourse.UnknownOnsetDate">Unknown date</mat-checkbox>
+                    </div>
+                </div>
+       
+                <div class="row">
+                    <div class="col-sm-11">
+                        <mat-label class="label-padding label-weight">Did the patient's symptoms resolve?  <span class="star">*</span></mat-label>
+                        <mat-form-field class="label-padding" style="width:23%;">
+                            <mat-label>Date of Symptom Resolution</mat-label>
+                            <input matInput [matDatepicker]="picker2" [max]="today" [required]="Section6.ClinicalCourse.SymptomResolved == undefined" #res='ngModel' name='res' [(ngModel)]="ResolveDate" [ngClass]="ResolveDate? 'focused' : '' " (dateChange)="UpdateResolveDate()" [errorStateMatcher]="matcher" (input)="Section6.ClinicalCourse.SymptomResolved = undefined">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                            <mat-hint>Format: mm/DD/yyyy</mat-hint>
+                            <mat-error *ngIf="res?.invalid">
+                                <div *ngIf="res.value ==null && res?.invalid">
+                                    Resolve date is required.
+                                </div>
+                                <div *ngIf="res.value != undefined && res?.invalid">
+                                    Resolve date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-radio-group *ngIf="Section6.ClinicalCourse.ResolveDate == undefined" class="level-checkbox" aria-label="Select an option" #isr='ngModel' name='isr' [(ngModel)]="Section6.ClinicalCourse.SymptomResolved" (change)="UpdateData()">
+                            <mat-radio-button #b1  [value]="Bool.Yes" class="label-padding">Symptom resolved, unknown date</mat-radio-button>
+                            <mat-radio-button #b2  [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button #b3  [value]="Bool.Unknown">Unknown</mat-radio-button>
+                        </mat-radio-group>
+
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-sm-11" [ngClass]="Section6.ClinicalCourse.SymptomResolved != Bool.Yes? 'level-checkbox': '' ">
+                    <mat-label class="label-padding label-weight">Did the patient develop pneumonia?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.Pneumomia" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11 level-checkbox">
+                    <mat-label class="label-padding label-weight">Did the patient have acute respiratory distress syndrome?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.RespiratorySyndrome" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11 level-checkbox">
+                    <mat-label class="label-padding label-weight">Did the patient have an abnormal chest X-ray?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.AbnomalChestXRay" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        <mat-radio-button [value]="Bool.NotApplicable" class="label-padding">N/A</mat-radio-button>
+
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11 level-checkbox">
+                    <mat-label class="label-padding label-weight">Did the patient receive ECMO?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.ReceivedECMO" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11 level-checkbox">
+                    <mat-label class="label-padding label-weight">Did the patient have another diagnosis / etiology for their illness?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.AnotherDiagnosis" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11 level-checkbox">
+                    <mat-label class="label-padding label-weight">Did the patient have an abnormal EKG?</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.AbnormalEKG" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        <mat-radio-button [value]="Bool.NotApplicable" class="label-padding">N/A</mat-radio-button>
+
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11" [ngClass]="Section6.ClinicalCourse.ReceivedMV != Bool.Yes? 'level-checkbox': '' ">
+                    <mat-label class="label-padding label-weight">Did the patient receive mechanical ventilation (MV) / intubation??</mat-label>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="Section6.ClinicalCourse.ReceivedMV" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field *ngIf="Section6.ClinicalCourse.ReceivedMV == Bool.Yes">
+                        <mat-label>Total days on MV</mat-label>
+                        <input matInput [(ngModel)]="Section6.ClinicalCourse.MVDays" [ngClass]="Section6.ClinicalCourse.MVDays? 'focused' : ''" (change)="UpdateData()">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="section-title-padding" *ngIf="Section6.ClinicalCourse.Symptomatic == Bool.Yes">
+            <div class="row">
+                <div class="col-sm-11">
+
+                    <mat-label class="label-padding label-weight">Did the patient experience any of the symptoms below:</mat-label>
+
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Fever > 100.4℉/38℃</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Fever" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Chills</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Chills" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Rigors</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Rigors" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Nausea or vomiting</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Nausea" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Muscle aches (myalgia)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.MuscleAches" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Runny nose (rhinorrhea)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.RunnyNose" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Sore throat</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.SoreThroat" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Chest pain</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.ChestPain" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Abdominal pain</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.AbdominalPain" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Headache</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Headache" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Fatigue</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Fatigue" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Wheezing</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Wheezing" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Difficulty breathing</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.DifficultyBreathing" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Subjective fever (felt feverish)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.SubjectiveFever" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-4">
+                    <mat-label class="blocked label-padding label-weight">Cough (new onset or worsening of chronic cough)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Cough" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row level-checkbox row-padding">
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">Shortness of breath (dyspnea)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Dyspnea" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-3">
+                    <mat-label class="blocked label-padding label-weight">New olfactory and taste disorder(s)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.OlfactoryDisorder" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-4">
+                    <mat-label class="blocked label-padding label-weight">Diarrhea (≥ 3 loose stools / 24 hr period)</mat-label>
+                    <mat-radio-group class="blocked level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.Diarrhea" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-sm-11">
+                    <mat-label class="label-padding label-weight">Other symptom(s)</mat-label>
+                    <mat-radio-group class="level-checkbox" aria-label="Select an option" [(ngModel)]="Section6.Symptoms.OtherSymptom" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding-sm">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding-sm">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field class="label-padding wide-width" *ngIf="Section6.Symptoms.OtherSymptom == Bool.Yes">
+                        <mat-label>Specify other symptom(s)</mat-label>
+                        <input matInput [(ngModel)]="Section6.Symptoms.OtherDescription" [ngClass]="Section6.Symptoms.OtherDescription? 'focused' : '' " (change)="UpdateData()">
+                        <mat-hint>If there is more than one symptom, please separate each symptom by a comma (,). </mat-hint>
+                    </mat-form-field>
+                 
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+    <div class="row section-title-padding"></div>
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="Section6.ClinicalCourse.Symptomatic == Bool.Yes && onsetForm.invalid || Section6.Saved">Save</button>
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+
+</div>
+
+
+<!-- <div class="col-sm-5">
+  <mat-label class="label-padding">If yes, specify which language:</mat-label>
+  <mat-form-field>
+      <mat-label>Any symptom present?</mat-label>
+      <mat-select [(ngModel)]="Section2.HospitalizationInformation.TranslatiorRequired.Language" (selectionChange)="UpdateData()">
+          <mat-option *ngFor="let language of staticData.Languages" [value]="language.name">{{language.name}} - {{language.nativeName}}</mat-option>
+      </mat-select>
+  </mat-form-field>
+</div> -->

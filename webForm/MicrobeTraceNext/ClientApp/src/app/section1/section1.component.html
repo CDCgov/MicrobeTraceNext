@@ -1,0 +1,343 @@
+<div *ngIf="Confirmed">
+    <div class="nCov" *ngIf="Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+        <p class="title">Human Infection with 2019 Novel Coronavirus Case Report Form </p>
+        <p class="title2">........PATIENT IDENTIFIER INFORMATION IS NOT TRANSMITTED TO CDC.........</p>
+
+        <div class="container">
+            <form #nCoVIdForm='ngForm' class="section-divide-sm" [hidden]="!isNew">
+                <div class="row">
+                    <div class="col-sm-10 level center">
+                        <mat-label class="label-padding">Would you like to manually enter a CDC 2019-nCoV ID? (Auto-generated if No) <span class="star">*</span>:</mat-label>
+                        <mat-radio-group aria-label="Select an option" required #manual='ngModel' name='manual' [(ngModel)]="IsManual" (change)="CheckID(nCoVIdForm)">
+                            <mat-radio-button [value]="true">Yes</mat-radio-button>
+                            <mat-radio-button [value]="false">No</mat-radio-button>
+                         
+                        </mat-radio-group>
+                    </div>
+                    </div>
+                <div class="row" *ngIf="IsManual">
+                    <div class="col-sm-10 center">
+                       
+                         
+                        <mat-label class="label-padding">CDC 2019-nCoV ID <span class="star">*</span>:</mat-label>
+              
+                        <mat-form-field class="label-padding-sm" style="width:10%">
+                            <mat-label>Jurisdiction</mat-label>
+                            <mat-select required #state='ngModel' name='state' [(ngModel)]="covid_state" (selectionChange)="GenerateManualCoVId(nCoVIdForm)" [errorStateMatcher]="matcher" [disabled]="covid_state != undefined && covid_state != ''">
+                                <mat-option *ngFor="let state of staticData.StateCode" [value]="state.abbreviation">
+                                    {{state.abbreviation}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="state?.invalid && (state.dirty || state.touched)">
+                                <div *ngIf="state.errors.required">
+                                    State is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field>
+                            <mat-label>ID</mat-label>
+                            <input matInput required #nCoV='ngModel' name='nCoV'  [pattern]='regex.nCoV'  [(ngModel)]="covid" [ngClass]="covid? 'focused' : '' " (change)="GenerateManualCoVId(nCoVIdForm)" [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="nCoV?.invalid">
+                                <div *ngIf="nCoV.errors.required">
+                                    ID is required.
+                                </div>
+                                <div *ngIf="nCoV.value && nCoV?.invalid">
+                                    ID only allows 6-16 numeric.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <form #headerForm='ngForm'>
+                <div class="row">
+                    <div class="col-sm-8 level center">
+                        <!--<mat-label class="label-padding">Is this a new case? <span class="star">*</span></mat-label>
+                        <mat-radio-group aria-label="Select an option" required #newCase='ngModel' name='newCase' [(ngModel)]="Section1.PatientInformation.IsNewCase" (change)="UpdateData()">
+                            <mat-radio-button [value]="true">Yes</mat-radio-button>
+                            <mat-radio-button [value]="false">No</mat-radio-button>
+                            <mat-error *ngIf="newCase?.invalid && (newCase.dirty || newCase.touched)">
+                                <div *ngIf="newCase.errors.required">
+                                    Is new case is required.
+                                </div>
+                            </mat-error>
+                        </mat-radio-group>-->
+                    </div>
+                    <div class="col-sm-3 center" style="padding-left:0px">
+                        <mat-form-field>
+                            <mat-label>State</mat-label>
+                            <mat-select required #state='ngModel' name='state' [(ngModel)]="Section1.PatientInformation.State" (selectionChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                <mat-option *ngFor="let state of staticData.States" [value]="state">
+                                    {{state}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="state?.invalid && (state.dirty || state.touched)">
+                                <div *ngIf="state.errors.required">
+                                    State is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    <div class="container">
+        <p class="section-title">Patient Information</p>
+        <form #patientInfoForm='ngForm'>
+            <div class="row">
+
+                <div class="col-sm-4 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Last name</mat-label>
+                        <!-- <input matInput [(ngModel)]="Section1.PatientInformation.Lastname" [ngClass]="Section1.PatientInformation.Lastname? 'focused' : ''" (change)="UpdateData()"> -->
+                        <input matInput required #lastName='ngModel' name='lastName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.PatientInformation.Lastname" [ngClass]="Section1.PatientInformation.Lastname? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+
+                        <mat-error *ngIf="lastName?.invalid">
+                            <div *ngIf="lastName.errors.required">
+                                Last name is required.
+                            </div>
+                            <div *ngIf="lastName.value && lastName?.invalid">
+                                Last name only allows letters, ', -, and spaces.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="col-sm-4 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>First name</mat-label>
+                        <!-- <input matInput [(ngModel)]="Section1.PatientInformation.Firstname" [ngClass]="Section1.PatientInformation.Firstname? 'focused' : ''" (change)="UpdateData()"> -->
+                        <input matInput required #firstName='ngModel' name='firstName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.PatientInformation.Firstname" [ngClass]="Section1.PatientInformation.Firstname? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="firstName?.invalid">
+                            <div *ngIf="firstName.errors.required">
+                                First name is required.
+                            </div>
+                            <div *ngIf="firstName.value && firstName?.invalid">
+                                First name only allows letters, ', -, and spaces.
+                            </div>
+                        </mat-error>
+                        <!-- <mat-error *ngIf="firstName?.invalid">
+                <div *ngIf="firstName.errors.required && (firstName.dirty || firstName.touched)">
+                    First name is required.
+                </div>
+                <div *ngIf="firstName.value && firstName?.invalid">
+                    First name only allows letters, ', -, and spaces.
+                </div>
+            </mat-error>-->
+                    </mat-form-field>
+
+                </div>
+                <div class="col-sm-2 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Middle name</mat-label>
+                        <!-- <input matInput [(ngModel)]="Section1.PatientInformation.Lastname" [ngClass]="Section1.PatientInformation.Lastname? 'focused' : ''" (change)="UpdateData()"> -->
+                        <input matInput #midName='ngModel' name='midName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.PatientInformation.Middlename" [ngClass]="Section1.PatientInformation.Middlename? 'focused' : ''" (change)="UpdateData()" [errorStateMatcher]="matcher">
+
+                        <mat-error *ngIf="midName?.invalid">
+
+                            <div *ngIf="midName.value && midName?.invalid">
+                                Last name only allows letters, ', -, and spaces.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+
+                <div class="col-sm-3">
+                    <mat-form-field>
+                        <mat-label>Date Of Birth</mat-label>
+                        <!-- <input matInput [matDatepicker]="picker" [(ngModel)]="Section1.PatientInformation.DateOfBirth" [ngClass]="Section1.PatientInformation.DateOfBirth? 'focused' : '' " (dateChange)="UpdateData()"> -->
+                        <input matInput [matDatepicker]="picker" [max]="today" required #dob='ngModel' name='dob' [(ngModel)]="DateOfBirth" [ngClass]="DateOfBirth? 'focused' : '' " (dateChange)="UpdateDOB()" [errorStateMatcher]="matcher">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-hint>Format: mm/DD/yyyy</mat-hint>
+                        <mat-error *ngIf="dob?.invalid">
+                            <div *ngIf="dob.errors.required">
+                                Date of Birth is required in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="dob.value != undefined && dob?.invalid">
+                                Date of Birth (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <form #cdcForm='ngForm'>
+            <div class="row section-divide">
+
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Reporting Jurisdiction</mat-label>
+                        <input matInput required #jurisdiction='ngModel' name='jurisdiction' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Jurisdiction" [ngClass]="Section1.InterviewerInformation.UserProfile.Jurisdiction? 'focused' : '' " [disabled]="true">
+
+                        <mat-error *ngIf="jurisdiction?.invalid && (jurisdiction.dirty || jurisdiction.touched)">
+                            <div *ngIf="jurisdiction.errors.required">
+                                Reporting Jurisdiction is required.
+                            </div>
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Reporting Health Department</mat-label>
+                        <input matInput required #healthDepartment='ngModel' name='healthDepartment' [(ngModel)]="Section1.InterviewerInformation.UserProfile.ReportingHealthDepartment" [ngClass]="Section1.InterviewerInformation.UserProfile.ReportingHealthDepartment? 'focused' : '' " [disabled]="true">
+                        <mat-error *ngIf="healthDepartment?.invalid && (healthDepartment.dirty || healthDepartment.touched)">
+                            <div *ngIf="healthDepartment.errors.required">
+                                Health Department is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>CDC 2019-nCoV ID</mat-label>
+                        <input matInput required #nCoV='ngModel' name='nCoV' [pattern]='regex.CoVId' [(ngModel)]="Section1.PatientInformation.CDCInformation.CDC2019nCovID" [ngClass]="Section1.PatientInformation.CDCInformation.CDC2019nCovID? 'focused' : '' " [disabled]="isNew" (change)="UpdateData()" [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="nCoV?.invalid">
+                            <div *ngIf="nCoV.errors.required">
+                                CDC 2019-nCoV ID is required.
+                            </div>
+                            <div *ngIf="nCoV.value && nCoV?.invalid">
+                                CDC 2019-nCoV ID must be in the format AA123456.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Contact ID</mat-label>
+                        <input matInput #contact='ngModel' name='contact' [(ngModel)]="Section1.PatientInformation.CDCInformation.ContactIDa" [ngClass]="Section1.PatientInformation.CDCInformation.ContactIDa? 'focused' : '' " (change)="UpdateData()">
+
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Case state / local ID</mat-label>
+                        <input matInput #local='ngModel' name='local' [(ngModel)]="Section1.PatientInformation.CDCInformation.CaseState" [ngClass]="Section1.PatientInformation.CDCInformation.CaseState? 'focused' : '' " (change)="UpdateData()">
+
+                    </mat-form-field>
+                </div>
+
+
+                <div class="col-sm-3 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>NNDSS loc. rec. ID / Case ID</mat-label>
+                        <input matInput #nNDSS='ngModel' name='nNDSS' [(ngModel)]="Section1.PatientInformation.CDCInformation.NNDSSloc_rec_ID" [ngClass]="Section1.PatientInformation.CDCInformation.NNDSSloc_rec_ID? 'focused' : '' " (change)="UpdateData()">
+
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <div class="section-divide">
+            <p class="section-title">Interviewer Information</p>
+            <form #interviewerForm='ngForm'>
+
+                <div class="row">
+
+
+                    <div class="col-sm-3 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Last name</mat-label>
+                            <input matInput required #iLastName='ngModel' name='iLastName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Lastname" [ngClass]="Section1.InterviewerInformation.UserProfile.Lastname? 'focused' : '' " [disabled]="true">
+                            <mat-error *ngIf="iLastName?.invalid && (iLastName.dirty || iLastName.touched)">
+                                <div *ngIf="iLastName.errors.required">
+                                    Last name is required.
+                                </div>
+                                <div *ngIf="iLastName.value && iLastName?.invalid">
+                                    Last name only allows letters, ', -, and spaces.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-sm-3 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>First name</mat-label>
+                            <input matInput required #iFirstName='ngModel' name='iFirstName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Firstname" [ngClass]="Section1.InterviewerInformation.UserProfile.Firstname? 'focused' : ''" [disabled]="true">
+                            <mat-error *ngIf="iFirstName?.invalid">
+                                <div *ngIf="iFirstName.errors.required">
+                                    First name is required.
+                                </div>
+                                <div *ngIf="iFirstName.value && iFirstName?.invalid">
+                                    First name only allows letters, ', -, and spaces.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Middle name</mat-label>
+                            <!-- <input matInput [(ngModel)]="Section1.PatientInformation.Lastname" [ngClass]="Section1.PatientInformation.Lastname? 'focused' : ''" (change)="UpdateData()"> -->
+                            <input matInput #midName='ngModel' name='midName' [pattern]='regex.AlphaWithCharacter' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Middlename" [ngClass]="Section1.InterviewerInformation.UserProfile.Middlename? 'focused' : ''" (change)="UpdateData()" [disabled]="true">
+
+                            <mat-error *ngIf="midName?.invalid">
+
+                                <div *ngIf="midName.value && midName?.invalid">
+                                    Last name only allows letters, ', -, and spaces.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-sm-1 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Phone</mat-label>
+                            <input appPhoneMask matInput required #phone='ngModel' name='phone' [pattern]='regex.PhoneNumber' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Phone" [ngClass]="Section1.InterviewerInformation.UserProfile.Phone? 'focused' : '' "[disabled]="true">
+                            <mat-error *ngIf="phone?.invalid">
+                                <div *ngIf="phone.errors.required">
+                                    Phone is required.
+                                </div>
+                                <div *ngIf="phone.value && phone?.invalid">
+                                    Phone number allows 10 numbers, () and -.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput required #email='ngModel' name='email' [pattern]='regex.Email' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Email" [ngClass]="Section1.InterviewerInformation.UserProfile.Email? 'focused' : '' " [disabled]="true">
+                            <mat-error *ngIf="email?.invalid">
+                                <div *ngIf="email.errors.required">
+                                    Email is required.
+                                </div>
+                                <div *ngIf="email.value && email?.invalid">
+                                    Email is invalid.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-8">
+                        <mat-form-field class="full-width">
+                            <mat-label>Affiliation / Organization</mat-label>
+                            <input matInput required #org='ngModel' name='org' [(ngModel)]="Section1.InterviewerInformation.UserProfile.Organization" [ngClass]="Section1.InterviewerInformation.UserProfile.Organization? 'focused' : '' " [disabled]="true">
+                            <mat-error *ngIf="org?.invalid && (org.dirty || org.touched)">
+                                <div *ngIf="org.errors.required">
+                                    Organization is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <!--<button  class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData(patientInfoForm,headerForm,interviewerForm,cdcForm)" [disabled]="isSaveRequested == true &&(patientInfoForm.invalid || headerForm.invalid || interviewerForm.invalid || cdcForm.invalid)">Save</button>-->
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="(isNew && nCoVIdForm.invalid)||(patientInfoForm.invalid || headerForm.invalid || interviewerForm.invalid || cdcForm.invalid)|| Section1.Saved">Save</button>
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+</div>

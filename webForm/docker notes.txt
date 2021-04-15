@@ -1,0 +1,52 @@
+
+docker run -t -d -p9000:80 [container id] 
+
+docker ps -a
+ 
+docker commit [exited container id] temp/[name]
+
+docker run -it --rm --entrypoint sh temp/[name]
+
+
+ls
+
+
+
+
+
+
+*** Understanding Docker syntax
+https://docs.docker.com/engine/reference/builder/#copy
+
+
+
+
+1. FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS base
+2. FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS publish
+
+3. EXPOSE 80
+
+4. WORKDIR /app
+   # Copy everything else and build
+5. COPY . .
+
+6. COPY --from=base 	. .
+
+7. ENTRYPOINT ["dotnet", "MicrobeTraceNext.dll"]
+
+
+
+
+
+#1 Executes a build operation that generates a new container layer that is named with the alias "base"
+#2 Executes a bulid operation that generates a new container layer that is named with the alias "publish".
+   Note, this build operation creates the most recent container layer and as such it is the active layer that next operations operate under.
+#3 Opens port 80 in the container
+#4 Sets the working directory in the current container layer (#2).
+   Note, the working directory is where the next set of instructions will be saved (i.e. the next copy commands). 
+#5 Copies all data in the same folder of the currently running Docker file (from the host computer) into the current container layer (#2).
+#6 Copies all data (using the container layer with the alias "base") into the the current container layer (#2).
+#7 Sets the entrypoint of the application within the container.  Since this is a ASP.NET CORE application we execute dotnet to run the application.
+   Note, without this command the application can not run in the container.
+
+

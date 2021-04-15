@@ -1,0 +1,8 @@
+<h1 *ngIf="data.Header != undefined" mat-dialog-title>{{data.Header}}</h1>
+<div mat-dialog-content>
+    <p *ngFor="let detail of data.Details; let j = index;">- {{detail}}</p>
+</div>
+<div mat-dialog-actions class="pull-right">
+    <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{data.Button1Desp}}</button>
+    <button *ngIf="data.Button2Desp != undefined" mat-stroked-button color="warn" [mat-dialog-close]="false" cdkFocusInitial>{{data.Button2Desp}}</button>
+</div>

@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg header-bg">
+    <div class="container-fluid">
+        <div *ngIf='userInfo.IsLoggedIn' class="sidenav" [ngClass]="isSetingsIcon ? 'header-slide-section' : 'close-slide-section'">
+            <a href="javascript:void(0)" class="closebtn" (click)="closeSlideNav()">&times;</a>
+            <a href="#">User:{{userInfo.Firstname}} {{userInfo.Lastname}}</a>
+            <a href="#" (click)="logout()">Sign out</a>
+        </div>
+
+        <div class="row header-logo">
+            <a id="HeaderLogo" href="" class="logo">
+                <!-- <img src="assets/images/Contact-tracing.png" id="HeaderLogo" class="header-logo"> -->
+                <img src="assets/images/MicrobeTraceNext.png" class="header-logo">
+            </a>
+            <span class="header-lab"> MicrobeTrace Next</span><span style="color:#fff">Version 1.6.7</span>
+        </div>
+        <div class="row header-logo">
+            <div class="col-xl-10"></div>
+        </div>
+        <div class="row pull-right log-det-sec" *ngIf='userInfo.IsLoggedIn'>
+            <div class="head-login-det-sec">User:<span>{{userInfo.Firstname}} {{userInfo.Lastname}}</span></div>
+            <div class="head-login-sigOut" (click)="logout()">Sign out</div>
+        </div>
+        <div class="row pull-right header-set-ico-sec">
+            <div class="header-settings-icon" (click)="openSlideNav()"><span>&#9776;</span></div>
+        </div>
+    </div>
+</nav>
+<div [ngClass]="isSetingsIcon ? 'toggler-overlay' : ''"></div>

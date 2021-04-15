@@ -1,0 +1,478 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Case Classification and Identification</p>
+        <form #statusForm='ngForm'>
+
+            <div class="row">
+
+                <div class="col-sm-11 row-bottom">
+
+                    <mat-label class="label-padding label-weight">What is the current status of this person? <span class="star">*</span></mat-label>
+
+                    <mat-radio-group aria-label="Select an option" required #status='ngModel' name='status' [(ngModel)]="Section2.CaseClassification.Status" (change)="UpdateData()">
+                        <mat-radio-button [value]="PersonStatus.LabConfirmed" class="label-padding">Lab-Confirmed Case</mat-radio-button>
+                        <mat-radio-button [value]="PersonStatus.ProbableCase" class="label-padding">Probable Case</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+
+            <div class="row row-bottom" *ngIf="Section2.CaseClassification.Status==PersonStatus.ProbableCase">
+
+                <div class="col-sm-11">
+
+                    <mat-label class="blocked label-padding lg-pad-bottom label-weight">Select reason for case classification <span class="star">*</span>:</mat-label>
+
+                    <mat-radio-group class="blocked" aria-label="Select an option" required #classification='ngModel' name='classification' [(ngModel)]="Section2.CaseClassification.ReasonForClassification" (change)="UpdateData()">
+                        <mat-radio-button class="blocked sm-pad-bottom" [value]="ReasonForClassification.ClinicalCriteria">Meets clinical criteria AND epidemiologic evidence with no confirmatory lab testing</mat-radio-button>
+                        <mat-radio-button class="blocked sm-pad-bottom" [value]="ReasonForClassification.LabEvidence">Meets presumptive lab evidence AND either clinical criteria OR epidemiologic evidence</mat-radio-button>
+                        <mat-radio-button class="blocked sm-pad-bottom" [value]="ReasonForClassification.ViralRecord">Meets vital records criteria with no confirmatory lab testing</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-11">
+
+                    <mat-label class="blocked label-padding  lg-pad-bottom  label-weight">Under what process was the case first identified? (check all that apply):</mat-label>
+
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #ClinicalEvaluation='ngModel' name='ClinicalEvaluation' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.ClinicalEvaluation">Clinical evaluation</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #RoutineSurveillance='ngModel' name='RoutineSurveillance' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.RoutineSurveillance">Routine surveillance</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding-sm" #EpiXNotification='ngModel' name='EpiXNotification' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.EpiXNotification">EpiX notification of travellers</mat-checkbox>
+                    <mat-form-field class="label-padding" *ngIf="Section2.CaseClassification.CaseIdProcess.EpiXNotification">
+                        <mat-label>If yes, DGMQID:</mat-label>
+                        <input matInput #DGMQID='ngModel' name='DGMQID' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.DGMQID" [ngClass]="Section2.CaseClassification.CaseIdProcess.DGMQID? 'focused' : ''" (change)="UpdateData()">
+                    </mat-form-field>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #ContactTracingCase='ngModel' name='ContactTracingCase' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.ContactTracingCase">Contact tracing of case patient</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #classificationUnknown='ngModel' name='classificationUnknown'[(ngModel)]="Section2.CaseClassification.CaseIdProcess.Unknown">Unknown</mat-checkbox>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding-sm" #classificationOther='ngModel' name='classificationOther'[(ngModel)]="Section2.CaseClassification.CaseIdProcess.Other">Other</mat-checkbox>
+                    <mat-form-field class="label-padding" *ngIf="Section2.CaseClassification.CaseIdProcess.Other">
+                        <mat-label>Specify other process</mat-label>
+                        <input matInput required #classificationOtherSpecify='ngModel' name='classificationOtherSpecify' [(ngModel)]="Section2.CaseClassification.CaseIdProcess.OtherSpecify" [ngClass]="Section2.CaseClassification.CaseIdProcess.OtherSpecify? 'focused' : ''" (change)="UpdateData()">
+                        <mat-error *ngIf="classificationOtherSpecify?.invalid && (classificationOtherSpecify.dirty || classificationOtherSpecify.touched)">
+                            <div *ngIf="classificationOtherSpecify.errors.required">
+                                Please specify other process.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+            </div>
+        </form>
+
+        <form #reportForm='ngForm'>
+
+            <div class="row">
+                <div class="col-sm-11">
+                    <mat-label class="label-padding label-weight level">Report date of case to CDC</mat-label>
+                    <mat-form-field>
+                        <mat-label>mm/DD/yyyy</mat-label>
+                        <input matInput [matDatepicker]="picker" [max]="today" #rep='ngModel' name='rep' [(ngModel)]="CDCReportDate" [ngClass]="CDCReportDate? 'focused' : '' " (dateChange)="UpdateCDCReportDate()" [errorStateMatcher]="matcher">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="rep?.invalid">
+                            <div *ngIf="col.value ==null && col?.invalid">
+                                Report date must be in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="rep.value != undefined && rep?.invalid">
+                                Report date (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <mat-label class="label-padding label-weight level">Date of first positive specimen collection</mat-label>
+                    <mat-form-field class="label-padding">
+                        <mat-label>mm/DD/yyyy</mat-label>
+                        <input matInput [matDatepicker]="picker2" [max]="today" #col='ngModel' name='col' [(ngModel)]="CollectionDate" [ngClass]="CollectionDate? ' focused' : '' " (dateChange)="UpdateCollectionDate()" [errorStateMatcher]="matcher" (input)="Section2.CaseClassification.PositiveSpecimenCollection.Type = undefined">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-error *ngIf="col?.invalid">
+                            <div *ngIf="col.value ==null && col?.invalid">
+                                Collection date must be in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="col.value != undefined && col?.invalid">
+                                Collection date (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-radio-group aria-label="Select an option" #type='ngModel' name='type' [(ngModel)]="Section2.CaseClassification.PositiveSpecimenCollection.Type" (change)="UpdateData()" *ngIf="Section2.CaseClassification.PositiveSpecimenCollection.CollectionDate == undefined">
+                        <mat-radio-button #b1 [value]="SpecimenCollectionType.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        <mat-radio-button #b2 [value]="SpecimenCollectionType.NA" class="label-padding">N/A</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <mat-label class="label-padding label-weight level">
+                        Date Of Last Vaccination (2nd Dose if applicable)
+                    </mat-label>
+                    <mat-form-field class="label-padding">
+                        <mat-label>mm/DD/yyyy</mat-label>
+                        <input matInput [matDatepicker]="picker7" [max]="today" #vac='ngModel' name='vac' [(ngModel)]="VacinationDate" [ngClass]="VacinationDate? ' focused' : '' " (dateChange)="UpdateVacinationDate()" [errorStateMatcher]="matcher" (input)="Section2.CaseClassification.VacinationDetails.Type = undefined">
+                        <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                        <mat-datepicker #picker7></mat-datepicker>
+                        <mat-error *ngIf="vac?.invalid">
+                            <div *ngIf="vac.value ==null && vac?.invalid">
+                                Vacination date must be in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="vac.value != undefined && vac?.invalid">
+                                Vacination date (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-radio-group aria-label="Select an option" #type='ngModel' name='type' [(ngModel)]="Section2.CaseClassification.VacinationDetails.Type" (change)="UpdateData()" *ngIf="Section2.CaseClassification.VacinationDetails.VacinationDate == undefined">
+                        <mat-radio-button #b2 [value]="VacinationType.No" class="label-padding">Not vacinated</mat-radio-button>
+                        <mat-radio-button #b1 [value]="VacinationType.Unknown" class="label-padding">Unknown Date</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </form>
+
+        <p class="section-title section-title-padding">Hospitalization, ICU, and Death Information</p>
+        <form #hospitalForm='ngForm'>
+
+            <div>
+
+                <div class="row">
+
+                    <div class="col-sm-6">
+
+                        <mat-label class="label-padding label-weight">Was the patient hospitalized? <span class="star">*</span></mat-label>
+
+                        <mat-radio-group aria-label="Select an option" required #admitted='ngModel' name='admitted' [(ngModel)]="Section2.HospitalizationInformation.Hospitalized.IsAdmitted" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+
+                    </div>
+                    <div class="col-sm-10" *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes">
+
+                        <mat-label class="label-padding level indent">Date of First Admission <span class="star">*</span></mat-label>
+                        <mat-form-field>
+                            <mat-label>mm/DD/yyyy</mat-label>
+                            <input matInput [matDatepicker]="picker3" required [max]="today" #ad='ngModel' name='ad' [(ngModel)]="HAdmissionDate" [ngClass]="HAdmissionDate? 'focused' : '' " (dateChange)="UpdateHAdmissionDate()" [errorStateMatcher]="matcher">
+                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-datepicker #picker3></mat-datepicker>
+                            <mat-error *ngIf="ad?.invalid">
+                                <div *ngIf="ad.value ==null && ad?.invalid">
+                                    Admission date must be in mm/DD/yyyy format.
+                                </div>
+                                <div *ngIf="ad.value != undefined && ad?.invalid">
+                                    Admission date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-label class="label-padding level indent">Date of First Discharge</mat-label>
+                        <mat-form-field>
+                            <mat-label>mm/DD/yyyy</mat-label>
+                            <input matInput [matDatepicker]="picker4" [max]="today" #dd='ngModel' name='dd' [(ngModel)]="HDischargeDate" [ngClass]="HDischargeDate? 'focused' : '' " (dateChange)="UpdateHDischargeDate()" [errorStateMatcher]="matcher">
+                            <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                            <mat-datepicker #picker4></mat-datepicker>
+                            <mat-error *ngIf="dd?.invalid">
+                                <div *ngIf="dd.value ==null && dd?.invalid">
+                                    Discharge Date must be in mm/DD/yyyy format.
+                                </div>
+                                <div *ngIf="dd.value != undefined && dd?.invalid">
+                                    Discharge Date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+
+                <div *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes" class="row">
+                    <div class="col-sm-6 level-checkbox">
+
+                        <mat-label class="label-padding label-weight">When hospitalized, was a translator required? <span class="star">*</span></mat-label>
+
+                        <mat-radio-group aria-label="Select an option" required #trans='ngModel' name='trans' [(ngModel)]="Section2.HospitalizationInformation.TranslatiorRequired.TransalatorRequired" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown">Unknown</mat-radio-button>
+                        </mat-radio-group>
+
+                    </div>
+                    <div class="col-sm-5" *ngIf="Section2.HospitalizationInformation.TranslatiorRequired.TransalatorRequired == Bool.Yes">
+                        <mat-label class="label-padding">Specify which language:</mat-label>
+                        <mat-form-field>
+                            <mat-label>Select a language</mat-label>
+                            <mat-select #lang='ngModel' name='lang' [(ngModel)]="Section2.HospitalizationInformation.TranslatiorRequired.Language" (selectionChange)="UpdateData()">
+                                <mat-option *ngFor="let language of staticData.Languages" [value]="language.name">{{language.name}} - {{language.nativeName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes" class="row">
+                    <div class="col-sm-10">
+
+                        <mat-label class="label-padding label-weight">Was the patient admitted to an intensive care unit (ICU)? <span class="star">*</span></mat-label>
+
+                        <mat-radio-group aria-label="Select an option" required #icu='ngModel' name='icu' [(ngModel)]="Section2.HospitalizationInformation.ICUAdmitted.IsAdmitted" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+
+                    </div>
+                    <div class="col-sm-10" *ngIf="Section2.HospitalizationInformation.ICUAdmitted.IsAdmitted == Bool.Yes">
+
+                        <mat-label class="label-padding level indent">Date of First Admission <span class="star">*</span></mat-label>
+                        <mat-form-field>
+                            <mat-label>mm/DD/yyyy</mat-label>
+                            <input matInput [matDatepicker]="picker5" [max]="today" required #icuad='ngModel' name='icuad' [(ngModel)]="IAdmissionDate" [ngClass]="IAdmissionDate? 'focused' : '' " (dateChange)="UpdateIAdmissionDate()" [errorStateMatcher]="matcher">
+                            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                            <mat-datepicker #picker5></mat-datepicker>
+                            <mat-error *ngIf="icuad?.invalid">
+                                <div *ngIf="icuad.value ==null && icuad?.invalid">
+                                    Admission date must be in mm/DD/yyyy format.
+                                </div>
+                                <div *ngIf="icuad.value != undefined && icuad?.invalid">
+                                    Admission date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-label class="label-padding level indent">Date of First Discharge</mat-label>
+                        <mat-form-field>
+                            <mat-label>mm/DD/yyyy</mat-label>
+                            <input matInput [matDatepicker]="picker6" [max]="today" #icudd='ngModel' name='icudd' [(ngModel)]="IDischargeDate" [ngClass]="IDischargeDate? 'focused' : '' " (dateChange)="UpdateIDischargeDate()" [errorStateMatcher]="matcher">
+                            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                            <mat-datepicker #picker6></mat-datepicker>
+                            <mat-error *ngIf="icudd?.invalid">
+                                <div *ngIf="icudd.value ==null && icudd?.invalid">
+                                    Discharge Date must be in mm/DD/yyyy format.
+                                </div>
+                                <div *ngIf="icudd.value != undefined && icudd?.invalid">
+                                    Discharge Date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row row-bottom" *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes">
+                    <div class="col-sm-12">
+                        <mat-label class="label-padding label-weight">Did the patient die as a result of this illness? <span class="star">*</span></mat-label>
+                        <mat-radio-group aria-label="Select an option" required #death='ngModel' name='death' [(ngModel)]="Section2.HospitalizationInformation.DeathInfo.IsDeath" (change)="UpdateData()">
+                            <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                            <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                            <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                        </mat-radio-group>
+                        <span *ngIf="Section2.HospitalizationInformation.DeathInfo.IsDeath == Bool.Yes">
+                            <mat-label class="label-padding level">Date of death <span class="star">*</span></mat-label>
+                            <mat-form-field>
+                                <mat-label>mm/DD/yyyy</mat-label>
+                                <input matInput [matDatepicker]="picker7" required [max]="today" #dod='ngModel' name='dod' [(ngModel)]="DeathDate" [ngClass]="DeathDate? 'focused' : '' " (dateChange)="UpdateDeathDate()" [errorStateMatcher]="matcher">
+                                <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                                <mat-datepicker #picker7></mat-datepicker>
+                                <mat-error *ngIf="dod?.invalid">
+                                    <div *ngIf="dod.errors.required">
+                                        Date of death is required.
+                                    </div>
+                                    <div *ngIf="dod.value != undefined && dod?.invalid">
+                                        Date of death (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row section-title-padding"></div>
+
+    <!--<div class="container roundbox">
+
+            <p class="section-title section-title-padding-sm">
+                <a *ngIf="!ShowHospitalizedSection" class="section-title-a" (click)="ShowHospitalizedSection = !ShowHospitalizedSection">Is there Hospitalization, ICU or Death Information?</a>
+                <a *ngIf="ShowHospitalizedSection" class="section-title-a" (click)="ShowHospitalizedSection = !ShowHospitalizedSection">Hospitalization, ICU, and Death Information</a>
+                <a (click)="ShowHospitalizedSection = !ShowHospitalizedSection">
+                    <img *ngIf="!ShowHospitalizedSection" class="chevron-custom" src="../../assets/images/chevron-down-solid.svg" />
+                </a>
+                <a (click)="ShowHospitalizedSection = !ShowHospitalizedSection">
+                    <img *ngIf="ShowHospitalizedSection" class="chevron-custom" src="../../assets/images/chevron-up-solid.svg" />
+                </a>
+            </p>
+
+            <form #hospitalForm='ngForm'>
+
+                <div [hidden]="!ShowHospitalizedSection">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+
+                            <mat-label class="label-padding label-weight">Was the patient hospitalized? <span class="star">*</span></mat-label>
+
+                            <mat-radio-group aria-label="Select an option" required #admitted='ngModel' name='admitted' [(ngModel)]="Section2.HospitalizationInformation.Hospitalized.IsAdmitted" (change)="UpdateData()">
+                                <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                            </mat-radio-group>
+
+                        </div>
+                        <div class="col-sm-10" *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes">
+
+                            <mat-label class="label-padding level indent">Date of First Admission <span class="star">*</span></mat-label>
+                            <mat-form-field>
+                                <mat-label>mm/DD/yyyy</mat-label>
+                                <input matInput [matDatepicker]="picker3" required [max]="today" #ad='ngModel' name='ad' [(ngModel)]="Section2.HospitalizationInformation.Hospitalized.AdmissionDate" [ngClass]="Section2.HospitalizationInformation.Hospitalized.AdmissionDate? 'focused' : '' " (dateChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                                <mat-error *ngIf="ad?.invalid">
+                                    <div *ngIf="ad.value ==null && ad?.invalid">
+                                        Admission date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="ad.value != undefined && ad?.invalid">
+                                        Admission date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-label class="label-padding level indent">Date of First Discharge</mat-label>
+                            <mat-form-field>
+                                <mat-label>mm/DD/yyyy</mat-label>
+                                <input matInput [matDatepicker]="picker4" [max]="today" #dd='ngModel' name='dd' [(ngModel)]="Section2.HospitalizationInformation.Hospitalized.DischargeDate" [ngClass]="Section2.HospitalizationInformation.Hospitalized.DischargeDate? 'focused' : '' " (dateChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                                <mat-error *ngIf="dd?.invalid">
+                                    <div *ngIf="dd.value ==null && dd?.invalid">
+                                        Discharge Date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="dd.value != undefined && dd?.invalid">
+                                        Discharge Date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+
+                    <div *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes" class="row">
+                        <div class="col-sm-6 level-checkbox">
+
+                            <mat-label class="label-padding label-weight">When hospitalized, was a translator required? <span class="star">*</span></mat-label>
+
+                            <mat-radio-group aria-label="Select an option" required #trans='ngModel' name='trans' [(ngModel)]="Section2.HospitalizationInformation.TranslatiorRequired.TransalatorRequired" (change)="UpdateData()">
+                                <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                <mat-radio-button [value]="Bool.Unknown">Unknown</mat-radio-button>
+                            </mat-radio-group>
+
+                        </div>
+                        <div class="col-sm-5" *ngIf="Section2.HospitalizationInformation.TranslatiorRequired.TransalatorRequired == Bool.Yes">
+                            <mat-label class="label-padding">Specify which language:</mat-label>
+                            <mat-form-field>
+                                <mat-label>Select a language</mat-label>
+                                <mat-select #lang='ngModel' name='lang' [(ngModel)]="Section2.HospitalizationInformation.TranslatiorRequired.Language" (selectionChange)="UpdateData()">
+                                    <mat-option *ngFor="let language of staticData.Languages" [value]="language.name">{{language.name}} - {{language.nativeName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                    <div *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes" class="row">
+                        <div class="col-sm-10">
+
+                            <mat-label class="label-padding label-weight">Was the patient admitted to an intensive care unit (ICU)? <span class="star">*</span></mat-label>
+
+                            <mat-radio-group aria-label="Select an option" required #icu='ngModel' name='icu' [(ngModel)]="Section2.HospitalizationInformation.ICUAdmitted.IsAdmitted" (change)="UpdateData()">
+                                <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                            </mat-radio-group>
+
+                        </div>
+                        <div class="col-sm-10" *ngIf="Section2.HospitalizationInformation.ICUAdmitted.IsAdmitted == Bool.Yes">
+
+                            <mat-label class="label-padding level indent">Date of First Admission <span class="star">*</span></mat-label>
+                            <mat-form-field>
+                                <mat-label>mm/DD/yyyy</mat-label>
+                                <input matInput [matDatepicker]="picker5" [max]="today" required #icuad='ngModel' name='icuad' [(ngModel)]="Section2.HospitalizationInformation.ICUAdmitted.AdmissionDate" [ngClass]="Section2.HospitalizationInformation.ICUAdmitted.AdmissionDate? 'focused' : '' " (dateChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                                <mat-datepicker #picker5></mat-datepicker>
+                                <mat-error *ngIf="icuad?.invalid">
+                                    <div *ngIf="icuad.value ==null && icuad?.invalid">
+                                        Admission date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="icuad.value != undefined && icuad?.invalid">
+                                        Admission date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-label class="label-padding level indent">Date of First Discharge</mat-label>
+                            <mat-form-field>
+                                <mat-label>mm/DD/yyyy</mat-label>
+                                <input matInput [matDatepicker]="picker6" [max]="today" #icudd='ngModel' name='icudd' [(ngModel)]="Section2.HospitalizationInformation.ICUAdmitted.DischargeDate" [ngClass]="Section2.HospitalizationInformation.ICUAdmitted.DischargeDate? 'focused' : '' " (dateChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                <mat-datepicker #picker6></mat-datepicker>
+                                <mat-error *ngIf="icudd?.invalid">
+                                    <div *ngIf="icudd.value ==null && icudd?.invalid">
+                                        Discharge Date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="icudd.value != undefined && icudd?.invalid">
+                                        Discharge Date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row row-bottom" *ngIf="Section2.HospitalizationInformation.Hospitalized.IsAdmitted == Bool.Yes">
+                        <div class="col-sm-12">
+                            <mat-label class="label-padding label-weight">Did the patient die as a result of this illness? <span class="star">*</span></mat-label>
+                            <mat-radio-group aria-label="Select an option" required #death='ngModel' name='death' [(ngModel)]="Section2.HospitalizationInformation.DeathInfo.IsDeath" (change)="UpdateData()">
+                                <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                                <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                                <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                            </mat-radio-group>
+                            <span *ngIf="Section2.HospitalizationInformation.DeathInfo.IsDeath == Bool.Yes">
+                                <mat-label class="label-padding level">Date of death <span class="star">*</span></mat-label>
+                                <mat-form-field>
+                                    <mat-label>mm/DD/yyyy</mat-label>
+                                    <input matInput [matDatepicker]="picker7" required [max]="today" #dod='ngModel' name='dod' [(ngModel)]="Section2.HospitalizationInformation.DeathInfo.DeathDate" [ngClass]="Section2.HospitalizationInformation.DeathInfo.DeathDate? 'focused' : '' " (dateChange)="UpdateData()" [errorStateMatcher]="matcher">
+                                    <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker7></mat-datepicker>
+                                    <mat-error *ngIf="dod?.invalid">
+                                        <div *ngIf="dod.errors.required">
+                                            Date of death is required.
+                                        </div>
+                                        <div *ngIf="dod.value != undefined && dod?.invalid">
+                                            Date of death (in mm/DD/yyyy format) cannot be a future date.
+                                        </div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    -->
+
+
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="statusForm.invalid ||reportForm.invalid || hospitalForm.invalid || Section2.Saved">Save</button>
+
+    </div>
+    <div class="center"><span class="star">*</span> indicates required field</div>
+
+</div>

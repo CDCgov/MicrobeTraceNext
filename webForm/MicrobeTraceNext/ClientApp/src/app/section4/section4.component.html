@@ -1,0 +1,675 @@
+<div>
+    <div class="nCov" *ngIf="MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID">CDC 2019-nCoV ID: {{MicrobeTraceData.Section1.PatientInformation.CDCInformation.CDC2019nCovID}}</div>
+    <div class="row nCoV-divide"></div>
+    <div class="container">
+        <p class="section-title section-title-padding">Exposure Information</p>
+
+        <div class="row">
+            <div class="col-sm-11">
+                <mat-label class="blocked label-padding lg-pad-bottom label-weight">In the 14 days prior to illness onset, did the patient have any of the following exposure (check all that apply):</mat-label>
+            </div>
+        </div>
+        <form #travelForm='ngForm'>
+            <div class="row">
+                <div class="col-sm-5 level-checkbox">
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #dom='ngModel' name='dom' [(ngModel)]="Section4.ExposureInformation.DomesticTraveled">Domestic travel (outside state of normal residence)</mat-checkbox>
+
+                    <div class="row" *ngIf=" Section4.ExposureInformation.DomesticTraveled">
+                        <div class="col-sm-7 level-checkbox">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Specity state(s)</mat-label>
+                                <mat-select multiple required #states='ngModel' name='states' [(ngModel)]="Section4.ExposureInformation.DemesticDestinations" (selectionChange)="UpdateData()">
+                                    <mat-option *ngFor="let state of staticData.StatesDomestic" [value]="state">{{state}}</mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="states?.invalid && (states.dirty || states.touched)">
+                                    <div *ngIf="states.errors.required">
+                                        State(s) is required.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+
+                            <mat-form-field>
+                                <mat-label>Exposure Date</mat-label>
+                                <input matInput #DomesticTraveledDate2='ngModel' name='DomesticTraveledDate2' [matDatepicker]="picker" [max]="today"
+                                       [(ngModel)]="DomesticTraveledDate" [ngClass]="DomesticTraveledDate ? 'focused' : '' " (dateChange)="UpdateDomesticTraveledDate()" [errorStateMatcher]="matcher"
+                                       (input)="Section4.ExposureInformation.UnknownDomesticTraveledDate = false">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error *ngIf="DomesticTraveledDate2?.invalid">
+                                    <div *ngIf="DomesticTraveledDate2.value ==null && DomesticTraveledDate2?.invalid">
+                                        Exposure date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="DomesticTraveledDate2.value != undefined && DomesticTraveledDate2?.invalid">
+                                        Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-sm-1 level-checkbox2">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownDomesticTraveledDate='ngModel' name='UnknownDomesticTraveledDate'
+                                          [(ngModel)]="Section4.ExposureInformation.UnknownDomesticTraveledDate" *ngIf="!Section4.ExposureInformation.DomesticTraveledDate">Unknown Date</mat-checkbox>
+
+                        </div>
+                        </div>
+
+
+                    </div>
+                <div class="col-sm-5 level-checkbox">
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #int='ngModel' name='int' [(ngModel)]="Section4.ExposureInformation.InternationalTraveled">International travel</mat-checkbox>
+
+                    <div class="row" *ngIf="Section4.ExposureInformation.InternationalTraveled">
+                        <div class="col-sm-7 level-checkbox">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Specity countrie(s)</mat-label>
+                                <mat-select multiple required #country='ngModel' name='country' [(ngModel)]="Section4.ExposureInformation.InternationalDestinations" (selectionChange)="UpdateData()">
+                                    <mat-option *ngFor="let country of staticData.Countries" [value]="country">{{country}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="country?.invalid && (country.dirty || country.touched)">
+                                    <div *ngIf="country.errors.required">
+                                        Countrie(s) is required.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+                            <mat-form-field>
+                                <mat-label>Exposure Date</mat-label>
+                                <input matInput #InternationalTraveledDate2='ngModel' name='InternationalTraveledDate2' [matDatepicker]="picker2" [max]="today" [(ngModel)]="InternationalTraveledDate"
+                                       [ngClass]="InternationalTraveledDate ? 'focused' : '' " (dateChange)="UpdateInternationalTraveledDate()" [errorStateMatcher]="matcher" (input)="Section4.ExposureInformation.UnknownInternationalTraveledDate = false">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                                <mat-error *ngIf="InternationalTraveledDate2?.invalid">
+                                    <div *ngIf="InternationalTraveledDate2.value ==null && InternationalTraveledDate2?.invalid">
+                                        Exposure date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="InternationalTraveledDate2.value != undefined && InternationalTraveledDate2?.invalid">
+                                        Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="col-sm-1 level-checkbox2">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownIntExpDate='ngModel' name='UnknownIntExpDate' [(ngModel)]="Section4.ExposureInformation.UnknownInternationalTraveledDate" *ngIf="!Section4.ExposureInformation.InternationalTraveledDate">Unknown Date</mat-checkbox>
+
+                        </div>
+                        </div>
+
+                    </div>
+
+            </div>
+          
+            <div class="row">
+                <div class="col-sm-5 level-checkbox">
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #cruise='ngModel' name='cruise' [(ngModel)]="Section4.ExposureInformation.CruiseShipTraveld">Cruise ship or vessel travel as passenger or crew member</mat-checkbox>
+                    <div class="row" *ngIf="Section4.ExposureInformation.CruiseShipTraveld">
+                        <div class="col-sm-7 level-checkbox">
+                            <mat-form-field class="label-padding full-width">
+                                <mat-label>Specify name of ship</mat-label>
+                                <input matInput required #ship='ngModel' name='ship' [(ngModel)]="Section4.ExposureInformation.CruiseShipName" [ngClass]="Section4.ExposureInformation.CruiseShipName? 'focused' : ''" (change)="UpdateData()">
+                                <mat-error *ngIf="ship?.invalid && (ship.dirty || ship.touched)">
+                                    <div *ngIf="ship.errors.required">
+                                        Please specify name of ship.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+                            <mat-form-field>
+                                <mat-label>Exposure Date</mat-label>
+                                <input matInput #CruiseShipTraveldDate2='ngModel' name='CruiseShipTraveldDate2' [matDatepicker]="picker3" [max]="today"
+                                       [(ngModel)]="CruiseShipTraveldDate"
+                                       [ngClass]="CruiseShipTraveldDate ? 'focused' : '' " (dateChange)="UpdateCruiseShipTraveldDate()" [errorStateMatcher]="matcher"
+                                       (input)="Section4.ExposureInformation.UnknownCruiseShipTraveldDate = false">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                                <mat-error *ngIf="CruiseShipTraveldDate2?.invalid">
+                                    <div *ngIf="CruiseShipTraveldDate2.value ==null && CruiseShipTraveldDate2?.invalid">
+                                        Exposure date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="CruiseShipTraveldDate2.value != undefined && CruiseShipTraveldDate2?.invalid">
+                                        Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                      
+                        </div>
+                        <div class="col-sm-1 level-checkbox2">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownCruiseShipTraveldDate='ngModel' name='UnknownCruiseShipTraveldDate'
+                                          [(ngModel)]="Section4.ExposureInformation.UnknownCruiseShipTraveldDate"
+                                          *ngIf="!Section4.ExposureInformation.CruiseShipTraveldDate">Unknown Date</mat-checkbox>
+
+
+                        </div>
+                        </div>
+
+                    </div>
+      
+                <div class="col-sm-5 level-checkbox">
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #air='ngModel' name='air' [(ngModel)]="Section4.ExposureInformation.Airport">Airport / Airplane</mat-checkbox>
+                    <div class="row" *ngIf="Section4.ExposureInformation.Airport">
+                        <div class="col-sm-8 level-checkbox">
+                            <mat-form-field class="label-padding full-width">
+                                <mat-label>Specify Airport Name and Location</mat-label>
+                                <input matInput required #AirportInfo='ngModel' name='AirportInfo' [(ngModel)]="Section4.ExposureInformation.AirportInfo.Name" [ngClass]="Section4.ExposureInformation.AirportInfo.Name? 'focused' : ''" (change)="UpdateAddressData(Section4.ExposureInformation.AirportInfo)"
+                                       matGoogleMapsAutocomplete
+                                       [country]="DefaultCountry"
+                                       (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.AirportInfo)"
+                                       (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.AirportInfo)">
+                                <mat-error *ngIf="AirportInfo?.invalid && (AirportInfo.dirty || AirportInfo.touched)">
+                                    <div *ngIf="AirportInfo.errors.required">
+                                        Please specify Airport Name and Location.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-2 level-checkbox">
+                            <mat-form-field class="full-width">
+                                <mat-label>Zipcode</mat-label>
+                                <input matInput required #AirportZip='ngModel' name='AirportZip' [(ngModel)]="Section4.ExposureInformation.AirportInfo.Zipcode" [ngClass]="Section4.ExposureInformation.AirportInfo.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                                <mat-error *ngIf="AirportZip?.invalid && (AirportZip.dirty || AirportZip.touched)">
+                                    <div *ngIf="AirportZip.errors.required">
+                                        Zipcode is required.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-5">
+                            <mat-form-field>
+                                <mat-label>Exposure Date</mat-label>
+                                <input matInput #AirportExposureDate2='ngModel' name='AirportExposureDate2' [matDatepicker]="picker4" [max]="today"
+                                       [(ngModel)]="AirportExposureDate"
+                                       [ngClass]="AirportExposureDate ? 'focused' : '' " (dateChange)="UpdateAirportExposureDate()" [errorStateMatcher]="matcher"
+                                       (input)="Section4.ExposureInformation.UnknownAirportExposureDate = false">
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                                <mat-error *ngIf="AirportExposureDate2?.invalid">
+                                    <div *ngIf="AirportExposureDate2.value ==null && AirportExposureDate2?.invalid">
+                                        Exposure date must be in mm/DD/yyyy format.
+                                    </div>
+                                    <div *ngIf="AirportExposureDate2.value !=undefined && AirportExposureDate2?.invalid">
+                                        Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                    </div>
+                                </mat-error>
+                            </mat-form-field>
+                          
+                        </div>
+                        <div class="col-sm-1 level-checkbox2">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownAirportExposureDate='ngModel' name='UnknownAirportExposureDate'
+                                          [(ngModel)]="Section4.ExposureInformation.UnknownAirportExposureDate"
+                                          *ngIf="!Section4.ExposureInformation.AirportExposureDate">Unknown Date</mat-checkbox>
+                        </div>
+
+
+                    </div>
+                    </div>
+                    </div>
+</form>
+        <form #workForm='ngForm'>
+
+            <div class="row">
+
+                <div class="col-sm-1 level-checkbox">
+                    <mat-checkbox (change)="UpdateData()" class="label-padding" #exposed='ngModel' name='exposed' [(ngModel)]="Section4.ExposureInformation.WorkPlaceExposed">Workplace</mat-checkbox>
+
+                </div>
+                <div class="col-sm-10 level-checkbox" *ngIf="Section4.ExposureInformation.WorkPlaceExposed">
+                    <mat-label class="label-padding">Is the workplace critical infrastructure (e.g. healthcare setting, grocery store)?*</mat-label>
+                    <mat-radio-group aria-label="Select an option" required #critical='ngModel' name='critical' [(ngModel)]="Section4.ExposureInformation.WorkPlaceCritical" (change)="UpdateData()">
+                        <mat-radio-button [value]="Bool.Yes" class="label-padding">Yes</mat-radio-button>
+                        <mat-radio-button [value]="Bool.No" class="label-padding">No</mat-radio-button>
+                        <mat-radio-button [value]="Bool.Unknown" class="label-padding">Unknown</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="Section4.ExposureInformation.WorkPlaceExposed">
+                <div class="col-sm-6 form-full-width">
+                    <mat-form-field class="label-padding form-full-width">
+                        <mat-label>Specify workplace setting</mat-label>
+                        <input matInput required #workplace='ngModel' name='workplace' [(ngModel)]="Section4.ExposureInformation.WorkPlaceSetting.Name" [ngClass]="Section4.ExposureInformation.WorkPlaceSetting.Name? 'focused' : '' " (change)="UpdateAddressData(Section4.ExposureInformation.WorkPlaceSetting)" [errorStateMatcher]="matcher"
+                               matGoogleMapsAutocomplete
+                               [country]="DefaultCountry"
+                               (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.WorkPlaceSetting)"
+                               (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.WorkPlaceSetting)">
+                        <mat-error *ngIf="workplace?.invalid">
+                            <div *ngIf="workplace.errors.required">
+                                Workplace is required.
+                            </div>
+                            <div *ngIf="workplace.value && workplace?.invalid">
+                                Workplace only allows alphanumeric, commas, spaces, - and '.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-1 form-full-width">
+                    <mat-form-field class="full-width">
+                        <mat-label>Zipcode</mat-label>
+                        <input matInput required #workZip='ngModel' name='workZip' [(ngModel)]="Section4.ExposureInformation.WorkPlaceSetting.Zipcode" [ngClass]="Section4.ExposureInformation.WorkPlaceSetting.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                        <mat-error *ngIf="workZip?.invalid && (workZip.dirty || workZip.touched)">
+                            <div *ngIf="workZip.errors.required">
+                                Zipcode is required.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4 form-full-width">
+                    <mat-form-field>
+                        <mat-label>Exposure Date</mat-label>
+                        <input matInput #WorkPlaceExposedDate2='ngModel' name='WorkPlaceExposedDate2' [matDatepicker]="picker5" [max]="today"
+                               [(ngModel)]="WorkPlaceExposedDate"
+                               [ngClass]="WorkPlaceExposedDate ? 'focused' : '' " (dateChange)="UpdateWorkPlaceExposedDate()" [errorStateMatcher]="matcher"
+                               (input)="Section4.ExposureInformation.UnknownWorkPlaceExposedDate = false">
+                        <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                        <mat-datepicker #picker5></mat-datepicker>
+                        <mat-error *ngIf="WorkPlaceExposedDate2?.invalid">
+                            <div *ngIf="WorkPlaceExposedDate2.value ==null && WorkPlaceExposedDate2?.invalid">
+                                Exposure date must be in mm/DD/yyyy format.
+                            </div>
+                            <div *ngIf="WorkPlaceExposedDate2.value !=undefined && WorkPlaceExposedDate2?.invalid">
+                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                            </div>
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-checkbox (change)="UpdateData()" class="label-padding2" #UnknownWorkPlaceExposedDate='ngModel' name='UnknownWorkPlaceExposedDate'
+                                  [(ngModel)]="Section4.ExposureInformation.UnknownWorkPlaceExposedDate"
+                                  *ngIf="!Section4.ExposureInformation.WorkPlaceExposedDate">Unknown Date</mat-checkbox>
+                </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-11 form-full-width">
+                        <mat-checkbox (change)="UpdateData()" class="label-padding" #AdultLivingFacility='ngModel' name='AdultLivingFacility' [(ngModel)]="Section4.ExposureInformation.AdultLivingFacility">Adult congregate living facility (nursing, assisted living, or long-term care facility)</mat-checkbox>
+                    </div>
+                </div>
+                <div class="row" *ngIf="Section4.ExposureInformation.AdultLivingFacility">
+                    <div class="col-sm-6 form-full-width">
+                        <mat-form-field class="label-padding form-full-width">
+                            <mat-label>Specify name and location</mat-label>
+                            <input matInput required #AdultLivingFacilityInfo='ngModel' name='AdultLivingFacilityInfo' [(ngModel)]="Section4.ExposureInformation.AdultLivingFacilityInfo.Name" [ngClass]="Section4.ExposureInformation.AdultLivingFacilityInfo.Name? 'focused' : ''" (change)="UpdateAddressData(Section4.ExposureInformation.AdultLivingFacilityInfo)"
+                                   matGoogleMapsAutocomplete
+                                   [country]="DefaultCountry"
+                                   (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.AdultLivingFacilityInfo)"
+                                   (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.AdultLivingFacilityInfo)">
+                            <mat-error *ngIf="AdultLivingFacilityInfo?.invalid && (AdultLivingFacilityInfo.dirty || AdultLivingFacilityInfo.touched)">
+                                <div *ngIf="AdultLivingFacilityInfo.errors.required">
+                                    Please specify name and location.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-sm-1 form-full-width">
+                        <mat-form-field class="full-width">
+                            <mat-label>Zipcode</mat-label>
+                            <input matInput required #AdultZip='ngModel' name='AdultZip' [(ngModel)]="Section4.ExposureInformation.AdultLivingFacilityInfo.Zipcode" [ngClass]="Section4.ExposureInformation.AdultLivingFacilityInfo.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                            <mat-error *ngIf="AdultZip?.invalid && (AdultZip.dirty || AdultZip.touched)">
+                                <div *ngIf="AdultZip.errors.required">
+                                    Zipcode is required.
+                                </div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-5">
+                        <mat-form-field>
+                            <mat-label>Exposure Date</mat-label>
+                            <input matInput #AdultLivingFacilityExposureDate2='ngModel' name='AdultLivingFacilityExposureDate2' [matDatepicker]="picker6" [max]="today"
+                                   [(ngModel)]="AdultLivingFacilityExposureDate"
+                                   [ngClass]="AdultLivingFacilityExposureDate ? 'focused' : '' " (dateChange)="UpdateAdultLivingFacilityExposureDate()" [errorStateMatcher]="matcher"
+                                   (input)="Section4.ExposureInformation.UnknownAdultLivingFacilityExposureDate = false">
+                            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                            <mat-datepicker #picker6></mat-datepicker>
+                            <mat-error *ngIf="AdultLivingFacilityExposureDate2?.invalid">
+                                <div *ngIf="AdultLivingFacilityExposureDate2.value ==null && AdultLivingFacilityExposureDate2?.invalid">
+                                    Exposure date must be in mm/DD/yyyy format.
+                                </div>
+                                <div *ngIf="AdultLivingFacilityExposureDate2.value !=undefined && AdultLivingFacilityExposureDate2?.invalid">
+                                    Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                </div>
+                            </mat-error>
+
+                        </mat-form-field>
+                        <mat-checkbox (change)="UpdateData()" class="label-padding2" #UnknownAdultLivingFacilityExposureDate='ngModel' name='UnknownAdultLivingFacilityExposureDate'
+                                      [(ngModel)]="Section4.ExposureInformation.UnknownAdultLivingFacilityExposureDate"
+                                      *ngIf="!Section4.ExposureInformation.AdultLivingFacilityExposureDate">Unknown Date</mat-checkbox>
+
+
+                    </div>
+                 
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #School='ngModel' name='School' [(ngModel)]="Section4.ExposureInformation.School">School / University / Childcare Center</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.School">
+                                <div class="col-sm-7">
+                                    <mat-form-field class="label-padding full-width">
+                                        <mat-label>Specify name and location</mat-label>
+                                        <input matInput required #SchoolInfo='ngModel' name='SchoolInfo' [(ngModel)]="Section4.ExposureInformation.SchoolInfo.Name" [ngClass]="Section4.ExposureInformation.SchoolInfo.Name? 'focused' : ''" (change)="UpdateAddressData(Section4.ExposureInformation.SchoolInfo)"
+                                               matGoogleMapsAutocomplete
+                                               [country]="DefaultCountry"
+                                               (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.SchoolInfo)"
+                                               (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.SchoolInfo)">
+                                        <mat-error *ngIf="SchoolInfo?.invalid && (SchoolInfo.dirty || SchoolInfo.touched)">
+                                            <div *ngIf="SchoolInfo.errors.required">
+                                                Please specify name and location.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-1 form-full-width">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Zipcode</mat-label>
+                                        <input matInput required #SchoolZip='ngModel' name='SchoolZip' [(ngModel)]="Section4.ExposureInformation.SchoolInfo.Zipcode" [ngClass]="Section4.ExposureInformation.SchoolInfo.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                                        <mat-error *ngIf="SchoolZip?.invalid && (SchoolZip.dirty || SchoolZip.touched)">
+                                            <div *ngIf="SchoolZip.errors.required">
+                                                Zipcode is required.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-5">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #SchoolExposureDate2='ngModel' name='SchoolExposureDate2' [matDatepicker]="picker7" [max]="today"
+                                               [(ngModel)]="SchoolExposureDate"
+                                               [ngClass]="SchoolExposureDate ? 'focused' : '' " (dateChange)="UpdateSchoolExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownSchoolExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker7></mat-datepicker>
+                                        <mat-error *ngIf="SchoolExposureDate2?.invalid">
+                                            <div *ngIf="SchoolExposureDate2.value ==null && SchoolExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="SchoolExposureDate2.value !=undefined && SchoolExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-1 level-checkbox2">
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownSchoolExposureDate='ngModel' name='UnknownSchoolExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownSchoolExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.SchoolExposureDate">Unknown Date</mat-checkbox>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #CorrectionalFacility='ngModel' name='CorrectionalFacility' [(ngModel)]="Section4.ExposureInformation.CorrectionalFacility">Correctional Facility</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.CorrectionalFacility">
+                                <div class="col-sm-7">
+                                    <mat-form-field class="label-padding full-width">
+                                        <mat-label>Specify name and location</mat-label>
+                                        <input matInput required #CorrectionalFacilityInfo='ngModel' name='CorrectionalFacilityInfo' [(ngModel)]="Section4.ExposureInformation.CorrectionalFacilityInfo.Name" [ngClass]="Section4.ExposureInformation.CorrectionalFacilityInfo.Name? 'focused' : ''" (change)="UpdateAddressData(Section4.ExposureInformation.CorrectionalFacilityInfo)"
+                                               matGoogleMapsAutocomplete
+                                               [country]="DefaultCountry"
+                                               (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.CorrectionalFacilityInfo)"
+                                               (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.CorrectionalFacilityInfo)">
+                                        <mat-error *ngIf="CorrectionalFacilityInfo?.invalid && (CorrectionalFacilityInfo.dirty || CorrectionalFacilityInfo.touched)">
+                                            <div *ngIf="CorrectionalFacilityInfo.errors.required">
+                                                Please specify name and location.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-1 form-full-width">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Zipcode</mat-label>
+                                        <input matInput required #CorrectionalFacilityZip='ngModel' name='CorrectionalFacilityZip' [(ngModel)]="Section4.ExposureInformation.CorrectionalFacilityInfo.Zipcode" [ngClass]="Section4.ExposureInformation.CorrectionalFacilityInfo.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                                        <mat-error *ngIf="CorrectionalFacilityZip?.invalid && (CorrectionalFacilityZip.dirty || CorrectionalFacilityZip.touched)">
+                                            <div *ngIf="CorrectionalFacilityZip.errors.required">
+                                                Zipcode is required.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-sm-5">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #CorrectionalFacilityExposureDate2='ngModel' name='CorrectionalFacilityExposureDate2' [matDatepicker]="picker8" [max]="today"
+                                               [(ngModel)]="CorrectionalFacilityExposureDate"
+                                               [ngClass]="CorrectionalFacilityExposureDate ? 'focused' : '' " (dateChange)="UpdateCorrectionalFacilityExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownCorrectionalFacilityExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker8></mat-datepicker>
+                                        <mat-error *ngIf="CorrectionalFacilityExposureDate2?.invalid">
+                                            <div *ngIf="CorrectionalFacilityExposureDate2.value ==null && CorrectionalFacilityExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="CorrectionalFacilityExposureDate2.value !=undefined && CorrectionalFacilityExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-1 level-checkbox2">
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownCorrectionalFacilityExposureDate='ngModel' name='UnknownCorrectionalFacilityExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownCorrectionalFacilityExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.CorrectionalFacilityExposureDate">Unknown Date</mat-checkbox>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #CommunityEvent='ngModel' name='CommunityEvent' [(ngModel)]="Section4.ExposureInformation.CommunityEvent">Community event / Mass gathering</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.CommunityEvent">
+                                <div class="col-sm-7">
+                                    <mat-form-field class="label-padding full-width">
+                                        <mat-label>Specify Event/Gathering venue</mat-label>
+                                        <input matInput required #CommunityEventInfo='ngModel' name='CommunityEventInfo' [(ngModel)]="Section4.ExposureInformation.CommunityEventInfo.Name" [ngClass]="Section4.ExposureInformation.CommunityEventInfo.Name? 'focused' : ''" (change)="UpdateAddressData(Section4.ExposureInformation.CommunityEventInfo)"
+                                               matGoogleMapsAutocomplete
+                                               [country]="DefaultCountry"
+                                               (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.CommunityEventInfo)"
+                                               (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.CommunityEventInfo)">
+                                        <mat-error *ngIf="CommunityEventInfo?.invalid && (CommunityEventInfo.dirty || CommunityEventInfo.touched)">
+                                            <div *ngIf="CommunityEventInfo.errors.required">
+                                                Please specify Event/Gathering venue.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-1 form-full-width">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Zipcode</mat-label>
+                                        <input matInput required #CommunityEventZip='ngModel' name='CommunityEventZip' [(ngModel)]="Section4.ExposureInformation.CommunityEventInfo.Zipcode" [ngClass]="Section4.ExposureInformation.CommunityEventInfo.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                                        <mat-error *ngIf="CommunityEventZip?.invalid && (CommunityEventZip.dirty || CommunityEventZip.touched)">
+                                            <div *ngIf="CommunityEventZip.errors.required">
+                                                Zipcode is required.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-5">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #CommunityEventExposureDate2='ngModel' name='CommunityEventExposureDate2' [matDatepicker]="picker9" [max]="today"
+                                               [(ngModel)]="CommunityEventExposureDate"
+                                               [ngClass]="CommunityEventExposureDate ? 'focused' : '' " (dateChange)="UpdateCommunityEventExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownCommunityEventExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker9></mat-datepicker>
+                                        <mat-error *ngIf="CommunityEventExposureDate2?.invalid">
+                                            <div *ngIf="CommunityEventExposureDate2.value ==null && CommunityEventExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="CommunityEventExposureDate2.value !=undefined && CommunityEventExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-1 level-checkbox2">
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownCommunityEventExposureDate='ngModel' name='UnknownCommunityEventExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownCommunityEventExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.CommunityEventExposureDate">Unknown Date</mat-checkbox>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #iAnimal='ngModel' name='iAnimal' [(ngModel)]="Section4.ExposureInformation.CovidAnimal">Animal with confirmed or suspected COVID-19</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.CovidAnimal">
+                                <div class="col-sm-6 level-checkbox">
+                                    <mat-form-field class="label-padding full-width">
+                                        <mat-label>Specify Animal</mat-label>
+                                        <input matInput required #Animal='ngModel' name='Animal' [(ngModel)]="Section4.ExposureInformation.AnimalSpecify" [ngClass]="Section4.ExposureInformation.AnimalSpecify? 'focused' : '' " (change)="UpdateData()">
+                                        <mat-error *ngIf="Animal?.invalid && (Animal.dirty || Animal.touched)">
+                                            <div *ngIf="Animal.errors.required">
+                                                Please specify animal.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-4 level-checkbox">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #CovidAnimalExposureDate2='ngModel' name='CovidAnimalExposureDate2' [matDatepicker]="picker10" [max]="today"
+                                               [(ngModel)]="CovidAnimalExposureDate"
+                                               [ngClass]="CovidAnimalExposureDate ? 'focused' : '' " (dateChange)="UpdateCovidAnimalExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownCovidAnimalExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker10"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker10></mat-datepicker>
+                                        <mat-error *ngIf="CovidAnimalExposureDate2?.invalid">
+                                            <div *ngIf="CovidAnimalExposureDate2.value ==null && CovidAnimalExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="CovidAnimalExposureDate2.value !=undefined && CovidAnimalExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownCovidAnimalExposureDate='ngModel' name='UnknownCovidAnimalExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownCovidAnimalExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.CovidAnimalExposureDate">Unknown Date</mat-checkbox>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownExposure='ngModel' name='UnknownExposure' [(ngModel)]="Section4.ExposureInformation.UnknownExposure">Unknown exposures in the 14 days prior to illness onset</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.UnknownExposure">
+
+                                <div class="col-sm-5">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #UnknownExposureDate2='ngModel' name='UnknownExposureDate2' [matDatepicker]="picker11" [max]="today"
+                                               [(ngModel)]="UnknownExposureDate"
+                                               [ngClass]="UnknownExposureDate ? 'focused' : '' " (dateChange)="UpdateUnknownExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownUnknownExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker11"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker11></mat-datepicker>
+                                        <mat-error *ngIf="UnknownExposureDate2?.invalid">
+                                            <div *ngIf="UnknownExposureDate2.value ==null && UnknownExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="UnknownExposureDate2.value !=undefined && UnknownExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-1 level-checkbox2">
+
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownUnknownExposureDate='ngModel' name='UnknownUnknownExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownUnknownExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.UnknownExposureDate">Unknown Date</mat-checkbox>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-sm-5 level-checkbox">
+                            <mat-checkbox (change)="UpdateData()" class="label-padding" #OtherExposure='ngModel' name='OtherExposure' [(ngModel)]="Section4.ExposureInformation.Other">Other exposures</mat-checkbox>
+                            <div class="row" *ngIf="Section4.ExposureInformation.Other">
+                                <div class="col-sm-7">
+                                    <mat-form-field class="label-padding full-width">
+                                        <mat-label>Specify other exposure location</mat-label>
+                                        <input matInput required #OtherExSpecify='ngModel' name='OtherExSpecify' [(ngModel)]="Section4.ExposureInformation.OtherSpecify.Name" [ngClass]="Section4.ExposureInformation.OtherSpecify.Name? 'focused' : '' " (change)="UpdateAddressData(Section4.ExposureInformation.OtherSpecify)"
+                                               matGoogleMapsAutocomplete
+                                               [country]="DefaultCountry"
+                                               (onAutocompleteSelected)="onAutocompleteSelected($event, Section4.ExposureInformation.OtherSpecify)"
+                                               (onLocationSelected)="onLocationSelectedAddress($event, Section4.ExposureInformation.OtherSpecify)">
+                                        <mat-error *ngIf="OtherExSpecify?.invalid && (OtherExSpecify.dirty || OtherExSpecify.touched)">
+                                            <div *ngIf="OtherExSpecify.errors.required">
+                                                Please specify other exposure location.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-1 form-full-width">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Zipcode</mat-label>
+                                        <input matInput required #OtherZip='ngModel' name='OtherZip' [(ngModel)]="Section4.ExposureInformation.OtherSpecify.Zipcode" [ngClass]="Section4.ExposureInformation.OtherSpecify.Zipcode? 'focused' : '' " (change)="UpdateData()">
+                                        <mat-error *ngIf="OtherZip?.invalid && (OtherZip.dirty || OtherZip.touched)">
+                                            <div *ngIf="OtherZip.errors.required">
+                                                Zipcode is required.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-sm-5">
+                                    <mat-form-field>
+                                        <mat-label>Exposure Date</mat-label>
+                                        <input matInput #OtherExposureDate2='ngModel' name='OtherExposureDate2' [matDatepicker]="picker12" [max]="today"
+                                               [(ngModel)]="OtherExposureDate"
+                                               [ngClass]="OtherExposureDate ? 'focused' : '' " (dateChange)="UpdateOtherExposureDate()" [errorStateMatcher]="matcher"
+                                               (input)="Section4.ExposureInformation.UnknownOtherExposureDate = false">
+                                        <mat-datepicker-toggle matSuffix [for]="picker12"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker12></mat-datepicker>
+                                        <mat-error *ngIf="OtherExposureDate2?.invalid">
+                                            <div *ngIf="OtherExposureDate2.value ==null && OtherExposureDate2?.invalid">
+                                                Exposure date must be in mm/DD/yyyy format.
+                                            </div>
+                                            <div *ngIf="OtherExposureDate2.value !=undefined && OtherExposureDate2?.invalid">
+                                                Exposure date (in mm/DD/yyyy format) cannot be a future date.
+                                            </div>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div class="col-sm-1 level-checkbox2">
+                                    <mat-checkbox (change)="UpdateData()" class="label-padding" #UnknownOtherExposureDate='ngModel' name='UnknownOtherExposureDate'
+                                                  [(ngModel)]="Section4.ExposureInformation.UnknownOtherExposureDate"
+                                                  *ngIf="!Section4.ExposureInformation.OtherExposureDate">Unknown Date</mat-checkbox>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+</form>
+
+    </div>
+    <div class="row section-title-padding"></div>
+    <div>
+        <button style="margin: 10px" mat-flat-button color="warn" (click)="ClearAllData()">Clear All</button>
+        <button class="pull-right" style="margin: 10px" mat-stroked-button color="warn" (click)="ClearData()">Clear</button>
+        <button class="pull-right" style="margin: 10px;" mat-flat-button color="primary" (click)="SaveData()" [disabled]="travelForm.invalid || workForm.invalid || Section4.Saved">Save</button>
+    </div>
+    <div class="center"> <span class="star">*</span> indicates required field</div>
+
+</div>
