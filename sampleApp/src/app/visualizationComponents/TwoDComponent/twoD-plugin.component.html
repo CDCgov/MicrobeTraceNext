@@ -1,0 +1,425 @@
+﻿
+
+<span id="tooltip"></span>
+
+<svg id="network" [ngStyle]="svgStyle"></svg>
+
+
+<div class="row">
+    <div class="col-md-4">
+      <h2 *ngIf="isExporting && commonService.session.style.widgets['node-symbol-variable'] != 'None'" class="bottom-table">
+          Node Shapes
+        </h2>
+      <table id="node-symbol-table-bottom" class="bottom-table"></table>          
+    </div>
+    <div class="col-md-4">
+        <h2 *ngIf="isExporting && commonService.session.style.widgets['node-color-variable'] != 'None'" class="bottom-table">
+            Node Colors
+        </h2>
+        <table id="node-color-table-bottom" class="bottom-table"></table>          
+      </div>
+      <div class="col-md-4">
+        <h2 *ngIf="isExporting && commonService.session.style.widgets['link-color-variable'] != 'None'" class="bottom-table">
+            Link Colors
+        </h2>
+        <table id="link-color-table-bottom" class="bottom-table"></table>          
+      </div>
+  </div>
+
+<div class="m-content" *ngIf="IsDataAvailable == false">
+    <div id="file-panel" class="container-fluid" style="height:500px;">
+        <div id="file-prompt" class="d-flex justify-content-center">
+            <h1><b>Please add data files to load...</b></h1>
+            <br />
+        </div>
+    </div>
+</div>
+
+
+
+<p-sidebar [(visible)]="ShowStatistics" position="right">
+
+    <!-- <div id="color-transparency-wrapper" *ngIf="false">
+        <input type="range" class="custom-range" id="color-transparency" min="0" max="1" step="0.05" value="1" [(ngModel)]="SelectedColorTransparencyVariable" (change)="onSelectedColorTransparencyVariableChange($event)">
+    </div> -->
+
+    <div id="network-statistics-wrapper">
+        <div id="network-statistics-draghandle"><span class="oi oi-move"></span></div>
+        <table id="network-statistics-table">
+            <tr>
+                <td class="text-right">
+                    <span id="numberOfNodes"></span>
+                    (<span id="numberOfSelectedNodes"></span>)
+                </td>
+                <td>Nodes (Selected)</td>
+            </tr>
+            <tr>
+                <td id="numberOfVisibleLinks" class="text-right"></td>
+                <td>Links</td>
+            </tr>
+            <tr>
+                <td id="numberOfDisjointComponents" class="text-right"></td>
+                <td>Clusters</td>
+            </tr>
+            <tr>
+                <td id="numberOfSingletonNodes" class="text-right"></td>
+                <td>Singletons</td>
+            </tr>
+        </table>
+    </div>
+</p-sidebar>
+
+
+
+<div class="view-controls">
+    <p-dialog id="network-settings-pane" 
+                [positionLeft]="Node2DNetworkExportDialogSettings.left" 
+                [positionTop]="Node2DNetworkExportDialogSettings.top" 
+                [(visible)]="Node2DNetworkExportDialogSettings.isVisible"  
+                header="2D Network Settings" 
+                >
+        <tabset class="tab-container tabbable-line">
+            <tab heading="{{'Nodes' | localize}}" [active]="true" customClass="m-tabs__item">
+                <p-accordion>
+                    <p-accordionTab style="color:#495057" header="Labels and Tooltips">
+                        <div #nodecontrolslabels>
+                            <div class="form-group row" title="What field should be displayed as a label for the node?">
+                                <div class="col-4"><label for="node-label-variable">Label</label></div>
+                                <div class="col-8">
+                                    <p-dropdown id="node-label-variable" [options]="FieldList" appendTo="body" [(ngModel)]="SelectedNodeLabelVariable" (ngModelChange)="onNodeLabelVaribleChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row node-label-row" title="How big should node labels be?">
+                                <div class="col-4"><label for="node-label-size">Label Size</label></div>
+                                <div class="col-8"><input type="range" class="custom-range" id="node-label-size" min="6" value="16" max="72" [(ngModel)]="SelectedNodeLabelSizeVariable" (change)="onNodeLabelSizeChange($event)"></div>
+                            </div>
+                            <div class="form-group row node-label-row" title="How should the labels be oriented relative to their nodes?">
+                                <div class="col-4"><label for="node-label-orientation">Orientation</label></div>
+                                <div class="col-8">
+                                    <select id="node-label-orientation" [(ngModel)]="SelectedNodeLabelOrientationVariable" (ngModelChange)="onNodeLabelOrientationChange($event)">
+                                        <option selected>Right</option>
+                                        <option>Left</option>
+                                        <option>Top</option>
+                                        <option>Bottom</option>
+                                        <option>Middle</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="What node data should be displayed as a tooltip for the node?">
+                                <div class="col-4">
+                                    <label for="node-tooltip-variable">Tooltip</label>
+                                </div>
+                                <div class="col-8">
+                                    <p-dropdown id="node-tooltip-variable" [options]="FieldList" appendTo="body" [(ngModel)]="SelectedNodeTooltipVariable" (ngModelChange)="onNodeTooltipVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+
+                    <p-accordionTab style="color:#495057" header="Shapes and Sizes">
+                        <div #nodecontrolsshapes>
+                            <div class="form-group row" title="Which variable should determine the shape of the node?">
+                                <div class="col-4">
+                                    <label for="node-symbol-variable">Shape By</label>
+                                </div>
+                                <div class="col-8">
+                                    <p-dropdown id="node-symbol-variable" [options]="FieldList" appendTo="body" [(ngModel)]="SelectedNodeSymbolVariable" (ngModelChange)="onNodeSymbolVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                            <div id="node-symbol-table-row" [hidden]="!ShowNodeSymbolTable" class="form-group row" title="What shape should the nodes be?">
+                                <div class="col-4">Table</div>
+                                <div class="col-8">
+                                    <p-selectButton [options]="TableTypes" [(ngModel)]="SelectedNetworkTableTypeVariable" (ngModelChange)="onNodeSymbolTableChange($event)"></p-selectButton>
+                                </div>
+                            </div>
+
+                            <div id="node-symbol-row" [hidden]="ShowNodeSymbolWrapper" class="form-group row" title="What shape should the nodes be?">
+                                <div class="col-4"><label for="node-symbol">Shape</label></div>
+                                <div class="col-8">
+                                    <select id="node-symbol" class="form-control form-control-sm" [(ngModel)]="SelectedNodeShapeVariable" (ngModelChange)="onNodeSymbolChange($event)">
+
+                                        <option value="symbolCircle" selected>&nbsp;&#11044; (Circle)</option>
+                                        <option value="symbolTriangle">&nbsp;&#9650; (Up Triangle)</option>
+                                        <option value="symbolTriangleDown">&nbsp;&#9660; (Down Triangle)</option>
+                                        <option value="symbolTriangleLeft">&nbsp;&#9664; (Left Triangle)</option>
+                                        <option value="symbolTriangleRight">&nbsp;&#9654; (Right Triangle)</option>
+                                        <option value="symbolDiamond">&nbsp;&#10731; (Vertical Diamond)</option>
+                                        <option value="symbolDiamondAlt">&nbsp;&#10731; (Horizontal Diamond)</option>
+                                        <option value="symbolSquare">&nbsp;&#9632; (Square)</option>
+                                        <option value="symbolDiamondSquare">&nbsp;&#9670; (Tilted Square)</option>
+                                        <option value="symbolPentagon">&nbsp;&#11039; (Pentagon)</option>
+                                        <option value="symbolHexagon">&nbsp;&#11042; (Hexagon)</option>
+                                        <option value="symbolHexagonAlt">&nbsp;&#11043; (Tilted Hexagon)</option>
+                                        <option value="symbolOctagon">&nbsp;&#11204; (Octagon)</option>
+                                        <option value="symbolOctagonAlt">&nbsp;&#11203; (Tilted Octagon)</option>
+                                        <option value="symbolCross">&nbsp;&#10010; (Addition Sign)</option>
+                                        <option value="symbolX">&nbsp;&#10006; (Multiplication Sign)</option>
+                                        <option value="symbolWye">&nbsp;&#120300; (Wye)</option>
+                                        <option value="symbolStar">&nbsp;&#9733; (Star)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" title="Which variable should determine the size of the node?">
+                                <div class="col-4"><label for="node-radius-variable">Size By</label></div>
+                                <div class="col-8">
+                                    <p-dropdown id="node-radius-variable" [options]="FieldList" appendTo="body" [(ngModel)]="SelectedNodeRadiusVariable" (ngModelChange)="onNodeRadiusVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How big should the nodes be?">
+                                <div class="col-4"><label for="node-radius">Size</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="node-radius" min="100" value="250" step="1" max="5000" [(ngModel)]="SelectedNodeRadiusSizeVariable" (ngModelChange)="onNodeRadiusChange($event)">
+                                </div>
+                            </div>
+
+                        </div>
+                    </p-accordionTab>
+
+                    <p-accordionTab style="color:#495057" header="Colors">
+                        <button pButton type="button" label="Show Colors" class="ui-button-raised" (click)="showGlobalSettings()"></button>
+                    </p-accordionTab>
+
+                </p-accordion>
+            </tab>
+
+            <tab heading="{{'Links' | localize}}" customClass="m-tabs__item">
+                <p-accordion>
+                    <p-accordionTab style="color:#495057" header="Labels and Tooltips">
+                        <div #linkcontrolslabels>
+                            <div class="form-group row" title="What data should be displayed when you hover over a link?">
+                                <div class="col-4"><label for="link-tooltip-variable">Tooltip</label></div>
+                                <div class="col-8">
+                                    <p-dropdown id="link-tooltip-variable" [options]="ToolTipFieldList" appendTo="body" [(ngModel)]="SelectedLinkTooltipVariable" (ngModelChange)="onLinkTooltipVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="What data should be displayed when you hover over a link?">
+                                <div class="col-4"><label for="link-label-variable">Label</label></div>
+                                <div class="col-8">
+                                    <p-dropdown id="link-label-variable" [options]="ToolTipFieldList" appendTo="body" [(ngModel)]="SelectedLinkLabelVariable" (ngModelChange)="onLinkLabelVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+
+                    <p-accordionTab style="color:#495057" header="Shapes and Sizes">
+                        <div #linkcontrolsshapes>
+                            <div id="link-transparency-row" class="form-group row" title="How transparent should the links be?">
+                                <div class="col-4"><label for="link-opacity">Transparency</label></div>
+                                <div class="col-8"><input type="range" class="custom-range" id="link-opacity" min="0" max="1" value="0" step="0.01" [(ngModel)]="SelectedLinkTransparencyVariable" (ngModelChange)="onLinkOpacityChange($event)"></div>
+                            </div>
+                            <div class="form-group row" title="Which variable should determine the width of a link?">
+                                <div class="col-4"><label for="link-width-variable">Width By</label></div>
+                                <div class="col-8">
+                                    <p-dropdown id="link-width-variable" [options]="ToolTipFieldList" appendTo="body" [(ngModel)]="SelectedLinkWidthByVariable" (ngModelChange)="onLinkWidthVariableChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+                            <div id="link-reciprocalthickness-row" class="form-group row" title="Should link widths be proportioned to the reciprocal of this variable?">
+                                <div class="col-4">Reciprocal</div>
+                                <div class="col-8">
+                                    <p-selectButton id="link-width-reciprocal-non-reciprocal" appendTo="body"  [options]="ReciprocalTypes" [(ngModel)]="SelectedLinkReciprocalTypeVariable" (ngModelChange)="onLinkWidthReciprocalNonReciprocalChange($event)"></p-selectButton>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How thick should the links be?">
+                                <div class="col-4"><label for="link-width">Width</label></div>
+                                <div class="col-8"><input type="range" class="custom-range" id="link-width" min="0.3" max="30" step=".3" value="3" [(ngModel)]="SelectedLinkWidthVariable" (ngModelChange)="onLinkWidthChange($event)"></div>
+                            </div>
+                            <div class="form-group row" title="How long should links be?">
+                                <div class="col-4"><label for="link-length">Length</label></div>
+                                <div class="col-8"><input type="range" class="custom-range" id="link-length" min="0" max="200" value="50" [(ngModel)]="SelectedLinkLengthVariable" (ngModelChange)="onLinkLengthChange($event)"></div>
+                            </div>
+                            <div class="form-group row hideForHIVTrace" title="Shoul arrowheads pointing to the">
+                                <div class="col-4">Arrows</div>
+                                <div class="col-8">
+                                    <p-selectButton id="link-directed-undirected" [options]="ArrowTypes" [(ngModel)]="SelectedLinkArrowTypeVariable" (ngModelChange)="onLinkDirectedUndirectedChange($event)"></p-selectButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+
+
+                    <p-accordionTab style="color:#495057" header="Colors">
+                        <button pButton type="button" label="Show Colors" class="ui-button-raised" (click)="showGlobalSettings()"></button>
+                    </p-accordionTab>
+
+                </p-accordion>
+            </tab>
+
+            <tab heading="{{'Network' | localize}}" customClass="m-tabs__item">
+                <p-accordion>
+                    <p-accordionTab style="color:#495057" header="Display">
+                        <div #networkcontrolslabels>
+                            <div class="form-group row" title="Should MicrobeTrace Highlight a node's neighbors when you hover on it?">
+                                <div class="col-4">Neighbors</div>
+                                <div class="col-8">
+                                    <p-selectButton id="dont-highlight-neighbors-highlight-neighbors" [options]="NeighborTypes" [(ngModel)]="SelectedNetworkNeighborTypeVariable" (ngModelChange)="onDontHighlightNeighborsHighlightNeighborsChange($event)"></p-selectButton>
+                                </div>
+                            </div>
+                            <div class="form-group row" title="Should MicrobeTrace Highlight a node's neighbors when you hover on it?">
+                                <div class="col-4">Gridlines</div>
+                                <div class="col-8">
+                                    <p-selectButton id="network-gridlines-show-hide" [options]="GridLineTypes" [(ngModel)]="SelectedNetworkGridLineTypeVariable" (ngModelChange)="onNetworkGridlinesShowHideChange($event)"></p-selectButton>
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+                    <p-accordionTab style="color:#495057" header="Physics">
+                        <div #networkcontrolsphysics>
+                            <div class="form-group row" title="How strongly are the nodes repulsed by each other?">
+                                <div class="col-4"><label for="node-charge">Charge</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="node-charge" min="0" max="400" value="200" [(ngModel)]="SelectedNetworkChargeVariable" (ngModelChange)="onNodeChargeChange($event)">
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How attractive is the mass of the graph?">
+                                <div class="col-4"><label for="network-gravity">Gravity</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="network-gravity" min="0.025" max="1" value="0.05" step="0.025" [(ngModel)]="SelectedNetworkGravityVariable" (ngModelChange)="onNetworkGravityChange($event)">
+                                </div>
+                            </div>
+                            <div class="form-group row" title="How quickly should moving nodes lose their momentum?">
+                                <div class="col-4"><label for="network-friction">Friction</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" id="network-friction" min="0" max="1" value="0.4" step="0.025" [(ngModel)]="SelectedNetworkFrictionVariable" (ngModelChange)="onNetworkFrictionChange($event)">
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>                   
+                    <p-accordionTab style="color:#495057" header="Colors">
+                        <button pButton type="button" label="Show Colors" class="ui-button-raised" (click)="showGlobalSettings()" ></button>
+                    </p-accordionTab>
+                </p-accordion>
+            </tab>
+        </tabset>
+
+    </p-dialog>
+
+
+
+</div>
+
+    <p-dialog id="node-symbol-table-wrapper" 
+                [positionLeft]="NodeSymbolTableWrapperDialogSettings.left" 
+                [positionTop]="NodeSymbolTableWrapperDialogSettings.top" 
+                [(visible)]="NodeSymbolTableWrapperDialogSettings.isVisible"  
+                header="Node Symbol Selection Table" 
+                [style]="{width: '25vw'}" 
+                (onHide)="onNodeSymbolTableChange('Hide')"
+                (onShow)="onNodeSymbolTableChange('Show')"
+                >
+        <div class="col-12" style="width:100%;max-height:50vh;" title="Node Shapes and Size Selection.">          
+             <table id="node-symbol-table" style="width:100%;height:100%;"></table>          
+        </div>
+        <select id="node-symbol2" [hidden]="'true'" class="form-control form-control-sm">
+
+            <option value="symbolCircle" selected>&nbsp;&#11044; (Circle)</option>
+            <option value="symbolTriangle">&nbsp;&#9650; (Up Triangle)</option>
+            <option value="symbolTriangleDown">&nbsp;&#9660; (Down Triangle)</option>
+            <option value="symbolTriangleLeft">&nbsp;&#9664; (Left Triangle)</option>
+            <option value="symbolTriangleRight">&nbsp;&#9654; (Right Triangle)</option>
+            <option value="symbolDiamond">&nbsp;&#10731; (Vertical Diamond)</option>
+            <option value="symbolDiamondAlt">&nbsp;&#10731; (Horizontal Diamond)</option>
+            <option value="symbolSquare">&nbsp;&#9632; (Square)</option>
+            <option value="symbolDiamondSquare">&nbsp;&#9670; (Tilted Square)</option>
+            <option value="symbolPentagon">&nbsp;&#11039; (Pentagon)</option>
+            <option value="symbolHexagon">&nbsp;&#11042; (Hexagon)</option>
+            <option value="symbolHexagonAlt">&nbsp;&#11043; (Tilted Hexagon)</option>
+            <option value="symbolOctagon">&nbsp;&#11204; (Octagon)</option>
+            <option value="symbolOctagonAlt">&nbsp;&#11203; (Tilted Octagon)</option>
+            <option value="symbolCross">&nbsp;&#10010; (Addition Sign)</option>
+            <option value="symbolX">&nbsp;&#10006; (Multiplication Sign)</option>
+            <option value="symbolWye">&nbsp;&#120300; (Wye)</option>
+            <option value="symbolStar">&nbsp;&#9733; (Star)</option>
+        </select>
+
+    </p-dialog>
+
+
+
+
+
+<div id="node-symbol-table-context" class="dropdown-menu">
+    <a href="#" id="node-symbol-table-move" class="dropdown-item">Pin</a>
+    <a href="#" id="node-symbol-table-context-hide" class="dropdown-item">Hide</a>
+    <a href="#" id="node-symbol-table-expand" class="dropdown-item">Expand</a>
+    <a href="#" id="node-symbol-table-counts" class="dropdown-item">Toggle Counts</a>
+    <a href="#" id="node-symbol-table-frequencies" class="dropdown-item">Toggle Frequencies</a>
+</div>
+
+<div id="context-menu" class="dropdown-menu">
+    <a href="javascript:;" id="pinNode" class="dropdown-item">Pin Node</a>
+    <a href="javascript:;" id="copyID" class="dropdown-item">Copy ID</a>
+    <a href="javascript:;" id="copySeq" class="dropdown-item">Copy Sequence</a>
+    <a href="javascript:;" id="viewAttributes" class="dropdown-item">View Attributes</a>
+</div>
+
+
+<p-dialog id="network-attribute-table-wrapper" [(visible)]="ShowNetworkAttributes" header="Node Attributes" [style]="{width: '35vw'}" >
+    <div class="col-12" style="width:100%;">        
+        <table style="width:100%">
+            <tr *ngFor="let item of ContextSelectedNodeAttributes">
+                <td>
+                    <strong>
+                        {{item.attribute}}
+                    </strong>
+                </td>
+                <td>{{item.value}}</td>
+            </tr>
+        </table>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog id="network-export-modal" [(visible)]="Show2DExportPane" header="Export Network Image" class="dialogSize" (onHide)="onCloseExport()">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-body" style='min-width: 400px; height: 100%;'>
+                    <div class="form-group row">
+                    <div class="col-9">
+                        <input type="text" id="network-export-filename" class="form-control form-control-sm" placeholder="Filename" [(ngModel)]="SelectedNetworkExportFilenameVariable" (ngModelChange)="onDataChange($event)">
+                    </div>
+                    <div class="col-3">
+                        <p-dropdown id="network-export-filetype" [options]="NetworkExportFileTypeList" [(ngModel)]="SelectedNetworkExportFileTypeListVariable" (ngModelChange)="onNetworkExportFiletypeChange($event)"></p-dropdown>
+                    </div>
+                </div>
+                <div>
+
+                    <div [hidden]="!ShowAdvancedExport">
+                        <p-accordion>
+                            <p-accordionTab style="color:#495057" header="Advanced">
+                                <div id="network-export-advanced">
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="network-export-scale">Scale</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="number" id="network-export-scale" class="form-control form-control-sm" min="0" max="2" step="0.1" value="1" [(ngModel)]="SelectedNetworkExportScaleVariable" (ngModelChange)="updateCalculatedResolution($event)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">Resolution</div>
+                                        <div id="network-export-dimensions" class="col-9 text-right">{{CalculatedResolution}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label for="network-export-quality">Quality</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="range" class="custom-range" id="network-export-quality" min="0" max="1.0" value="0.92" step="0.01" [(ngModel)]="SelectedNetworkExportQualityVariable">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-error" (click)="Show2DExportPane = !Show2DExportPane">Cancel</button>
+                <button type="button" id="network-export" class="btn btn-primary" (click)="exportVisualization($event)">Export</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</p-dialog><!-- /.modal -->

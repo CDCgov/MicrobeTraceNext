@@ -1,0 +1,55 @@
+﻿:host ::ng-deep .ui-multiselected-item-token,
+:host ::ng-deep .ui-multiselected-empty-token {
+    padding: 2px 4px;
+    margin: 0 0.286em 0 0;
+    display: inline-block;
+    vertical-align: middle;
+    height: 1.857em;
+}
+
+:host ::ng-deep .ui-multiselected-item-token {
+    background: #007ad9;
+    color: #ffffff;
+}
+
+:host ::ng-deep .ui-multiselected-empty-token {
+    background: #d95f00;
+    color: #ffffff;
+}
+
+
+.loader {
+    position: absolute;
+    left: calc(50% - 20px);
+    top: 40%;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

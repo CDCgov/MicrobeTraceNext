@@ -1,0 +1,16 @@
+.mapStyle{
+    height:calc(100vh - 350px);
+    position: sticky !important;
+}
+
+#mapTooltip {
+    color:#333333;
+    background:#f5f5f5;
+    border:1px solid #cccccc;
+    border-radius:.25rem;
+    padding:.25rem;
+  }
+
+  .bottom-table{
+    font-size: calc((.5vmax));   
+}

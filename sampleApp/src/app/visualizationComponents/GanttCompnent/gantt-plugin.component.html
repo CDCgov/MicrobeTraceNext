@@ -1,0 +1,131 @@
+﻿<div class="m-content" *ngIf="isDataAvailable == false">
+    <div id="file-panel" class="container-fluid" style="height:500px;">
+        <div id="file-prompt" class="d-flex justify-content-center">
+            <h1><b>Please add data files to load...</b></h1>
+            <br />
+        </div>
+    </div>
+</div>
+
+<div id="gantt"></div>
+
+<p-dialog id="gantt-settings-pane" [positionLeft]="ganttExportDialogSettings.left"
+    [positionTop]="ganttExportDialogSettings.top" [(visible)]="ganttExportDialogSettings.isVisible"
+    header="Gantt Settings">
+    <div style="max-height:60vh">
+    <tabset class="tab-container tabbable-line">
+        <tab heading="{{'Gantt' | localize}}" [active]="true" customClass="m-tabs__item">
+            <div id="gantt-settings-pane" class="left-pane" >
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="ganttConfigurations" role="tabpanel"
+                        aria-labelledby="gantt-tab">
+                        <div style="min-width:350px">
+                            <div class="form-group row">
+                                <div class="col">
+                                    <button id="addDate" type="button" class="btn btn-light w-100"
+                                        (click)="onAddDateItem()">Add Date</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngFor="let item of ganttDateList">
+                            <div class="form-group row">
+                                <span style="overflow: visible; position: relative; width: 110px;">
+                                    <a title="Remove" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="onCloseDate(item)"><i class="flaticon-cancel"></i></a>
+                                </span>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-4"><label for="start-variable">Start</label></div>
+                                <div class="col-8">
+                                    <p-dropdown [options]="fieldList" appendTo="body" [(ngModel)]="item.start"
+                                        (ngModelChange)="onDateItemChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-4"><label for="end-variable">End</label></div>
+                                <div class="col-8">
+                                    <p-dropdown [options]="fieldList" appendTo="body" [(ngModel)]="item.end"
+                                        (ngModelChange)="onDateItemChange($event)"></p-dropdown>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-4"><label for="end-variable">Color</label></div>
+                                <div class="col-8">
+                                    <input class="form-control form-control-sm" type="color" [(ngModel)]="item.color"
+                                        (change)="onColorChange(item)">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-4"><label for="end-variable">Transparency</label></div>
+                                <div class="col-8">
+                                    <input type="range" class="custom-range" min="0" max="1" step="0.01"
+                                        [(ngModel)]="item.transparency" (change)="onTransparencyChange(item)">
+                                </div>
+                            </div>
+                            <hr>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>
+</p-dialog>
+
+
+<p-dialog id="network-export-modal" [(visible)]="ganttExportPane" header="Export Network Image" class="dialogSize" (onHide)="onCloseExport()">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-body" style='min-width: 400px; height: 100%;'>
+                    <div class="form-group row">
+                    <div class="col-9">
+                        <input type="text" id="network-export-filename" class="form-control form-control-sm" placeholder="Filename" [(ngModel)]="selectedGanttExportFilenameVariable">
+                    </div>
+                    <div class="col-3">
+                        <p-dropdown id="network-export-filetype" [options]="ganttExportFileTypeList" [(ngModel)]="selectedGanttExportFileTypeListVariable" (ngModelChange)="onGanttExportFiletypeChange($event)"></p-dropdown>
+                    </div>
+                </div>
+                <div>
+
+                    <div [hidden]="!showAdvancedExport">
+                        <p-accordion>
+                            <p-accordionTab style="color:#495057" header="Advanced">
+                                <div id="network-export-advanced">
+                                    <div class="form-group row">
+                                        <div class="col-3">
+                                            <label for="network-export-scale">Scale</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="number" id="network-export-scale" class="form-control form-control-sm" min="0" max="2" step="0.1" value="1" [(ngModel)]="selectedGanttExportScaleVariable" (ngModelChange)="updateCalculatedResolution($event)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-3">Resolution</div>
+                                        <div id="network-export-dimensions" class="col-9 text-right">{{calculatedResolution}}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label for="network-export-quality">Quality</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="range" class="custom-range" id="network-export-quality" min="0" max="1.0" value="0.92" step="0.01" [(ngModel)]="selectedGanttExportQualityVariable">
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </p-accordionTab>
+                        </p-accordion>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-error" (click)="ganttExportPane = !ganttExportPane">Cancel</button>
+                <button type="button" id="network-export" class="btn btn-primary" (click)="exportVisualization($event)">Export</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</p-dialog><!-- /.modal -->
