@@ -1,0 +1,581 @@
+﻿<div class="m-content">   
+    <div class="m-portlet m-portlet--mobile">
+
+        <div class="m-subheader">
+            <div class="row align-items-center">
+                <div class="mr-auto col-auto">
+                    <h3 class="m-subheader__title m-subheader__title--separator">
+                        <span>{{"MicrobeTrace " | localize}}</span>
+                        <span>{{"Next" | localize}}</span>
+                        <span><sup>&reg;</sup></span>
+                    </h3>
+
+                </div>
+                <div class="col text-left mt-3 mt-md-0">
+
+                    <div class="btn-group dropdown mr-2" dropdown>
+                        <label dropdownToggle class="dropdown-toggle btn">
+                            <i class="far flaticon-file-1"></i><span class="caret"></span> {{"File" | localize}}
+                        </label>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="FileClick('New Session')">
+                                    <i class="fa flaticon2-refresh"></i>
+                                    {{'New Session' | localize}}
+                                </a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="FileClick('Save Session')">
+                                    <i class="fa flaticon-edit-1"></i>
+                                    {{'Save Session' | localize}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" (click)="file.click()"> <input #file type="file" id="data-files" class="d-none" multiple="true" onclick="this.value=null;" hidden (change)="OpenStashFiles($event.target.files)">
+                                    <i class="fa flaticon-notes"></i> 
+                                    {{'Load Session' | localize}}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="FileClick('Add Ledger Data')">
+                                    <i class="fa flaticon-folder-1"></i>
+                                    {{'Add Ledger Data' | localize}}
+                                </a>
+                            </li>
+                            <li>
+                                <input type="file" class="form-control"
+                                       #LoadFile
+                                       (change)="getfileContent($event.target.files)"
+                                       id="LoadFile"
+                                       style="display:none"
+                                       accept=".csv,.zip"
+                                       multiple="true">
+
+                                <a href="javascript:;" title="Please select a Network CSV or FASTA File" data-toggle="tooltip"
+                                   (click)="LoadFile.click()">
+                                    <i class="fa flaticon-file-1"></i>
+                                    {{'Add Local Data' | localize}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropdown mr-2" dropdown>
+                        <label dropdownToggle class="dropdown-toggle btn">
+                            <i class="far flaticon-cogwheel"></i><span class="caret"></span> {{"Settings" | localize}}
+                        </label>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="SettingsClick('Global Settings')">
+                                    <i class="fa flaticon-settings-1"></i>
+                                    {{'Global Settings' | localize}}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropdown mr-2" dropdown>
+                        <label dropdownToggle class="dropdown-toggle btn">
+                            <i class="far flaticon-line-graph"></i><span class="caret"></span> {{"View" | localize}}
+                        </label>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+
+                            <!-- Active visualizatons -->
+                            <!-- 2D -->
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="Viewclick('2D Network')">
+                                    <i class="fa flaticon2-box"></i>
+                                    {{'2D Network' | localize}}
+                                </a>
+                            </li>
+
+                            <li class="dropdown-divider"></li>
+
+                            <!-- 3D -->
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="Viewclick('3D Network')">
+                                    <i class="fa flaticon-web"></i>
+                                    {{'3D Network' | localize}}
+                                </a>
+                            </li>
+
+                            <!-- Histogram -->
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="Viewclick('Histogram')">
+                                    <i class="fa flaticon-graphic-2"></i>
+                                    {{'Histogram' | localize}}
+                                </a>
+                            </li>
+
+                            <!-- Table -->
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="Viewclick('Table')">
+                                    <i class="fa flaticon-squares-3"></i>
+                                    {{'Table' | localize}}
+                                </a>
+                            </li>
+
+                            <!-- Map -->
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="Viewclick('Map')">
+                                    <i class="fa flaticon-map-location"></i>
+                                    {{'Map' | localize}}
+                                </a>
+                            </li>
+                            
+                            <!-- Gantt -->
+                            <li>
+                                <a href="javascript:;"
+                                    (click)="Viewclick('Gantt')">
+                                    <i class="fa flaticon-interface-7"></i>
+                                    {{'Gantt' | localize}}
+                                </a>
+                            </li>
+
+
+                            <!-- Inactive visualizatons -->
+                            <!-- Aggregation -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Aggregation')">
+                                <i class="fa flaticon2-layers-1"></i>
+                                {{'Aggregation' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Bubbles -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Bubbles')">
+                                <i class="fa flaticon2-drop"></i>
+                                {{'Bubbles' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Flow Diagram -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Flow Diagram')">
+                                <i class="fa flaticon2-console"></i>
+                                {{'Flow Diagram' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Scatterplot -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Scatterplot')">
+                                <i class="fa flaticon-interface-8"></i>
+                                {{'Scatterplot' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Waterfall -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Waterfall')">
+                                <i class="fa flaticon2-browser-2"></i>
+                                {{'Waterfall' | localize}}
+                            </a>
+                        </li>-->
+                            
+                            <!-- Timeline -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Timeline')">
+                                <i class="fa flaticon-stopwatch"></i>
+                                {{'Timeline' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Heatmap -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Heatmap')">
+                                <i class="fa flaticon-technology-2"></i>
+                                {{'Heatmap' | localize}}
+                            </a>
+                        </li>-->
+                            <!-- Phylogenetic -->
+                            <!--<li>
+                            <a href="javascript:;"
+                               (click)="Viewclick('Phylogenetic Tree')">
+                                <i class="fa flaticon-map"></i>
+                                {{'Phylogenetic Tree' | localize}}
+                            </a>
+                        </li>-->
+
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropdown mr-2" dropdown>
+                        <label dropdownToggle class="dropdown-toggle btn">
+                            <i class="far flaticon-web"></i><span class="caret"></span> {{"Window" | localize}}
+                        </label>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                            <li *ngIf="!HideThisForNow">
+                                <a href="javascript:;"
+                                   (click)="WindowClick('Phylogeography Mode')">
+                                    <i class="fa flaticon-earth-globe"></i>
+                                    {{'Phylogeography Mode' | localize}}
+                                </a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="WindowClick('Reload Screen')">
+                                    <i class="fa flaticon2-refresh"></i>
+                                    {{'Reload Screen' | localize}}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="btn-group dropdown mr-2" dropdown>
+                        <label dropdownToggle class="dropdown-toggle btn">
+                            <i class="far flaticon-questions-circular-button"></i><span class="caret"></span> {{"Help" | localize}}
+                        </label>
+                        <ul class="dropdown-menu dropdown-menu-right dropdown-excel-operations" *dropdownMenu>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="HelpClick('Help' )">
+                                    <i class="fa flaticon-questions-circular-button"></i>
+                                    {{'Help' | localize}}
+                                </a>
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <li>
+                                <a href="javascript:;"
+                                   (click)="HelpClick('About')">
+                                    <i class="fa flaticon2-magnifier-tool"></i>
+                                    {{'About' | localize}}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="kt-container  kt-grid__item kt-grid__item--fluid">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="m-portlet__body" style="flex: 1 100%; max-width:100%">
+                        <!-- <div class="m-portlet__body" style="width:calc(100vw - 300px);"> -->
+
+                        <p-tabView id="main-tabset" (onClose)="removeTab($event)" (click)="setActiveTabProperties()">
+                                <p-tabPanel id="homepageTabs{{i}}" *ngFor="let tab of homepageTabs; let i = index" [closable]="i > 0" header={{tab.label}} [selected]="tab.isActive">
+
+                                <div class="m-portlet">
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showSettings == true">
+                                        <a title="Settings" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="openSettings(i)"><i class="flaticon-settings"></i></a>
+                                    </span>
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showExport == true">
+                                        <a title="Export Screen" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="openExport(i)"><i class="flaticon-download"></i></a>
+                                    </span>
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showCenter == true">
+                                        <a title="Center Screen" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="openCenter(i)"><i class="flaticon-eye"></i></a>
+                                    </span>
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showPinAllNodes == true">
+                                        <a title="Pin All Nodes" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="openPinAllNodes(i)"
+                                            [style.background]="commonService.session.network.allPinned ? 'lightblue': 'transparent'"
+                                        ><i class="flaticon-pin"></i></a>
+                                    </span>
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showRefresh == true">
+                                        <a title="Refresh Screen" class="btn btn-sm btn-clean btn-icon btn-icon-md" style="float:left" (click)="openRefreshScreen(i)"><i class="flaticon-refresh"></i></a>
+                                    </span>
+                                    <span style="overflow: visible; position: relative; width: 110px;" *ngIf="showButtonGroup == true">
+                                        <p-selectButton #dataSet [options]="dataSetView" [(ngModel)]="dataSetViewSelected" (onOptionClick)="openSelectDataSetScreen(i,$event)"></p-selectButton>
+                                    </span>
+                                </div>
+
+                                <div class="m-portlet__body" style="background-color:white;">
+                                    <ng-container #placeholder>{{tab.templateRef}}</ng-container>
+                                </div>
+
+                            </p-tabPanel> 
+                        </p-tabView>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <p-dialog id="ledger-loader-modal" [(visible)]="displayLedgerLoaderDialog" header="Blockchain Ledgers" styleClass="ui-dialog" [contentStyle]="{'max-height':'50vh'}">
+
+            <div class="position-relative" #ledgerloadDiv>
+                <div class="loader">
+                    <i class="fa fa-spinner fa-spin" style="font-size:40px;z-index:1;display:none;" #ledgerloader></i>
+                </div>
+            </div>
+
+            <div style="min-height: 100px;">
+                <p-tree [value]="ledgerOptions" selectionMode="checkbox"  [filter]="true" [(selection)]="ledgerOptionSelected" *ngIf="ledgerOptions && ledgerOptions.length > 0" scrollHeight="flex"></p-tree>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-error" (click)="ToggleDisplayLedgerLoaderDialog()">Cancel</button>
+                <button type="button" id="stash-data2" class="btn btn-primary" (click)="DisplayLedgerLoaderDialog('Load')" [disabled]="!ledgerOptionSelected || ledgerOptionSelected.length === 0">Load</button>
+            </div>
+
+        </p-dialog><!-- /.modal -->
+
+
+
+
+
+
+        <p-dialog id="global-settings-modal" 
+                    [positionLeft]="GlobalSettingsDialogSettings.left" 
+                    [positionTop]="GlobalSettingsDialogSettings.top" 
+                    [(visible)]="GlobalSettingsDialogSettings.isVisible"  
+                    header="Global Settings" >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <tabset #globalSettingsTab class="tab-container tabbable-line" style='width: 100%; height: 100%;'>
+                            <tab heading="{{'Filtering' | localize}}" customClass="m-tabs__item" style='width: 400px; height: 100%;'>
+
+                                <div id="filtering-config" role="tabpanel" aria-labelledby="filtering-tab">
+                                    <div class="form-group row" title="By what algorithm would you like to prune links from the network?">
+                                        <div class="col-4">Prune With</div>
+                                        <div class="col-8">
+                                            <p-selectButton [options]="PruneWityTypes" [(ngModel)]="SelectedPruneWityTypesVariable" (onChange)="onPruneWithTypesChanged()"></p-selectButton>
+                                        </div>
+                                    </div>                                    
+                                    <div class="form-group row" title="What's the minimum number of nodes a cluster must have in order to be visible?">
+                                        <div class="col-4">
+                                            <label for="cluster-minimum-size">Minimum Cluster Size</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="number" class="form-control form-control-sm" id="cluster-minimum-size" min="1" value="1" step="1" [(ngModel)]="SelectedClusterMinimumSizeVariable" (ngModelChange)="onMinimumClusterSizeChanged()">
+                                        </div>
+                                    </div>
+                                    <div id="filtering-wrapper">
+                                        <div class="form-group row" title="By what variable would you like to prune links from the network?">
+                                            <div class="col-4"><label for="link-sort-variable">Filter Links on</label></div>
+                                            <div class="col-8">
+                                                <p-dropdown id="link-sort-variable" [options]="ToolTipFieldList" appendTo="body" [(ngModel)]="SelectedLinkSortVariable" (onChange)="onLinkSortChanged()"></p-dropdown>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" title="What's the maximum genetic distance you're willing to call a link?">
+                                            <div class="col-4"><label for="link-threshold">Filtering Threshold</label></div>
+                                            <div class="col-8"><svg id="link-threshold-sparkline" style="width: 280px; height: 48px;"></svg></div>
+                                            <div class="col-8  offset-4">
+                                                <input type="number" class="form-control form-control-sm" id="link-threshold" min="-1" value="1" step="0.001" [(ngModel)]="SelectedLinkThresholdVariable" (ngModelChange)="onLinkThresholdChanged()">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" hidden title="Click to reveal all hidden elements of the network.">
+                                        <div class="col-4"><label for="RevealAllTab">Reveal</label></div>
+                                        <div class="col-8">
+                                            <p-selectButton [options]="RevealTypes" [(ngModel)]="SelectedRevealTypesVariable" (onChange)="updateGlobalSettingsModel()"></p-selectButton>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group row" title="Display a table of overview statistics for the network">
+                                        <div class="col-4">Statistics</div>
+                                        <div class="col-8">
+                                            <p-selectButton [options]="StatisticsTypes" [(ngModel)]="SelectedStatisticsTypesVariable" (onChange)="onShowStatisticsChanged()"></p-selectButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab heading="{{'Styling' | localize}}" customClass="m-tabs__item" style='width: 400px; height: 100%;'>
+
+                                <div id="style-config" role="tabpanel" aria-labelledby="style-tab">
+                                    <div class="form-group row" title="By what variable nodes be colored?">
+                                        <div class="col-4"><label for="node-color-variable">Color Nodes By</label></div>
+                                        <div class="col-8">
+                                            <p-dropdown id="node-color-variable" [options]="FieldList" appendTo="body" [(ngModel)]="SelectedColorNodesByVariable" (onChange)="onColorNodesByChanged()"></p-dropdown>
+                                        </div>
+                                    </div>
+                                    <div id="link-color-table-row" class="form-group row" title="Should MicrobeTrace display the table of colors?">
+                                        <div class="col-4"><label>Nodes Color Table</label></div>
+                                        <div class="col-8">
+                                            <p-selectButton [options]="NodeColorTableTypes" [(ngModel)]="SelectedNodeColorTableTypesVariable" (onChange)="onNodeColorTableChanged()"></p-selectButton>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="node-color-value-row" class="form-group row" title="What color should the nodes be?">
+                                        <div class="col-4"><label for="node-color">Nodes</label></div>
+                                        <div class="col-8">
+                                            <input type="color" id="node-color" class="form-control form-control-sm" value="#1f77b4" [(ngModel)]="SelectedNodeColorVariable" (ngModelChange)="onNodeColorChanged()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" title="By what variable should links be colored?">
+                                        <div class="col-4"><label for="link-color-variable">Color Links By</label></div>
+                                        <div class="col-8">
+                                            <p-dropdown id="link-tooltip-variable" [options]="ToolTipFieldList" appendTo="body" [(ngModel)]="SelectedColorLinksByVariable" (onChange)="onColorLinksByChanged()"></p-dropdown>
+                                        </div>
+                                    </div>
+                                    <div id="link-color-table-row2" class="form-group row" title="Should MicrobeTrace display the table of colors?">
+                                        <div class="col-4"><label>Link Color Table</label></div>
+                                        <div class="col-8">
+                                            <p-selectButton [options]="LinkColorTableTypes" [(ngModel)]="SelectedLinkColorTableTypesVariable" (onChange)="onLinkColorTableChanged()"></p-selectButton>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row" title="What color should denote selection?">
+                                        <div class="col-4"><label for="selected-color">Selected</label></div>
+                                        <div class="col-8">
+                                            <input type="color" id="selected-color" class="form-control form-control-sm" value="#ff8300" [(ngModel)]="SelectedColorVariable" (ngModelChange)="updateGlobalSettingsModel()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" title="What color should the background be?">
+                                        <div class="col-4"><label for="background-color">Background</label></div>
+                                        <div class="col-8">
+                                            <input type="color" id="background-color" class="form-control form-control-sm" value="#ffffff" [(ngModel)]="SelectedBackgroundColorVariable" (ngModelChange)="onBackgroundChanged()">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" title="Load an existing MicrobeTrace style file" hidden>
+                                        <div class="col-4">Apply Style</div>
+                                        <div class="col-8">
+                                            <input type="file" id="apply-style" class="d-none" [(ngModel)]="SelectedApplyStyleVariable" (ngModelChange)="updateGlobalSettingsModel()">
+                                            <label class="custom-file-label" for="apply-style">Choose MicrobeTrace Style File</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="btn-group" data-toggle="buttons">
+                    <button type="button" class="btn btn-primary" (click)="GlobalSettingsDialogSettings.setVisibility(false)">Done</button>
+                </div>
+            </div>
+        </p-dialog><!-- /.modal -->
+
+
+
+
+
+
+
+        <p-dialog id="session-recall-modal" [(visible)]="displayRecallStashDialog" header="Recall Stash">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div *ngIf="!HideThisForNow" class="modal-body">
+                        <div id="recall-stashes-available" class="table-sm"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button *ngIf="!HideThisForNow" type="button" class="btn btn-danger" id="recall-delete-stash" (click)="DisplayRecallStashDialog('Delete')">Delete</button>
+                        <button type="button" class="btn" (click)="DisplayRecallStashDialog('Cancel')">Cancel</button>
+                        <button type="button" class="btn btn-success" id="recall-load-stash" (click)="DisplayRecallStashDialog('Recall')">Recall</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </p-dialog><!-- /.modal -->
+
+
+        <p-dialog id="session-stash-modal" [(visible)]="displayStashDialog" header="Save Session">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <div class="modal-body">
+                        <div class="form-group row" title="What would you like to call this session?">
+                            <div class="col">
+                                <input type="text" id="stash-name" class="form-control form-control-sm" [(ngModel)]="saveFileName" placeholder="Name your session!">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-error" (click)="DisplayStashDialog('Cancel')">Cancel</button>
+                        <button type="button" id="stash-data" class="btn btn-primary" (click)="DisplayStashDialog('Save')" [disabled]="saveFileName === undefined || saveFileName === ''">Save</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </p-dialog><!-- /.modal -->
+
+
+        <p-dialog id="about-dialog" [(visible)]="displayAbout" header="About Micro-Tracing Next">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h3>
+                            <span>{{"Micro-Tracing " | localize}}</span>
+                            <span>{{"Next" | localize}}</span>
+                            <span><sup>&reg;</sup></span>
+                            <small>v<span id="version">{{version}}</span></small>
+                        </h3>
+                        <p>
+                            Micro-Tracing Next<sup>&reg;</sup> is an interactive web application that renders existing data from high-risk contact networks
+                            in an easy-to-use Graphical User Interface (GUI). The network visualization can be customized according to
+                            supplemental data sources and mathematical inferences like the most probable transmission pathways.
+                            Micro-Tracing Next<sup>&reg;</sup> is a highly responsive, visual sequence analytics tool which can reduce the gap between data
+                            production and analytics and help you to discover, understand, and display relationships (links) between
+                            patients (nodes). MicrobeTrace can be deployed on laptops to locations without any Internet access, thereby
+                            reducing both the startup cost and analysis time and effort.
+                        </p>
+                        <p class="ifOnline">
+                            <a href="https://github.com/CDCgov/MicrobeTrace/wiki" target="_blank" rel="noreferrer noopener">
+                                Click Here to Learn More
+                            </a>
+                        </p>
+                        <p>
+                            Micro-Tracing Next<sup>&reg;</sup> was built by Leidos, INC and First Genesis, INC for use by the CDC in Atlanta.
+                            <a href="https://cdcgov.github.io/MEBT" target="_blank" rel="noreferrer noopener" class="ifOnline">
+                                Click Here to See MEBT's Other Tools
+                            </a>
+                        </p>
+                        <p class="text-right">
+                            <a href="humans.txt">
+                                <img [src]="appRootUrl() + 'assets/common/images/humanstxt-isolated-blank.gif'" title="Click to see our humans.txt file" alt="humans.txt">
+                            </a>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" (click)="DisplayAbout()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </p-dialog>
+
+       
+        <p-dialog id="global-settings-link-color-table" 
+                    [positionLeft]="GlobalSettingsLinkColorDialogSettings.left" 
+                    [positionTop]="GlobalSettingsLinkColorDialogSettings.top" 
+                    [(visible)]="GlobalSettingsLinkColorDialogSettings.isVisible"  
+                    header="Link Color Table" [style]="{width: '25vw'}"
+                    (onShow)="SelectedLinkColorTableTypesVariable='Show'"
+                    (onHide)="SelectedLinkColorTableTypesVariable='Hide'"
+                    >
+            <div class="col-12" style="max-height: 50vh">
+                <table id="link-color-table" style="width:100%;height:100%;"></table>
+            </div>
+        </p-dialog>
+
+
+        <p-dialog id="global-settings-node-color-table" 
+                    [positionLeft]="GlobalSettingsNodeColorDialogSettings.left" 
+                    [positionTop]="GlobalSettingsNodeColorDialogSettings.top" 
+                    [(visible)]="GlobalSettingsNodeColorDialogSettings.isVisible"  
+                    header="Node Color Table" [style]="{width: '25vw'}"
+                    (onShow)="SelectedNodeColorTableTypesVariable='Show'"
+                    (onHide)="SelectedNodeColorTableTypesVariable='Hide'"
+                    >
+            <div class="col-12" style="max-height: 50vh">
+                <table id="node-color-table" style="width:100%;height:100%;"></table>
+            </div>
+        </p-dialog>
+
+
+    </div>
+</div>

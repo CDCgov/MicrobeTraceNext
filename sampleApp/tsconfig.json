@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es6",
+    "skipLibCheck": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "googlemaps"
+    ],
+    "lib": [
+      "es6",
+      "dom"
+    ], 
+    "paths":{
+      "@shared/*": [ "./src/shared/*" ],
+      "@app/*": [ "./src/app/*" ],
+      "@abp/*": [ "node_modules/abp-ng2-module/dist/src/*" ],
+      "@metronic/*": [ "./src/assets/metronic/*" ]
+    }
+  }
+}
